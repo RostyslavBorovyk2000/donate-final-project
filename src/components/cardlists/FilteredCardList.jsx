@@ -72,3 +72,4 @@ FilteredCardList.propTypes = {
     PropTypes.bool,
   ]).isRequired,
 };
+
