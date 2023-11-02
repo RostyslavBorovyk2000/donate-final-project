@@ -1,6 +1,5 @@
 import { render, screen } from "@testing-library/react";
-// eslint-disable-next-line import/no-named-as-default, import/no-unresolved
-import Linkedin from "./Linkedin.svg";
+import { Linkedin } from "./LinkedIn";
 
 describe("should the SVG icon Linkedin", () => {
   test("should render the SVG icon Linkedin", () => {

@@ -18,12 +18,10 @@ describe("Button", () => {
     const buttonElement = screen.getByRole("link");
     const buttonStyles = getComputedStyle(buttonElement);
 
-    expect(buttonStyles.backgroundColor).toBe("rgb(70, 163, 88)");
+    expect(buttonStyles.backgroundColor).toBe('rgb(124, 141, 102)');
     expect(buttonStyles.width).toBe("150px");
   });
 
-  // eslint-disable-next-line max-len
-  // Цей тест перевіряє, чи компонент Button викликає функцію onClick, коли користувач натискає на кнопку.
   test("should have the click", () => {
     render(
       <BrowserRouter>
