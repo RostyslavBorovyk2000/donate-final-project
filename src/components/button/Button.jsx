@@ -12,11 +12,17 @@ export default function Button({
     padding,
   };
 
+
   return (
-    // eslint-disable-next-line max-len
-    <Link to={toPage} style={buttonStyle} className={styles.buttonStyle} onClick={onClick} {...rest}>
+    <Link
+      to={toPage}
+      style={buttonStyle}
+      className={styles.buttonStyle}
+      onClick={onClick}
+      {...rest}
+    >
       {
-         text !== "" ? text : children
+          text !== "" ? text : children
         }
     </Link>
 
@@ -43,8 +49,8 @@ export function FormButton({
     // eslint-disable-next-line max-len, react/button-has-type
     <button type={type} style={buttonStyle} className={styles.buttonStyle} onClick={onClick} {...rest} onKeyDown={handleKeyDown}>
       {
-         text !== "" ? text : children
-        }
+        text !== "" ? text : children
+      }
     </button>
 
   );

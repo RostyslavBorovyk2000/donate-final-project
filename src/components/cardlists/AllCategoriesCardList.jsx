@@ -57,7 +57,7 @@ export default function CategoriesCardList() {
   
   return (
     <>
-      <div className={styles.filtrationWrapper}>
+      <div className={styles.filtrationWrapper} data-testid='allCategoriesCardList-test'>
         <div className={styles.filtration}>
           <div className={styles.filtrationSelectWrapper}>
             <p className={styles.filtrationHeadline}>Оберіть, що вам потрібно:</p>

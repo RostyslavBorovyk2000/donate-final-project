@@ -2,10 +2,10 @@ import { render, screen } from "@testing-library/react";
 import AdminPage from "./AdminPage";
 
 describe("AdminPage", () => {
-  test("should render element with the text 'Кабінет адміністратора'", () => {
+  test("should render an h1 element with text 'Кабінет адміністратора'", () => {
     render(<AdminPage />);
 
-    const text = screen.getByText("Кабінет адміністратора");
-    expect(text).toBeInTheDocument;
+    const h1 = screen.getByText("Кабінет адміністратора");
+    expect(h1).toBeInTheDocument();
   });
 });
