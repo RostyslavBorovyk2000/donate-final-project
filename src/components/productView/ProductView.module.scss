@@ -2,15 +2,13 @@
 @use "../../styles/variables";
 @import "../../styles/mediaqueries";
 
-
 .mainInfoDescription {
   @include devices(tablet) {
     display: flex;
     align-items: center;
     justify-content: center;
-
   }
-  @include devices (laptop) {
+  @include devices(laptop) {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -21,23 +19,22 @@
   width: 48%;
   padding-left: 10px;
 
-  @include devices(tablet){
+  @include devices(tablet) {
     padding: 0 15px;
   }
   @include devices(mobile) {
     width: 100%;
-    margin-left:  0;
-    background-color:rgba(255, 255, 255, 1);
+    margin-left: 0;
+    background-color: rgba(255, 255, 255, 1);
     border-radius: 31px;
   }
 }
 
-
-.productShortName{
+.productShortName {
   @include devices(laptop) {
     display: none;
   }
-  @include devices(tablet){
+  @include devices(tablet) {
     display: none;
   }
   @include devices(mobile) {
@@ -60,7 +57,6 @@
   @include devices(mobile) {
     display: none;
   }
-
 }
 .productPrice {
   @include mixins.font-family-bold;
@@ -68,7 +64,7 @@
   color: variables.$fc-price;
   font-size: 22px;
   line-height: 16px;
-  border-bottom: .3px solid variables.$border-color-main;
+  border-bottom: 0.3px solid variables.$border-color-main;
   @include devices(tablet) {
     font-size: variables.$fs-x;
   }
@@ -98,7 +94,6 @@
   color: #727272;
   font-size: 14px;
   line-height: 24px;
-
 }
 .selectContainer {
   display: flex;
@@ -116,13 +111,10 @@
   border-radius: 6px;
 }
 .quantityCounter {
-  order: 1;
-  min-width: 100%;
-  @include devices(tablet){
+  @include devices(tablet) {
     order: 1;
     margin-bottom: 20px;
   }
-
 }
 .decrease,
 .increase {
@@ -137,10 +129,12 @@
 
 .quantity {
   @include mixins.font-family-regular;
-  margin: 0 20px;
   color: variables.$main-text-color;
   font-size: 20px;
   line-height: 10px;
+  border: none;
+  text-align: center;
+  width: 50px;
 }
 
 .buyButtons {
@@ -184,7 +178,6 @@
   }
   @include devices(tablet) {
     order: 3;
-
   }
 }
 .sku {
@@ -246,7 +239,7 @@
   color: rgba(61, 61, 61, 1);
   font-size: 17px;
   line-height: 16px;
-  border-bottom: .3px solid #7c8d66;
+  border-bottom: 0.3px solid #7c8d66;
   cursor: pointer;
   @include mixins.font-family-regular;
   .activeTab {
@@ -257,19 +250,17 @@
     line-height: 16px;
     border-bottom: 2px solid #7c8d66;
     cursor: pointer;
-
   }
 }
-.descriptionTab{
+.descriptionTab {
   margin-right: 30px;
 }
-.tabContent{
+.tabContent {
   @include mixins.font-family-regular;
   min-height: max-content;
   color: #727272;
   font-size: 14px;
   line-height: 24px;
-
 }
 //donate
 .donateInfo {
@@ -282,29 +273,29 @@
   font-size: 14px;
   line-height: 2;
 }
-.donateInfoAmount{
+.donateInfoAmount {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
   align-items: baseline;
 }
-.donateInfoResult{
+.donateInfoResult {
   @include mixins.font-family-bold;
   font-size: 32px;
   line-height: 1.25;
 }
-.donateInfoGoal{
+.donateInfoGoal {
   font-size: 20px;
   line-height: 1.2;
 }
-.donateInfoTimer{
+.donateInfoTimer {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 16px;
 }
-.donateBtnContainer{
+.donateBtnContainer {
   display: flex;
   flex-direction: row-reverse;
   align-items: baseline;
@@ -320,7 +311,7 @@
   font-size: 17px;
   line-height: 16px;
   text-align: center;
-  background-color: #46A358;
+  background-color: #46a358;
   border: none;
   border-radius: 6px;
   cursor: pointer;
@@ -343,24 +334,23 @@
   border-left: none;
   transition: all 300ms linear 0s;
 }
-.lotDetails{
+.lotDetails {
   display: grid;
   gap: 20px;
   width: 100%;
 }
-.lotInfo{
+.lotInfo {
   display: grid;
   grid-template-columns: 1fr max-content;
   gap: 10px;
   justify-content: space-between;
 }
-.lotInfoDetails{
+.lotInfoDetails {
   @include mixins.font-family-medium;
   font-size: 16px;
   line-height: 16px;
-
 }
-.rateUpBtnWrapper{
+.rateUpBtnWrapper {
   display: flex;
   flex-direction: row-reverse;
   align-items: center;
@@ -377,11 +367,10 @@
   width: 100%;
 }
 
-.descriptionOfProduct{
+.descriptionOfProduct {
   margin-top: 10px;
 }
-.timer{
-@include mixins.font-family-bold;
+.timer {
+  @include mixins.font-family-bold;
   text-transform: uppercase;
-
 }

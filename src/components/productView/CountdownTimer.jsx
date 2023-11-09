@@ -5,51 +5,58 @@ import styles from "./ProductView.module.scss";
 function CountdownTimer({ targetDate }) {
   const calculateTimeLeft = () => {
     const difference = +new Date(targetDate) - +new Date();
-    let timeLeft = {};
 
-    if (difference > 0) {
-      timeLeft = {
-        "дн.": Math.floor(difference / (1000 * 60 * 60 * 24)),
-        "год.": Math.floor((difference / (1000 * 60 * 60)) % 24),
-        "хв.": Math.floor((difference / 1000 / 60) % 60),
-        "сек.": Math.floor((difference / 1000) % 60),
-      };
-    }
-
-    return timeLeft;
+    return difference > 0
+      ? {
+        days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+        hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+        minutes: Math.floor((difference / 1000 / 60) % 60),
+        seconds: Math.floor((difference / 1000) % 60),
+      }
+      : null;
   };
-    
+
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
+  const [isTimerExpired, setIsTimerExpired] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setTimeLeft(calculateTimeLeft());
+      const updatedTimeLeft = calculateTimeLeft();
+      setTimeLeft(updatedTimeLeft);
+      if (updatedTimeLeft === null) {
+        setIsTimerExpired(true);
+      }
     }, 1000);
 
     return () => clearTimeout(timer);
   });
 
-  const timerComponents = [];
-
-  Object.keys(timeLeft).forEach((interval, index) => {
-    if (!timeLeft[interval]) {
-      return;
-    }
-
-    timerComponents.push(
-      // eslint-disable-next-line react/no-array-index-key
-      <span key={index}>
-        {timeLeft[interval]}
-        {" "}
-        {interval}
-        {" "}
-      </span>,
-    );
-  });
-
   return (
-    <div>
-      {timerComponents.length ? timerComponents : <span className={styles.endTime}>00:00:00</span>}
+    <div className={isTimerExpired ? styles.timerExpired : null}>
+      {isTimerExpired ? (
+        <span className={styles.timerExpiredText}>Збір закрито</span>
+      ) : (
+        <div>
+          {timeLeft ? (
+            <span>
+              {timeLeft.days}
+              {" "}
+              дн.
+              {timeLeft.hours}
+              {" "}
+              год.
+              {timeLeft.minutes}
+              {" "}
+              хв.
+              {timeLeft.seconds}
+              {" "}
+              сек.
+            </span>
+          ) : (
+            <span className={styles.endTime}>00:00:00</span>
+          )}
+        </div>
+      )}
     </div>
   );
 }

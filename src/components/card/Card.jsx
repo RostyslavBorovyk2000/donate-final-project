@@ -10,17 +10,28 @@ import { Icons } from "./Icons";
 import { counterIncrement } from "../../redux/actionsCreators/counterActionsCreators";
 import { addFavorites, addToCart } from "../../redux/actions/cartActions";
 import sendCart from "../../api/sendCart";
-import { NEW_CART_URL, GET_FAVORITES, REGISTRATION_URL } from "../../endpoints/endpoints";
+import {
+  NEW_CART_URL,
+  GET_FAVORITES,
+  REGISTRATION_URL,
+} from "../../endpoints/endpoints";
 import styles from "./Card.module.scss";
-
+import Button from "../button/Button";
 
 export function Card({
-  itemNo, name, price, goal, nameCloudinary, category, id, quantity,
+  itemNo,
+  name,
+  price,
+  goal,
+  nameCloudinary,
+  category,
+  id,
+  quantity,
 }) {
   const dispatch = useDispatch();
   const isItemInCart = useSelector((state) => state.cart.items.some((cartItem) => cartItem.itemNo === itemNo));
   const isItemInFavorites = useSelector((state) => state.favorites.items.some((favItem) => favItem.itemNo === itemNo));
-  
+
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isModalVisibleTwo, setIsModalVisibleTwo] = useState(false);
 
@@ -32,10 +43,13 @@ export function Card({
   const myImage = cld.image(`${nameCloudinary}`);
   const imageURL = myImage.toURL();
 
-
-
   const product = {
-    itemNo, name, price, imageURL, id, quantity,
+    itemNo,
+    name,
+    price,
+    imageURL,
+    id,
+    quantity,
   };
 
   async function getCartFromServer() {
@@ -78,39 +92,40 @@ export function Card({
     }
   }
 
-
   async function checkFavoritesFromServer() {
     try {
       const cartData = await getFavoritesFromServer();
-      
-      if (cartData && cartData.favorites && Array.isArray(cartData.favorites.items)) {
+
+      if (
+        cartData
+        && cartData.favorites
+        && Array.isArray(cartData.favorites.items)
+      ) {
         const updatedFavoritesItems = [...cartData.favorites.items, product];
-    
+
         const updatedCustomer = {
           favorites: {
             items: updatedFavoritesItems,
           },
         };
-        
-        axios
-          .put(REGISTRATION_URL, updatedCustomer);
+
+        axios.put(REGISTRATION_URL, updatedCustomer);
       }
     } catch (error) {
       console.error("Помилка при виході:", error);
     }
   }
-  
-    
+
   const handleAddToCart = () => {
     let countProducts = JSON.parse(localStorage.getItem("CountCartProducts")) || 0;
-    
+
     if (!isItemInCart) {
       const currentProducts = JSON.parse(localStorage.getItem("Cart")) || [];
       currentProducts.push(product);
       countProducts += 1;
       localStorage.setItem("Cart", JSON.stringify(currentProducts));
       localStorage.setItem("CountCartProducts", JSON.stringify(countProducts));
-      
+
       checkCartFromServer();
 
       dispatch(addToCart(product));
@@ -136,10 +151,13 @@ export function Card({
       currentProducts.push(product);
       countProducts += 1;
       localStorage.setItem("Favorites", JSON.stringify(currentProducts));
-      localStorage.setItem("CountFavoritesProducts", JSON.stringify(countProducts));
+      localStorage.setItem(
+        "CountFavoritesProducts",
+        JSON.stringify(countProducts),
+      );
 
       checkFavoritesFromServer();
-      
+
       dispatch(addFavorites(product));
       dispatch(counterIncrement());
       setIsModalVisible(true);
@@ -155,56 +173,74 @@ export function Card({
     }
   };
 
-
   return (
     <li className={styles.cardItemWrapper}>
-      {category === "Благодійний лот"
-        ? <div className={styles.decorLot}>ЛОТ</div>
-        : category === "Донат"
-          ? <div className={styles.decorDonat}>ДОНАТ</div>
-          : null}
-      <div className={styles.cardItemImageWrapper}>
-        <Link to={`/product/${itemNo}`}>
-          <img src={imageURL} className={styles.cardItemImage} alt="My img" />
-        </Link>
-      </div>
-      <Link to={`/product/${itemNo}`}>
-        <div className={styles.cardItemTextWrapper}>
-          <h3 className={styles.cardItemHeadline}>{name}</h3>
-          {price
-            ? (
+      <article className={styles.cardContainer}>
+        {category === "Благодійний лот" ? (
+          <div className={styles.decorLot}>ЛОТ</div>
+        ) : category === "Донат" ? (
+          <div className={styles.decorDonat}>ДОНАТ</div>
+        ) : null}
+        <div className={styles.cardItemImageWrapper}>
+          <Link to={`/product/${itemNo}`}>
+            <img src={imageURL} className={styles.cardItemImage} alt="My img" />
+          </Link>
+        </div>
+        <Link to={`/product/${itemNo}`} className={styles.cardLink}>
+          <div className={styles.cardItemTextWrapper}>
+            <h3 className={styles.cardItemHeadline}>{name}</h3>
+            {price ? (
               <p className={styles.cardItemPrice}>
                 {price}
                 {" "}
                 грн
               </p>
-            )
-            : goal && category === "Благодійний лот"
-              ? (
-                <p className={styles.cardItemGoalLot}>
-                  {goal}
-                  {" "}
-                  грн
-                </p>
-              )
-              : goal && category === "Донат"
-                ? (
-                  <p className={styles.cardItemGoalDonat}>
-                    {" "}
-                    {goal}
-                    {" "}
-                    грн
-                  </p>
-                )
-                : null}
+            ) : goal && category === "Благодійний лот" ? (
+              <p className={styles.cardItemGoalLot}>
+                Ставка:
+                {" "}
+                {goal}
+                {" "}
+                грн
+              </p>
+            ) : goal && category === "Донат" ? (
+              <p className={styles.cardItemGoalDonat}>
+                Ціль:
+                {" "}
+                {goal}
+                {" "}
+                грн
+              </p>
+            ) : null}
+          </div>
+        </Link>
+
+        <div style={{ margin: "0 16px 16px" }}>
+          {category === "Благодійний лот" ? (
+            <Button text="Підняти ставку" width="100%" />
+          ) : category === "Донат" ? (
+            <Button text="Підтримати проєкт" width="100%" />
+          ) : null}
         </div>
-      </Link>
-      <Icons imageURL={imageURL} itemNo={itemNo} name={name} price={price} id={id} quantity={1} category={category} handleAddFavorites={handleAddFavorites} handleAddToCart={handleAddToCart} isModalVisible={isModalVisible} isModalVisibleTwo={isModalVisibleTwo} />
+      </article>
+
+      <Icons
+        imageURL={imageURL}
+        itemNo={itemNo}
+        name={name}
+        price={price}
+        id={id}
+        quantity={1}
+        category={category}
+        handleAddFavorites={handleAddFavorites}
+        handleAddToCart={handleAddToCart}
+        isModalVisible={isModalVisible}
+        isModalVisibleTwo={isModalVisibleTwo}
+      />
       <div className={styles.cardItemDecor} />
     </li>
   );
 }
-
 
 Card.propTypes = {
   itemNo: PropTypes.string.isRequired,

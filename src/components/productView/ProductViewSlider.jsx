@@ -37,6 +37,7 @@ export default function ProductViewSlider({ images }) {
         autoplay: true,
         speed: 500,
         arrows: false,
+        dots: true,
       },
     },
     {
@@ -46,7 +47,7 @@ export default function ProductViewSlider({ images }) {
         vertical: true,
         autoplay: true,
         speed: 800,
-
+        dots: true,
       },
     },
     {
@@ -97,6 +98,7 @@ export default function ProductViewSlider({ images }) {
         asNavFor={nav2}
         // eslint-disable-next-line no-return-assign
         ref={(slider) => (sliderRef1 = slider)}
+        dots
         slidesToShow={1}
       >
         {images.map((image, index) => (

@@ -8,20 +8,22 @@
     overflow: hidden;
     .slick-track {
       max-height: 400px;
+      @include devices(tablet) {
+        max-height: 300px;
+      }
     }
   }
 }
 
 
 .slick-slider.slick-vertical {
-  width: 7em;
   @include devices(mobile) {
     display: none;
   }
 }
 
 .thumbnailsSlider {
-    width: 20%;
+  width: 20%;
   max-width: 574px;
   max-height: 500px;
   .slick-slide {
@@ -31,6 +33,9 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    cursor: pointer;
+
+   
 
   }
 }
@@ -39,7 +44,6 @@
 
 .sliderContainer {
   display: flex;
-  align-items: center;
   justify-content: space-between;
   box-sizing: border-box;
   width: 48%;
@@ -84,4 +88,12 @@
   width: 100%;
   max-width: 100px;
   height: auto;
+}
+.slick-arrow.slick-prev, .slick-arrow.slick-next{
+  display: none!important;
+}
+.slick-dots{
+  position: sticky;
+  display: block;
+  bottom: 0;
 }

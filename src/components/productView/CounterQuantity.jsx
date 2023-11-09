@@ -1,4 +1,3 @@
-
 import styles from "./ProductView.module.scss";
 
 function QuantityCounter({ quantity, setQuantity }) {
@@ -14,11 +13,24 @@ function QuantityCounter({ quantity, setQuantity }) {
 
   return (
     <div className={styles.quantityCounter}>
-      <button className={styles.decrease} onClick={handleDecrease} type="button">
+      <button
+        className={styles.decrease}
+        onClick={handleDecrease}
+        type="button"
+      >
         -
       </button>
-      <span className={styles.quantity}>{quantity}</span>
-      <button className={styles.increase} onClick={handleIncrease} type="button">
+      <input
+        type="text"
+        value={quantity}
+        onChange={(e) => setQuantity(parseInt(e.target.value, 10))}
+        className={styles.quantity}
+      />
+      <button
+        className={styles.increase}
+        onClick={handleIncrease}
+        type="button"
+      >
         +
       </button>
     </div>
