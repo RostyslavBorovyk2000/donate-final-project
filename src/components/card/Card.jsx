@@ -147,7 +147,7 @@ export function Card({ item }) {
             name={name}
             price={price}
             id={_id}
-            quantity={1}
+            // quantity={1}
             category={category}
             handleAddFavorites={handleAddFavorites}
             handleAddToCart={handleAddToCart}

@@ -7,9 +7,7 @@ import {
   INITIALIZE_FAVORITES,
   RESET_CART,
   RESET_FAVORITES,
-  // !
   UPDATE_CART_PRODUCT_QUANTITY,
-  // UPDATE_CART_PRODUCT_QUANTITY,
 } from "../actions/cartActions";
 
 
@@ -127,43 +125,19 @@ export const favoritesReducer = (state = initialState.favorites, action) => {
       return {
         ...initialState.favorites,
       };
-      // case UPDATE_CART_PRODUCT: {
-      //   return {
-      //     ...state,
-      //     items: action.payload,
-      //     itemCount: action.payload.length,
-      //   };
-      // }
-      // case UPDATE_CART_PRODUCT_QUANTITY: {
     
-      // case UPDATE_CART_PRODUCT_QUANTITY: {
-      //   return {
-      //     ...state,
-      //     items: state.items.map((item) => {
-      //       console.log(action);
-      //       // eslint-disable-next-line no-underscore-dangle
-      //       if (item._id === action.payload._id) {
-      //         return { ...item, cartQuantity: action.payload.quantity };
-      //       }
-      //       return item;
-      //     }),
-      //   };
-      // }
-
     case UPDATE_CART_PRODUCT_QUANTITY: {
-      console.log("Current state:", state);
-      console.log("Action received:", action);
-      const updatedItems = state.items.map((item) => {
-        // eslint-disable-next-line no-underscore-dangle
-        if (item._id === action.payload.id) {
-          return { ...item, cartQuantity: action.payload.quantity };
-        }
-        return item;
-      });
-      console.log("Updated items:", updatedItems);
       return {
         ...state,
-        items: updatedItems,
+        items: state.items.map((item) => {
+          if (item.itemNo === action.payload.productId) {
+            return {
+              ...item,
+              cartQuantity: action.payload.newQuantity,
+            };
+          }
+          return item;
+        }),
       };
     }
         

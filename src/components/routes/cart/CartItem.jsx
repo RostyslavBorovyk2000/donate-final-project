@@ -1,8 +1,10 @@
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { Cloudinary } from "@cloudinary/url-gen";
 import axios from "axios";
-import { removeFromCart, updateCartProductQuantity } from "../../../redux/actions/cartActions";
+// import { removeFromCart, updateCartProductQuantity } from "../../../redux/actions/cartActions";
+import { removeFromCart } from "../../../redux/actions/cartActions";
 // import { removeFromCart } from "../../../redux/actions/cartActions";
 import { counterDecrement } from "../../../redux/actionsCreators/counterActionsCreators";
 import Button from "../../button/Button";
@@ -13,6 +15,7 @@ import DeleteIcon from "./DeleteIcon";
 
 
 function CartItem({ item }) {
+  const [cartIt, setCartIt] = useState(item);
   const dispatch = useDispatch();
   // eslint-disable-next-line max-len
   const isItemInCart = useSelector((state) => state.cart.items.some((cartItem) => cartItem.itemNo === item.itemNo));
@@ -79,16 +82,41 @@ function CartItem({ item }) {
     }
   };
 
+  async function updateCartQuantityOnServer(productId, newQuantity) {
+    try {
+      const updatedCart = {
+        products: [
+          {
+            product: productId,
+            cartQuantity: newQuantity,
+          },
+        ],
+      };
+      console.log(updatedCart);
+      const response = await axios.put(NEW_CART_URL, updatedCart);
+      
+      if (response.data.success) {
+        // Оновлюємо локальний стан після успішного оновлення на сервері
+        console.log("Кількість товару успішно оновлена на сервері.");
+      }
+    } catch (error) {
+      console.error("Помилка при оновленні кількості товару на сервері:", error);
+    }
+  }
+
   // ! replace
   const handleChangeQuantity = (change) => {
-    console.log(item);
-    const newQuantity = item.cartQuantity + change;
-    console.log("newQuantity:", newQuantity, "item.cartQuantity:", item.cartQuantity);
+    console.log(cartIt);
+    const newQuantity = cartIt.cartQuantity + change;
+    console.log("newQuantity:", newQuantity, "item.cartQuantity:", cartIt.cartQuantity);
     if (newQuantity >= 1) {
+      setCartIt({ ...cartIt, cartQuantity: newQuantity });
       // eslint-disable-next-line no-underscore-dangle
-      console.log(item._id);
+      updateCartQuantityOnServer(cartIt._id, newQuantity);
       // eslint-disable-next-line no-underscore-dangle
-      dispatch(updateCartProductQuantity(item._id, newQuantity));
+      console.log(cartIt._id);
+      // eslint-disable-next-line no-underscore-dangle
+      // dispatch(updateCartProductQuantity(item._id, newQuantity));
     }
   };
 
@@ -119,7 +147,7 @@ function CartItem({ item }) {
       <td>
         <div className={styles.quantityCounterWrapper}>
           <QuantityCounter
-            quantity={item.cartQuantity}
+            quantity={cartIt.cartQuantity}
             handleChangeQuantity={handleChangeQuantity}
           />
         </div>
