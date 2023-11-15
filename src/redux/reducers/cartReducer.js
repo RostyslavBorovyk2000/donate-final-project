@@ -130,7 +130,8 @@ export const favoritesReducer = (state = initialState.favorites, action) => {
       return {
         ...state,
         items: state.items.map((item) => {
-          if (item.itemNo === action.payload.productId) {
+          // eslint-disable-next-line no-underscore-dangle
+          if (item._id === action.payload.productId) {
             return {
               ...item,
               cartQuantity: action.payload.newQuantity,

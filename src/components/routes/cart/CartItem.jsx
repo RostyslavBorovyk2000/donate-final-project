@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { Cloudinary } from "@cloudinary/url-gen";
 import axios from "axios";
-// import { removeFromCart, updateCartProductQuantity } from "../../../redux/actions/cartActions";
-import { removeFromCart } from "../../../redux/actions/cartActions";
+import { removeFromCart, updateCartProductQuantity } from "../../../redux/actions/cartActions";
+// import { removeFromCart } from "../../../redux/actions/cartActions";
 // import { removeFromCart } from "../../../redux/actions/cartActions";
 import { counterDecrement } from "../../../redux/actionsCreators/counterActionsCreators";
 import Button from "../../button/Button";
@@ -19,6 +19,8 @@ function CartItem({ item }) {
   const dispatch = useDispatch();
   // eslint-disable-next-line max-len
   const isItemInCart = useSelector((state) => state.cart.items.some((cartItem) => cartItem.itemNo === item.itemNo));
+  const itemInCart = useSelector((state) => state.cart.items);
+  console.log(itemInCart);
   const itemsInLSCart = JSON.parse(localStorage.getItem("Cart"));
   // eslint-disable-next-line max-len
   const isItemInLSCart = itemsInLSCart && itemsInLSCart.some((cartItem) => cartItem.itemNo === item.itemNo);
@@ -82,25 +84,54 @@ function CartItem({ item }) {
     }
   };
 
+  // async function updateCartQuantityOnServer(productId, newQuantity) {
+  //   try {
+  //     const updatedCart = {
+  //       products: [
+  //         {
+  //           product: productId,
+  //           cartQuantity: newQuantity,
+  //         },
+  //       ],
+  //     };
+  //     console.log(updatedCart);
+  //     const response = await axios.put(NEW_CART_URL, updatedCart);
+      
+  //     if (response.data.success) {
+  //       // Оновлюємо локальний стан після успішного оновлення на сервері
+  //       console.log("Кількість товару успішно оновлена на сервері.");
+  //     }
+  //   } catch (error) {
+  //     console.error("Помилка при оновленні кількості товару на сервері:", error);
+  //   }
+  // }
+
   async function updateCartQuantityOnServer(productId, newQuantity) {
     try {
-      const updatedCart = {
-        products: [
-          {
-            product: productId,
-            cartQuantity: newQuantity,
-          },
-        ],
-      };
-      console.log(updatedCart);
-      const response = await axios.put(NEW_CART_URL, updatedCart);
-      
-      if (response.data.success) {
-        // Оновлюємо локальний стан після успішного оновлення на сервері
-        console.log("Кількість товару успішно оновлена на сервері.");
+      // Отримання поточного стану кошика
+      const cartData = await getCartFromServer();
+      if (cartData && cartData.products) {
+        // Оновлення кількості для вказаного продукту
+        const updatedProducts = cartData.products.map((product) => (
+          // eslint-disable-next-line no-underscore-dangle
+          product.product._id === productId
+            ? { ...product, cartQuantity: newQuantity }
+            : product
+        ));
+
+        // Створення оновленого кошика для відправки на сервер
+        const updatedCart = { products: updatedProducts };
+
+        // Відправлення оновленого кошика на сервер
+        const response = await axios.put(NEW_CART_URL, updatedCart);
+        console.log(productId, newQuantity);
+        dispatch(updateCartProductQuantity(productId, newQuantity));
+        if (response.data) {
+          console.log("Кошик успішно оновлено на сервері.");
+        }
       }
     } catch (error) {
-      console.error("Помилка при оновленні кількості товару на сервері:", error);
+      console.error("Помилка при оновленні кошика на сервері:", error);
     }
   }
 
