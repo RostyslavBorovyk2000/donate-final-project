@@ -8,8 +8,8 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 24px;
-  padding: 0;
   margin-bottom: 24px;
+  padding: 0;
 
   @include devices(mobile) {
     display: block;
@@ -41,12 +41,12 @@
   align-items: center;
   height: 40px;
   padding: 8px 16px;
-  text-align: center;
   color: #fff;
-  text-transform: uppercase;
   font-weight: 700;
   font-size: 18px;
   line-height: 24px;
+  text-align: center;
+  text-transform: uppercase;
   background-color: #7c8d66;
   border-color: #000;
   border-style: solid;

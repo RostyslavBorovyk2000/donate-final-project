@@ -64,7 +64,7 @@
   color: variables.$fc-price;
   font-size: 22px;
   line-height: 16px;
-  border-bottom: 0.3px solid variables.$border-color-main;
+  border-bottom: .3px solid variables.$border-color-main;
   @include devices(tablet) {
     font-size: variables.$fs-x;
   }
@@ -129,12 +129,12 @@
 
 .quantity {
   @include mixins.font-family-regular;
+  width: 50px;
   color: variables.$main-text-color;
   font-size: 20px;
   line-height: 10px;
-  border: none;
   text-align: center;
-  width: 50px;
+  border: none;
 }
 
 .buyButtons {
@@ -150,8 +150,8 @@
   color: white;
   font-size: 14px;
   line-height: 20px;
-  text-transform: uppercase;
   text-align: center;
+  text-transform: uppercase;
   background-color: #ffffff;
   border-radius: 6px;
   cursor: pointer;
@@ -239,7 +239,7 @@
   color: rgba(61, 61, 61, 1);
   font-size: 17px;
   line-height: 16px;
-  border-bottom: 0.3px solid #7c8d66;
+  border-bottom: .3px solid #7c8d66;
   cursor: pointer;
   @include mixins.font-family-regular;
   .activeTab {
