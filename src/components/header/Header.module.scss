@@ -443,3 +443,50 @@ input:focus {
     padding: 0;
     list-style: none;
   }
+
+  .categoryName{
+    font-size: 15px;
+    font-weight: 700;
+    color: #5b7742;
+    padding: 10px;
+    margin-left: 10px;
+    text-transform: uppercase;
+  }
+
+  @media screen and (min-width: 1025px) {
+    .searchResults {
+        position: absolute;
+        width: 720px;
+        top: 66px;
+        left: 8%;
+        border-radius: 15px;
+        background: #eee;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        max-height: 300px;
+        overflow-y: auto;
+        z-index: 1;
+    }
+  
+    .searchResultItem {
+      padding: 12px 15px;
+      cursor: pointer;
+      border-bottom: 1px solid #ddd;
+      font-family: "CeraProRegular", serif;
+    }
+  
+    .searchResultItem li {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+  
+    .categoryName {
+      font-size: 18px; /* Increase font size */
+      font-weight: 700;
+      color: #5b7742;
+      padding: 12px;
+      margin-left: 15px;
+      text-transform: uppercase;
+    }
+  }
+  

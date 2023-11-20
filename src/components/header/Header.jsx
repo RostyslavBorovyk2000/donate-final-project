@@ -93,6 +93,7 @@ function Header() {
       console.error("Помилка при виході:", error);
     }
   };
+  const [categoryName, setCategoryName] = useState('');
 
   const performSearch = async (query) => {
     try {
@@ -101,9 +102,17 @@ function Header() {
         result.shortName.toLowerCase().includes(query.toLowerCase())
       );
       setSearchResults(filteredResults);
+
+     
+      if (filteredResults.length > 0) {
+        setCategoryName(filteredResults[0].category);
+      } else {
+        setCategoryName(''); 
+      }
     } catch (error) {
       console.error("Помилка при пошуку товарів:", error);
       setSearchResults([]);
+      setCategoryName('');
     }
   };
 
@@ -129,7 +138,6 @@ function Header() {
     }
   };
   
-
   return (
     <header className={styles.header}>
       <div className={styles.mobileHeader}>
@@ -150,17 +158,35 @@ function Header() {
           value={inputValue}
           placeholder="Знайти..."
         />
-   {searchResults.length > 0 && inputValue !== "" && (
+{searchResults.length > 0 && inputValue !== "" && (
   <div className={styles.searchResults} ref={searchResultsRef}>
     {searchResults.map((result) => (
-      <li className={styles.searchResultItem}  key={result.id}>
-      <Link to={`/product/${result.itemNo}`} key={result.id} className={styles.searchResultItem}>
-        {result.shortName}
-      </Link>
+      <li className={styles.searchResultItem} key={result.id}>
+        <Link to={`/product/${result.itemNo}`} key={result.id} className={styles.searchResultItem}>
+          {result.shortName}
+        </Link>
       </li>
     ))}
+    {searchResults.length > 0 && searchResults[0].subcategory && (
+      <p className={styles.categoryName}>
+        <Link to={`/products-search?query=${inputValue}`}>{searchResults[0].subcategory}</Link>
+      </p>
+    )}
+    {categoryName && (
+      <p className={styles.categoryName}>
+        {categoryName === 'Одяг' ? (
+          <Link to="/categories/military-clothing">Одяг</Link>
+        ) : categoryName === 'Донат' ? (
+          <Link to="/categories/donation">Донат</Link>
+        ) : categoryName === 'Благодійний лот' || categoryName === 'Благодійний лот' ? (
+          <Link to="/categories/charity-auction">Лот</Link>
+        ) : null
+      }
+      </p>
+    )}
   </div>
 )}
+
 
         {isMobileScreen && <BurgerMenu toggleBar={toggleBar} />}
       </div>
