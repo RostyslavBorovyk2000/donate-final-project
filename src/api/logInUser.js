@@ -46,16 +46,30 @@ const logInUser = (login, password) => async (dispatch) => {
       // const favoritesItems = JSON.parse(localStorage.getItem("Favorites")) || [];
       const serverFavorites = await getFavorites();
       
-      // !
       if (serverCart.data === null && cartItems.length !== 0) {
         await sendCart(cartItems);
       } else if (serverCart.data === null && cartItems.length === 0) {
         // go ahead
       } else if (serverCart.data.products.length > 0) {
         const serverCartItems = [];
-        serverCart.data.products.map((i) => (
-          serverCartItems.push(i.product)
-        ));
+        // !
+        console.log(serverCart.data.products);
+        // serverCart.data.products.map((i) => (
+        //   serverCartItems.push(i.product)
+        // ));
+        serverCart.data.products.map((i) => ({
+          ...i.product, // Розпаковуємо всі властивості з i.product
+          cartQuantity: i.cartQuantity, // Оновлюємо властивість cartQuantity
+        }));
+        const updatedProducts = serverCart.data.products.map((i) => ({
+          ...i.product,
+          cartQuantity: i.cartQuantity,
+        }));
+
+        // Потім використовуйте updatedProducts для подальших операцій
+        serverCartItems.push(...updatedProducts);
+        // !
+        console.log(serverCartItems);
         const updatedCartItems = [...cartItems, ...serverCartItems];
         localStorage.setItem("Cart", JSON.stringify(updatedCartItems));
         dispatch(initializeCart(updatedCartItems));

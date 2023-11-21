@@ -32,7 +32,7 @@ export default function updateCart(cartItemsFromLocalStorage) {
     products: cartItemsFromLocalStorage.map((item) => ({
       // eslint-disable-next-line no-underscore-dangle
       product: item._id,
-      cartQuantity: item.quantity,
+      cartQuantity: item.cartQuantity,
     })),
   };
 

@@ -30,8 +30,10 @@ export function Card({ item }) {
     // quantity,
   } = item;
   const dispatch = useDispatch();
-  const isItemInCart = useSelector((state) => state.cart.items.some((cartItem) => cartItem.itemNo === itemNo));
-  const isItemInFavorites = useSelector((state) => state.favorites.items.some((favItem) => favItem.itemNo === itemNo));
+  // eslint-disable-next-line no-underscore-dangle
+  const isItemInCart = useSelector((state) => state.cart.items.some((cartItem) => cartItem._id === _id));
+  // eslint-disable-next-line no-underscore-dangle
+  const isItemInFavorites = useSelector((state) => state.favorites.items.some((favItem) => favItem._id === _id));
 
   const isUserLoggedIn = localStorage.getItem("userLogin");
 

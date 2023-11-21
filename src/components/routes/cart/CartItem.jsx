@@ -17,13 +17,12 @@ import DeleteIcon from "./DeleteIcon";
 function CartItem({ item }) {
   const [cartIt, setCartIt] = useState(item);
   const dispatch = useDispatch();
-  // eslint-disable-next-line max-len
-  const isItemInCart = useSelector((state) => state.cart.items.some((cartItem) => cartItem.itemNo === item.itemNo));
-  const itemInCart = useSelector((state) => state.cart.items);
-  console.log(itemInCart);
+  // eslint-disable-next-line max-len, no-underscore-dangle
+  const isItemInCart = useSelector((state) => state.cart.items.some((cartItem) => cartItem._id === item._id));
+  // const itemInCart = useSelector((state) => state.cart.items);
   const itemsInLSCart = JSON.parse(localStorage.getItem("Cart"));
-  // eslint-disable-next-line max-len
-  const isItemInLSCart = itemsInLSCart && itemsInLSCart.some((cartItem) => cartItem.itemNo === item.itemNo);
+  // eslint-disable-next-line max-len, no-underscore-dangle
+  const isItemInLSCart = itemsInLSCart && itemsInLSCart.some((cartItem) => cartItem._id === item._id);
   const isUserLoggedIn = localStorage.getItem("userLogin");
 
   const cld = new Cloudinary({
@@ -69,7 +68,8 @@ function CartItem({ item }) {
       if (isItemInCart) {
         deleteCartFromServer();
       
-        dispatch(removeFromCart(item.itemNo));
+        // eslint-disable-next-line no-underscore-dangle
+        dispatch(removeFromCart(item._id));
         dispatch(counterDecrement());
       }
     } else if (!isUserLoggedIn) {
@@ -78,7 +78,8 @@ function CartItem({ item }) {
         currentProducts.push(item);
         localStorage.setItem("Cart", JSON.stringify(currentProducts));
 
-        dispatch(removeFromCart(item.itemNo));
+        // eslint-disable-next-line no-underscore-dangle
+        dispatch(removeFromCart(item._id));
         dispatch(counterDecrement());
       }
     }
@@ -124,7 +125,6 @@ function CartItem({ item }) {
 
         // Відправлення оновленого кошика на сервер
         const response = await axios.put(NEW_CART_URL, updatedCart);
-        console.log(productId, newQuantity);
         dispatch(updateCartProductQuantity(productId, newQuantity));
         if (response.data) {
           console.log("Кошик успішно оновлено на сервері.");
@@ -137,17 +137,14 @@ function CartItem({ item }) {
 
   // ! replace
   const handleChangeQuantity = (change) => {
-    console.log(cartIt);
     const newQuantity = cartIt.cartQuantity + change;
-    console.log("newQuantity:", newQuantity, "item.cartQuantity:", cartIt.cartQuantity);
+    // console.log("newQuantity:", newQuantity, "item.cartQuantity:", cartIt.cartQuantity);
     if (newQuantity >= 1) {
       setCartIt({ ...cartIt, cartQuantity: newQuantity });
       // eslint-disable-next-line no-underscore-dangle
       updateCartQuantityOnServer(cartIt._id, newQuantity);
       // eslint-disable-next-line no-underscore-dangle
-      console.log(cartIt._id);
-      // eslint-disable-next-line no-underscore-dangle
-      // dispatch(updateCartProductQuantity(item._id, newQuantity));
+      dispatch(updateCartProductQuantity(cartIt._id, newQuantity));
     }
   };
 

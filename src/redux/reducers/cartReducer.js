@@ -26,11 +26,13 @@ const initialState = {
 export const cartReducer = (state = initialState.cart, action) => {
   switch (action.type) {
     case ADD_TO_CART:
-      if (state.items.some((item) => item.itemNo === action.payload.itemNo)) {
+      // eslint-disable-next-line no-underscore-dangle
+      if (state.items.some((item) => item._id === action.payload._id)) {
         return {
           ...state,
           items: state.items.map((item) => {
-            if (item.itemNo === action.payload.itemNo) {
+            // eslint-disable-next-line no-underscore-dangle
+            if (item._id === action.payload._id) {
               return {
                 ...item,
                 ...action.payload,
@@ -51,7 +53,8 @@ export const cartReducer = (state = initialState.cart, action) => {
     case REMOVE_FROM_CART:
       return {
         ...state,
-        items: state.items.filter((item) => item.itemNo !== action.payload),
+        // eslint-disable-next-line no-underscore-dangle
+        items: state.items.filter((item) => item._id !== action.payload),
         itemCount: state.itemCount - 1,
       };
     case INITIALIZE_CART:
@@ -60,6 +63,25 @@ export const cartReducer = (state = initialState.cart, action) => {
         items: action.payload,
         itemCount: action.payload.length,
       };
+    
+    case UPDATE_CART_PRODUCT_QUANTITY:
+      console.log("Current state items:", state.items); // Для діагностики
+      return {
+        ...state,
+        items: state.items.map((item) => {
+          // eslint-disable-next-line no-underscore-dangle
+          if (item._id === action.payload.productId) {
+            // eslint-disable-next-line no-underscore-dangle
+            console.log("Updating item with ID:", item._id, action.payload.productId); // Для діагностики
+            return {
+              ...item,
+              cartQuantity: action.payload.newQuantity,
+            };
+          }
+          return item;
+        }),
+      };
+    
     case RESET_CART:
       return {
         ...initialState.cart,
@@ -87,12 +109,14 @@ export const favoritesReducer = (state = initialState.favorites, action) => {
       //   ...state,
       //   items: [...state.items, action.payload],
       //   itemCount: state.itemCount + 1,
-    // };
-      if (state.items.some((item) => item.itemNo === action.payload.itemNo)) {
+      // };
+      // eslint-disable-next-line no-underscore-dangle
+      if (state.items.some((item) => item._id === action.payload._id)) {
         return {
           ...state,
           items: state.items.map((item) => {
-            if (item.itemNo === action.payload.itemNo) {
+            // eslint-disable-next-line no-underscore-dangle
+            if (item._id === action.payload._id) {
               return {
                 ...item,
                 ...action.payload,
@@ -112,7 +136,8 @@ export const favoritesReducer = (state = initialState.favorites, action) => {
     case REMOVE_FROM_FAVORITES:
       return {
         ...state,
-        items: state.items.filter((item) => item.itemNo !== action.payload),
+        // eslint-disable-next-line no-underscore-dangle
+        items: state.items.filter((item) => item._id !== action.payload),
         itemCount: state.itemCount - 1,
       };
     case INITIALIZE_FAVORITES:
@@ -125,23 +150,23 @@ export const favoritesReducer = (state = initialState.favorites, action) => {
       return {
         ...initialState.favorites,
       };
-    
-    case UPDATE_CART_PRODUCT_QUANTITY: {
-      return {
-        ...state,
-        items: state.items.map((item) => {
-          // eslint-disable-next-line no-underscore-dangle
-          if (item._id === action.payload.productId) {
-            return {
-              ...item,
-              cartQuantity: action.payload.newQuantity,
-            };
-          }
-          return item;
-        }),
-      };
-    }
-        
+       
+      // case UPDATE_CART_PRODUCT_QUANTITY:
+      //   console.log(state.items);
+      //   return {
+      //     ...state,
+      //     items: state.items.map((item) => {
+      //       // eslint-disable-next-line no-underscore-dangle
+      //       if (item._id === action.payload.productId) {
+      //         return {
+      //           ...item,
+      //           cartQuantity: action.payload.newQuantity,
+      //         };
+      //       }
+      //       return item;
+      //     }),
+      //   };
+
     default:
       return state;
   }
