@@ -1,6 +1,7 @@
 /* eslint-disable no-nested-ternary */
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import CardList from "./CardList";
 import SliderPrice from "../sliderPrice/SliderPrice";
 import Spinner from "../spinner/Spinner";
@@ -21,102 +22,112 @@ export default function CategoriesCardList() {
   const [selectedSubCategory, setSelectedSubCategory] = useState([]);
   const [selectedBrand, setSelectedBrand] = useState([]);
   const [selectedColor, setSelectedColor] = useState([]);
+  const [selectedStatus, setSelectedStatus] = useState("all");
   const productsList = useSelector((state) => state.products.items);
   const filtersList = useSelector((state) => state.filters.items);
+  const navigate = useNavigate();
+
 
   const applyFilter = () => {
-    setIsLoading(true);
-
-    const filteredItems = productsList.filter((item) => {
-      const categoryMatch = selectedValue === "all" || item.category === selectedValue;
-      const subCategoryMatch = selectedValue !== "Одяг" || selectedSubCategory.length === 0 || item.subcategory === selectedSubCategory;
-      const brandMatch = selectedBrand.length === 0 || item.brand === selectedBrand;
-      const colorMatch = selectedColor.length === 0 || item.color === selectedColor;
-      const priceMatch = item
-        .currentPrice >= tempSliderValue[0] && item.currentPrice <= tempSliderValue[1];
-
-      return categoryMatch && subCategoryMatch && brandMatch && colorMatch && priceMatch;
-    });
-
-    setItems(filteredItems);
-    setIsLoading(false);
+    fetchProducts();
   };
 
   useEffect(() => {
-    if (!selectedSubCategory || !selectedValue) {
-      return;
-    }
+    fetchProducts();
+  }, [selectedValue, selectedSubCategory, selectedBrand,
+    selectedColor, selectedStatus, productsList]);
 
+  function fetchProducts() {
     setIsLoading(true);
 
-    if (selectedValue === "all") {
-      setItems([...productsList]);
-      setIsLoading(false);
-      return;
+    const params = {};
+
+    if (selectedValue) {
+      params.category = selectedValue;
     }
 
-    getProducts({
-      category: selectedValue,
-      subcategory: selectedSubCategory,
-      brand: selectedBrand,
-      color: selectedColor,
-    })
+    if (selectedSubCategory) {
+      params.subcategory = selectedSubCategory;
+    }
+
+    if (selectedBrand) {
+      params.brand = selectedBrand;
+    }
+
+    if (selectedColor) {
+      params.color = selectedColor;
+    }
+
+    if (tempSliderValue) {
+      params.prices = tempSliderValue;
+    }
+    if (selectedValue === "all") {
+      params.category = undefined;
+      params.subcategory = undefined;
+      params.brand = undefined;
+      params.color = undefined;
+      params.prices = undefined;
+    } else if (selectedValue !== "Одяг") {
+      params.category = selectedValue;
+      params.subcategory = null;
+      params.brand = null;
+      params.color = null;
+      params.prices = null;
+    }
+    if (selectedStatus === "Донат") {
+      params.status = selectedStatus;
+    }
+ 
+    
+    const queryParams = new URLSearchParams(params).toString();
+    navigate(`/categories?${queryParams}`);
+
+    console.log("API params:", params);
+    getProducts(params)
       .then((data) => {
-        console.log("API call success:", data);
         setItems(data);
-        setIsLoading(false);
+        console.log(data);
       })
       .catch((error) => {
         console.error("Помилка при отриманні товарів:", error);
+      })
+      .finally(() => {
         setIsLoading(false);
       });
-  }, [selectedValue, selectedSubCategory, selectedBrand, selectedColor, productsList]);
+  }
 
   useEffect(() => {
-    const prices = items
-      .filter((item) => item.currentPrice !== undefined)
-      .map((item) => item.currentPrice);
-
-    if (prices.length > 0) {
-      setTempSliderValue([Math.min(...prices), Math.max(...prices)]);
-    } else {
-      setTempSliderValue([0, 0]);
-    }
-  }, [items]);
-
-  useEffect(() => {
-    if (selectedValue === "all") {
-      setItems(productsList);
-    } else {
-      setItems(productsList.filter((item) => item.category === selectedValue));
-    }
-  }, [selectedValue, productsList]);
+    setItems(productsList);
+  }, [productsList]);
 
   const handleChange = (e) => {
     const selectCategory = e.target.value;
-    setSelectedValue(selectCategory === selectedValue ? "all" : selectCategory);
-    console.log(selectCategory);
+    setSelectedValue(selectCategory === selectedValue ? "" : selectCategory);
     setSelectedSubCategory("");
   };
 
   const handleSubCategoryChange = (e) => {
     const subCategory = e.target.value;
-    setSelectedSubCategory(subCategory);
-    console.log(subCategory);
+    setSelectedSubCategory((prevSubCategory) => (prevSubCategory === subCategory ? "" : subCategory));
   };
 
   const handleBrandChange = (e) => {
     const brand = e.target.value;
-    setSelectedBrand(brand);
+    setSelectedBrand((prevSelectedBrand) => (prevSelectedBrand === brand ? "" : brand));
   };
 
   const handleColorChange = (e) => {
     const color = e.target.value;
-    setSelectedColor(color);
+    setSelectedColor((prevSelectedColor) => (prevSelectedColor === color ? "" : color));
+  };
+
+  const handleStatusChange = (e) => {
+    const status = e.target.value;
+    setSelectedStatus(status === selectedStatus ? "all" : status);
   };
 
   return (
-    <>
+    <div className={styles.filtrationWrapper}>
       <div className={styles.subCategoryOptions}>
         {getUniqueList(
           filtersList.filter(({ type }) => type === "category").map(({ name }) => name),
@@ -129,101 +140,114 @@ export default function CategoriesCardList() {
             {selectCategory}
           </Button>
         ))}
-      </div>
-      <div className={styles.filtrationWrapper}>
+        {selectedValue === "Одяг" && (
         <aside className={styles.filtration}>
           <div className={styles.filtrationSelectWrapper}>
-
             <div className={styles.categoryOptions} />
+            <h3>Підкатегорія</h3>
+            {getUniqueList(
+              filtersList
+                .filter(({ type }) => type === "subcategory")
+                .map(({ name }) => name),
+            ).map((subCategory) => (
+              <label
+                htmlFor={subCategory}
+                key={subCategory}
+                className={styles.checkboxLabel}
+              >
+                <input
+                  type="checkbox"
+                  name={subCategory}
+                  checked={selectedSubCategory === subCategory}
+                  className={styles.customCheckbox}
+                  onChange={() => handleSubCategoryChange({ target: { value: subCategory } })}
+                />
+                {subCategory}
+              </label>
+            ))}
 
-            {selectedValue === "Одяг" && (
-              <>
-                <h3>Підкатегорія</h3>
-                {getUniqueList(
-                  filtersList
-                    .filter(({ type }) => type === "subcategory")
-                    .map(({ name }) => name),
-                ).map((subCategory) => (
-                  <label
-                    htmlFor={subCategory}
-                    key={subCategory}
-                    className={styles.checkboxLabel}
-                  >
-                    <input
-                      type="checkbox"
-                      name={subCategory}
-                      checked={selectedSubCategory === subCategory}
-                      onChange={() => handleSubCategoryChange({ target: { value: subCategory } })}
-                    />
-                    {subCategory}
-                  </label>
-                ))}
+            <h3>Виробник/Бренд</h3>
+            {getUniqueList(
+              filtersList
+                .filter(({ type }) => type === "brand")
+                .map(({ name }) => name),
+            ).map((brand) => (
+              <label
+                htmlFor={brand}
+                key={brand}
+                className={styles.checkboxLabel}
+              >
+                <input
+                  type="checkbox"
+                  name={brand}
+                  checked={selectedBrand === brand}
+                  className={styles.customCheckbox}
+                  onChange={() => handleBrandChange({ target: { value: brand } })}
+                />
+                {brand}
+              </label>
+            ))}
 
-                <h3>Виробник/Бренд</h3>
-                {getUniqueList(
-                  filtersList
-                    .filter(({ type }) => type === "brand")
-                    .map(({ name }) => name),
-                ).map((brand) => (
-                  <label
-                    htmlFor={brand}
-                    key={brand}
-                    className={styles.checkboxLabel}
-                  >
-                    <input
-                      type="checkbox"
-                      name={brand}
-                      checked={selectedBrand === brand}
-                      onChange={() => handleBrandChange({ target: { value: brand } })}
-                    />
-                    {brand}
-                  </label>
-                ))}
-
-                <h3>Колір</h3>
-                {getUniqueList(
-                  filtersList
-                    .filter(({ type }) => type === "color")
-                    .map(({ name }) => name),
-                ).map((color) => (
-                  <label
-                    htmlFor={color}
-                    key={color}
-                    className={styles.checkboxLabel}
-                  >
-                    <input
-                      type="checkbox"
-                      name={color}
-                      checked={selectedColor === color}
-                      onChange={() => handleColorChange({ target: { value: color } })}
-                    />
-                    {color}
-                  </label>
-                ))}
-              </>
-            )}
+            <h3>Колір</h3>
+            {getUniqueList(
+              filtersList
+                .filter(({ type }) => type === "color")
+                .map(({ name }) => name),
+            ).map((color) => (
+              <label
+                htmlFor={color}
+                key={color}
+                className={styles.checkboxLabel}
+              >
+                <input
+                  type="checkbox"
+                  name={color}
+                  checked={selectedColor === color}
+                  className={styles.customCheckbox}
+                  onChange={() => handleColorChange({ target: { value: color } })}
+                />
+                {color}
+              </label>
+            ))}
           </div>
+            
 
-          {selectedValue === "Одяг" && (
-            <div>
-              <SliderPrice
-                tempSliderValue={tempSliderValue}
-                setTempSliderValue={setTempSliderValue}
-                applyFilter={applyFilter}
-              />
-            </div>
-          )}
+          <SliderPrice
+            tempSliderValue={tempSliderValue}
+            setTempSliderValue={setTempSliderValue}
+            applyFilter={applyFilter}
+          />
 
 
         </aside>
-
-        {isLoading ? (
-          <Spinner />
-        ) : (
-          (selectedValue || selectedValue === "all") && <CardList items={items} />
+        )}
+        {selectedValue === "Донат" && (
+          <div>
+            <select name="status" value={selectedStatus} onChange={handleStatusChange}>
+              <option value="all">Усі статуси</option>
+              {getUniqueList(
+                filtersList
+                  .filter(({ type }) => type === "status")
+                  .map(({ name }) => name),
+              ).map((status) => (
+                <option key={status} value={status} className={styles.option}>
+                  {status}
+                </option>
+              ))}
+            </select>
+            
+          </div>
+          
         )}
       </div>
-    </>
+      
+
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        <CardList items={items} />
+      )}
+    </div>
 
   );
 }
