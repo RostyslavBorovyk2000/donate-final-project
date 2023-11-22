@@ -167,7 +167,7 @@ const containerStyle = {
 
 function Contacts() {
   return (
-    <section className={style.sectionWrapper}>
+    <>
       <DocumentTitle title="Контакти" />
       <h1
         style={{
@@ -176,9 +176,15 @@ function Contacts() {
       >
         Контакти
       </h1>
-      <p style={{ color: "rgb(61 61 61)", marginBottom: "50px" }}>Контактна інформація</p>
+      <p style={{ color: "rgb(61 61 61)", marginBottom: "10px" }}>Контактна інформація</p>
       <div
-        className={style.containerWrapper}
+        style={{
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          gap: "24px",
+          padding: "0",
+          marginBottom: "24px",
+        }}
       >
         <div style={containerStyle}>
           {" "}
@@ -281,7 +287,7 @@ function Contacts() {
       <div>
         <ContactMap />
       </div>
-    </section>
+    </>
   );
 }
 

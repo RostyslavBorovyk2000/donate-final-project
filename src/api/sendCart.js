@@ -39,7 +39,8 @@ export default function sendCart(cartItems) {
     // eslint-disable-next-line no-underscore-dangle
       product: item._id,
       // !
-      cartQuantity: item.quantity,
+      // cartQuantity: item.quantity,
+      cartQuantity: item.cartQuantity,
     })),
   };
 

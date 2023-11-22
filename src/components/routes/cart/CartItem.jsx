@@ -51,6 +51,7 @@ function CartItem({ item }) {
   // eslint-disable-next-line no-underscore-dangle
   async function deleteCartFromServer() {
     const cartData = await getCartFromServer();
+    console.log(cartData);
     if (cartData.products.length !== null) {
       // eslint-disable-next-line no-underscore-dangle
       const idToDelete = item._id ? item._id : item.id;
@@ -85,34 +86,10 @@ function CartItem({ item }) {
     }
   };
 
-  // async function updateCartQuantityOnServer(productId, newQuantity) {
-  //   try {
-  //     const updatedCart = {
-  //       products: [
-  //         {
-  //           product: productId,
-  //           cartQuantity: newQuantity,
-  //         },
-  //       ],
-  //     };
-  //     console.log(updatedCart);
-  //     const response = await axios.put(NEW_CART_URL, updatedCart);
-      
-  //     if (response.data.success) {
-  //       // Оновлюємо локальний стан після успішного оновлення на сервері
-  //       console.log("Кількість товару успішно оновлена на сервері.");
-  //     }
-  //   } catch (error) {
-  //     console.error("Помилка при оновленні кількості товару на сервері:", error);
-  //   }
-  // }
-
   async function updateCartQuantityOnServer(productId, newQuantity) {
     try {
-      // Отримання поточного стану кошика
       const cartData = await getCartFromServer();
       if (cartData && cartData.products) {
-        // Оновлення кількості для вказаного продукту
         const updatedProducts = cartData.products.map((product) => (
           // eslint-disable-next-line no-underscore-dangle
           product.product._id === productId
@@ -120,10 +97,8 @@ function CartItem({ item }) {
             : product
         ));
 
-        // Створення оновленого кошика для відправки на сервер
         const updatedCart = { products: updatedProducts };
 
-        // Відправлення оновленого кошика на сервер
         const response = await axios.put(NEW_CART_URL, updatedCart);
         dispatch(updateCartProductQuantity(productId, newQuantity));
         if (response.data) {
@@ -135,19 +110,29 @@ function CartItem({ item }) {
     }
   }
 
-  // ! replace
   const handleChangeQuantity = (change) => {
     const newQuantity = cartIt.cartQuantity + change;
-    // console.log("newQuantity:", newQuantity, "item.cartQuantity:", cartIt.cartQuantity);
     if (newQuantity >= 1) {
       setCartIt({ ...cartIt, cartQuantity: newQuantity });
-      // eslint-disable-next-line no-underscore-dangle
-      updateCartQuantityOnServer(cartIt._id, newQuantity);
+
+      if (!isUserLoggedIn) {
+        const currentProducts = JSON.parse(localStorage.getItem("Cart")) || [];
+        const updatedProducts = currentProducts.map((p) => {
+          // eslint-disable-next-line no-underscore-dangle
+          if (p._id === item._id) {
+            return { ...p, cartQuantity: newQuantity };
+          }
+          return p;
+        });
+        localStorage.setItem("Cart", JSON.stringify(updatedProducts));
+      } else {
+        // eslint-disable-next-line no-underscore-dangle
+        updateCartQuantityOnServer(cartIt._id, newQuantity);
+      }
       // eslint-disable-next-line no-underscore-dangle
       dispatch(updateCartProductQuantity(cartIt._id, newQuantity));
     }
   };
-
 
   
   return (

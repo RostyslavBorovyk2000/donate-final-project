@@ -36,6 +36,7 @@ const logInUser = (login, password) => async (dispatch) => {
       dispatch(setLoggedInUser(login));
       localStorage.setItem("userLogin", login);
       localStorage.setItem("token", token);
+      // !
       dispatch(setAuthToken(token));
       getCustomerFromServer();
       dispatch(logIn());

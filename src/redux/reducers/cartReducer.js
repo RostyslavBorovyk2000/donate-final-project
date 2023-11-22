@@ -65,14 +65,11 @@ export const cartReducer = (state = initialState.cart, action) => {
       };
     
     case UPDATE_CART_PRODUCT_QUANTITY:
-      console.log("Current state items:", state.items); // Для діагностики
       return {
         ...state,
         items: state.items.map((item) => {
           // eslint-disable-next-line no-underscore-dangle
           if (item._id === action.payload.productId) {
-            // eslint-disable-next-line no-underscore-dangle
-            console.log("Updating item with ID:", item._id, action.payload.productId); // Для діагностики
             return {
               ...item,
               cartQuantity: action.payload.newQuantity,
