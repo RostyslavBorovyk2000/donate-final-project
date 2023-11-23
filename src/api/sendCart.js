@@ -46,3 +46,21 @@ export default function sendCart(cartItems) {
 
   return axios.post(NEW_CART_URL, newCart);
 }
+
+export function editCart(cartItems) {
+  const token = localStorage.getItem("token");
+  // const { token } = store.getState().auth;
+  store.dispatch(setAuthToken(token));
+
+  const newCart = {
+    products: cartItems.map((item) => ({
+    // eslint-disable-next-line no-underscore-dangle
+      product: item._id,
+      // !
+      // cartQuantity: item.quantity,
+      cartQuantity: item.cartQuantity,
+    })),
+  };
+
+  return axios.put(NEW_CART_URL, newCart);
+}

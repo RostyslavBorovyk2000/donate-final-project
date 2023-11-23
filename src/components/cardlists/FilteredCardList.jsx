@@ -112,8 +112,8 @@ export default function FilteredCardList({ property, value, priceRange }) {
 //   return (
 //     // eslint-disable-next-line react/jsx-no-useless-fragment
 //     <>
-//       {isLoading ? <Spinner /> : <CardList items={filteredData} />}
-//       {/* {isLoading ? <Spinner /> : <CardList items={productsPopular} />} */}
+//       {/* {isLoading ? <Spinner /> : <CardList items={filteredData} />} */}
+//       {isLoading ? <Spinner /> : <CardList items={productsPopular} />}
 //     </>
 //   );
 // }

@@ -14,8 +14,11 @@ import DeleteIcon from "../cart/DeleteIcon";
 
 function FavoritesItem({ item }) {
   const dispatch = useDispatch();
-  // eslint-disable-next-line max-len
-  const isItemInFavorites = useSelector((state) => state.favorites.items.some((cartItem) => cartItem.itemNo === item.itemNo));
+  // eslint-disable-next-line max-len, no-underscore-dangle
+  const isItemInFavorites = useSelector((state) => state.favorites.items.some((cartItem) => cartItem._id === item._id));
+  // const itemsInLSFavorites = JSON.parse(localStorage.getItem("Favorites"));
+  // eslint-disable-next-line max-len, no-underscore-dangle
+  // const isItemInLSFavorites = itemsInLSFavorites && itemsInLSFavorites.some((cartItem) => cartItem._id === item._id);
 
   const cld = new Cloudinary({
     cloud: { cloudName: "dzaxltnel" },
@@ -40,34 +43,29 @@ function FavoritesItem({ item }) {
   }
 
   async function deleteFavoritesFromServer() {
-    try {
-      const cartData = await getFavoritesFromServer();
-      
-      if (cartData.products.length > 0) {
-        // eslint-disable-next-line no-underscore-dangle
-        const idToDelete = item._id ? item._id : item.id;
-        // const idToDelete = item._id;
-        axios
-          .delete(`http://localhost:4000/api/wishlist/${idToDelete}`)
-          .catch((err) => {
-            console.log(err);
-          });
-      }
-    } catch (error) {
-      console.error("Помилка при виході:", error);
+    const cartData = await getFavoritesFromServer();
+    
+    if (cartData.products.length !== null) {
+      // eslint-disable-next-line no-underscore-dangle
+      const idToDelete = item._id ? item._id : item.id;
+      // const idToDelete = item._id;
+      axios
+        .delete(`http://localhost:4000/api/wishlist/${idToDelete}`)
+        .catch((err) => {
+          console.log(err);
+        });
     }
   }
 
-
   const handleRemoveFromFavorites = () => {
     if (isItemInFavorites) {
-      const currentProducts = JSON.parse(localStorage.getItem("Favorites")) || [];
-      const newProducts = currentProducts.filter((cartItem) => cartItem.itemNo !== item.itemNo);
-      localStorage.setItem("Favorites", JSON.stringify(newProducts));
+      // const currentProducts = JSON.parse(localStorage.getItem("Favorites")) || [];
+      // const newProducts = currentProducts.filter((cartItem) => cartItem.itemNo !== item.itemNo);
+      // localStorage.setItem("Favorites", JSON.stringify(newProducts));
 
       deleteFavoritesFromServer();
-      
-      dispatch(removeFavorites(item.itemNo));
+      // eslint-disable-next-line no-underscore-dangle
+      dispatch(removeFavorites(item._id));
       dispatch(counterDecrement());
     }
   };

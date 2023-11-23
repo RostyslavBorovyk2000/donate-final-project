@@ -51,7 +51,7 @@ function CartItem({ item }) {
   // eslint-disable-next-line no-underscore-dangle
   async function deleteCartFromServer() {
     const cartData = await getCartFromServer();
-    console.log(cartData);
+
     if (cartData.products.length !== null) {
       // eslint-disable-next-line no-underscore-dangle
       const idToDelete = item._id ? item._id : item.id;
