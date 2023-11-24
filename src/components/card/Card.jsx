@@ -9,12 +9,6 @@ import axios from "axios";
 import { Icons } from "./Icons";
 import { counterIncrement } from "../../redux/actionsCreators/counterActionsCreators";
 import { addFavorites, addToCart } from "../../redux/actions/cartActions";
-// import { sendCartToEmptyServer } from "../../api/sendCart";
-// import { sendFavoritesToEmptyServer } from "../../api/sendFavorites";
-import {
-// NEW_CART_URL,
-// NEW_FAVORITES_URL,
-} from "../../endpoints/endpoints";
 import styles from "./Card.module.scss";
 import Button from "../button/Button";
 
@@ -27,7 +21,6 @@ export function Card({ item }) {
     nameCloudinary,
     category,
     _id,
-    // quantity,
   } = item;
   const dispatch = useDispatch();
   // eslint-disable-next-line no-underscore-dangle
@@ -45,28 +38,13 @@ export function Card({ item }) {
   const myImage = cld.image(`${nameCloudinary[0]}`);
   const imageURL = myImage.toURL();
 
-  // async function getCartFromServer() {
-  //   try {
-  //     const response = await axios.get(NEW_CART_URL);
-  //     return response.data;
-  //   } catch (err) {
-  //     console.error("Помилка при отриманні даних:", err);
-  //     return null;
-  //   }
-  // }
-
   async function addCartToServer() {
     try {
-      // const cartData = await getCartFromServer();
-      // if (cartData === null) {
-      //   sendCartToEmptyServer();
-      // } else if (cartData !== null) {
       axios
         .put(`http://localhost:4000/api/cart/${_id}`)
         .catch((err) => {
           console.log(err);
         });
-      // }
     } catch (error) {
       console.error("Помилка при виході:", error);
     }
@@ -92,29 +70,13 @@ export function Card({ item }) {
     }
   };
 
-
-  // async function getFavoritesFromServer() {
-  //   try {
-  //     const response = await axios.get(NEW_FAVORITES_URL);
-  //     return response.data;
-  //   } catch (err) {
-  //     console.error("Помилка при отриманні даних:", err);
-  //     return null;
-  //   }
-  // }
-
   async function addFavoritesToServer() {
     try {
-      // const favoritesData = await getFavoritesFromServer();
-      // if (favoritesData === null) {
-      //   sendFavoritesToEmptyServer();
-      // } else if (favoritesData !== null) {
       axios
         .put(`http://localhost:4000/api/wishlist/${_id}`)
         .catch((err) => {
           console.log(err);
         });
-      // }
     } catch (error) {
       console.error("Помилка при виході:", error);
     }
@@ -149,7 +111,6 @@ export function Card({ item }) {
             name={name}
             price={price}
             id={_id}
-            // quantity={1}
             category={category}
             handleAddFavorites={handleAddFavorites}
             handleAddToCart={handleAddToCart}

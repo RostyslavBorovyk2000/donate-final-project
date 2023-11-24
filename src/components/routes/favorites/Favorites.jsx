@@ -1,32 +1,22 @@
 import React from "react";
-// import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
-// import { useSelector, useDispatch } from "react-redux";
-// import { initializeFavorites } from "../../../redux/actions/cartActions";
+import { useDispatch, useSelector } from "react-redux";
 import FavoritesItem from "./FavoritesItem";
 import { FormButton } from "../../button/Button";
 // import { openModal } from "../../../redux/actionsCreators/modalActionsCreators";
 // import Modal from "../../modal/Modal";
+import getFavorites from "../../../api/getFavorites";
+import { initializeCart, resetFavorites } from "../../../redux/actions/cartActions";
+import updateCart from "../../../api/updateCart";
+import { deleteWishlist } from "../../../api/updateFavorites";
 import styles from "./Favorites.module.scss";
 
 
 function Favorites() {
-  // const dispatch = useDispatch();
   const favoritesItems = useSelector((state) => state.favorites.items);
-  // const currentProducts = JSON.parse(localStorage.getItem("Favorites")) || [];
-  // const isModalOpen = useSelector((state) => state.modal.isOpen);
-
-  // useEffect(() => {
-  //   if (!favoritesItems.length) {
-  //     const localData = JSON.parse(localStorage.getItem("Favorites"));
-  //     if (localData) {
-  //       dispatch(initializeFavorites(localData));
-  //     }
-  //   }
-  // }, [favoritesItems.length, dispatch]);
-
-  const isFavoriteEmpty = favoritesItems.length === 0; // Тепер перевірка відбувається тут
-  // const isFavoriteEmpty = currentProducts.length === 0;
+  const isFavoriteEmpty = favoritesItems.length === 0;
+  const cartLSItems = JSON.parse(localStorage.getItem("Cart")) || [];
+  // const favoritesLSItems = JSON.parse(localStorage.getItem("Favorites")) || [];
+  const dispatch = useDispatch();
 
   // let modalText = "";
   // if (!cartItems) {
@@ -36,6 +26,35 @@ function Favorites() {
   //   modalText = "Здається, ви забули вибрати товар для покупки.
   // Будь ласка, оберіть товар, який вас цікавить, і натисніть 'Купити'.";
   // }
+  
+  const handleAddFavoritesToCart = async () => {
+    try {
+      const serverFavorites = await getFavorites();
+
+      const updatedProducts = serverFavorites.data.products.map((i) => ({
+        ...i,
+        cartQuantity: i.cartQuantity,
+      }));
+      const serverCartItems = [];
+      serverCartItems.push(...updatedProducts);
+      const updatedCartItems = [...cartLSItems, ...serverCartItems];
+      localStorage.setItem("Cart", JSON.stringify(updatedCartItems));
+      dispatch(initializeCart(updatedCartItems));
+      await updateCart(updatedCartItems);
+      // cleaning after add
+      localStorage.setItem("Favorites", JSON.stringify([]));
+      dispatch(resetFavorites());
+      deleteWishlist();
+    } catch (error) {
+      console.error("Помилка під час отримання обраного вибору:", error);
+    }
+  };
+  
+  // const handleAddFavoritesToCart = () => {
+  //   // TODO
+  //   const serverFavorites = await getFavorites();
+  //   console.log("!");
+  // };
 
   return (
     <div className={styles.cardsSectionWrapper}>
@@ -65,8 +84,8 @@ function Favorites() {
       {/* {isModalOpen && (
         <Modal tittle={modalText} />
       )} */}
-      {/* <FormButton text="Купити" padding="10px" onClick={() =>} /> */}
-      <FormButton text="Купити" padding="10px" />
+      <FormButton text="До кошика" padding="10px" onClick={handleAddFavoritesToCart} />
+      {/* <FormButton text="Купити" padding="10px" /> */}
     </div>
   );
 }

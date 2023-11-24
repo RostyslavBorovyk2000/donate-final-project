@@ -7,10 +7,10 @@
   flex-direction: column;
   justify-content: flex-end;
   max-height: 360px;
-  transition: box-shadow 0.3s ease;
+  transition: box-shadow 1s ease;
 
   &:hover {
-    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 1);
   }
 }
 
@@ -24,8 +24,8 @@
   padding: 10px 0px;
   font-weight: 700;
   line-height: 1;
-  background-color: variables.$bgc-hot;
   white-space: nowrap;
+  background-color: variables.$bgc-hot;
   vertical-align: baseline;
 }
 
@@ -43,20 +43,20 @@
 .cardContainer {
   display: flex;
   border: 1px solid rgba(0, 0, 0, 0.125);
-  min-height: 350px;
   flex-direction: column;
-  justify-content: space-between;
+  min-height: 350px;
   gap: 10px;
+  justify-content: space-between;
 }
 
 .cardItemImageWrapper {
   position: relative;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   width: 100%;
-  overflow: hidden;
   padding: 16px 16px 0;
+  overflow: hidden;
 }
 
 .cardItemImage {
@@ -69,9 +69,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  align-content: center;
   flex-wrap: wrap;
+  align-content: center;
+  justify-content: center;
   padding: 0 16px 0;
 }
 .cardItemTextWrapper {
@@ -96,8 +96,8 @@
 }
 
 .cardItemPrice {
-  color: variables.$fc-price;
   padding-top: 20px;
+  color: variables.$fc-price;
 }
 
 .cardItemGoalLot {
@@ -143,8 +143,8 @@
 }
 
 .buttonWrapper {
-  margin: 10px 16px 16px;
   display: flex;
+  margin: 10px 16px 16px;
   justify-content: center;
 }
 
@@ -154,10 +154,10 @@
 
 .loginModal {
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   width: 100px;
-  text-align: center;
   color: variables.$fc-main;
+  text-align: center;
   font-size: variables.$fs-sx;
 }

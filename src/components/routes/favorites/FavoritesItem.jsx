@@ -2,11 +2,12 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { Cloudinary } from "@cloudinary/url-gen";
-import { NEW_FAVORITES_URL } from "../../../endpoints/endpoints";
-// import QuantityCounter from "../../productView/CounterQuantity";
+// import { NEW_FAVORITES_URL } from "../../../endpoints/endpoints";
 import { removeFavorites } from "../../../redux/actions/cartActions";
 import { counterDecrement } from "../../../redux/actionsCreators/counterActionsCreators";
-import Button from "../../button/Button";
+import getFavorites from "../../../api/getFavorites";
+import getCart from "../../../api/getCart";
+import Button, { FormButton } from "../../button/Button";
 import styles from "./Favorites.module.scss";
 import DeleteIcon from "../cart/DeleteIcon";
 
@@ -15,10 +16,10 @@ import DeleteIcon from "../cart/DeleteIcon";
 function FavoritesItem({ item }) {
   const dispatch = useDispatch();
   // eslint-disable-next-line max-len, no-underscore-dangle
-  const isItemInFavorites = useSelector((state) => state.favorites.items.some((cartItem) => cartItem._id === item._id));
-  // const itemsInLSFavorites = JSON.parse(localStorage.getItem("Favorites"));
+  const isItemInFavorites = useSelector((state) => state.favorites.items.some((favoritesItem) => favoritesItem._id === item._id));
   // eslint-disable-next-line max-len, no-underscore-dangle
-  // const isItemInLSFavorites = itemsInLSFavorites && itemsInLSFavorites.some((cartItem) => cartItem._id === item._id);
+  // const isItemInCart = useSelector((state) => state.cart.items.some((cartItem) => cartItem._id === item._id));
+  const cartItems = useSelector((state) => state.cart.items);
 
   const cld = new Cloudinary({
     cloud: { cloudName: "dzaxltnel" },
@@ -32,18 +33,56 @@ function FavoritesItem({ item }) {
     }
   }
 
-  async function getFavoritesFromServer() {
+  // async function getFavoritesFromServer() {
+  //   try {
+  //     const response = await axios.get(NEW_FAVORITES_URL);
+  //     return response.data;
+  //   } catch (err) {
+  //     console.error("Помилка при отриманні даних:", err);
+  //     return null;
+  //   }
+  // }
+
+  const handleAddFavoritesToCart = async () => {
     try {
-      const response = await axios.get(NEW_FAVORITES_URL);
-      return response.data;
-    } catch (err) {
-      console.error("Помилка при отриманні даних:", err);
-      return null;
+      const serverCart = await getCart();
+      const serverFavorites = await getFavorites();
+      console.log(serverCart);
+      // console.log(serverFavorites);
+      // console.log(isItemInFavorites);
+      // console.log(isItemInCart);
+
+      const updatedProduct = serverFavorites.data.products.map((product) => {
+        // eslint-disable-next-line max-len, no-underscore-dangle
+        const isProductInCart = cartItems.some((cartItem) => cartItem._id === product._id);
+
+        if (!isProductInCart) {
+          return {
+            ...product,
+            cartQuantity: product.cartQuantity,
+          };
+        }
+        return null;
+      }).filter(Boolean);
+      console.log(updatedProduct);
+        
+      // const serverCartItems = [];
+      // serverCartItems.push(...updatedProducts);
+      // const updatedCartItems = [...cartLSItems, ...serverCartItems];
+      // localStorage.setItem("Cart", JSON.stringify(updatedCartItems));
+      // dispatch(initializeCart(updatedCartItems));
+      // await updateCart(updatedCartItems);
+      // // cleaning after add
+      // localStorage.setItem("Favorites", JSON.stringify([]));
+      // dispatch(resetFavorites());
+      // deleteWishlist();
+    } catch (error) {
+      console.error("Помилка під час отримання обраного вибору:", error);
     }
-  }
+  };
 
   async function deleteFavoritesFromServer() {
-    const cartData = await getFavoritesFromServer();
+    const cartData = await getFavorites();
     
     if (cartData.products.length !== null) {
       // eslint-disable-next-line no-underscore-dangle
@@ -59,10 +98,6 @@ function FavoritesItem({ item }) {
 
   const handleRemoveFromFavorites = () => {
     if (isItemInFavorites) {
-      // const currentProducts = JSON.parse(localStorage.getItem("Favorites")) || [];
-      // const newProducts = currentProducts.filter((cartItem) => cartItem.itemNo !== item.itemNo);
-      // localStorage.setItem("Favorites", JSON.stringify(newProducts));
-
       deleteFavoritesFromServer();
       // eslint-disable-next-line no-underscore-dangle
       dispatch(removeFavorites(item._id));
@@ -78,7 +113,6 @@ function FavoritesItem({ item }) {
           <div className={styles.productInfo}>
             <Link to={`/product/${item.itemNo}`}>
               <div className={styles.cardItemImageWrapper}>
-                {/* <img src={imageURL} alt={item.name} className={styles.cardItemImage} /> */}
                 {/* eslint-disable-next-line max-len */}
                 <img src={imageURL || item.imageURL} alt={item.name} className={styles.cardItemImage} />
               </div>
@@ -105,6 +139,7 @@ function FavoritesItem({ item }) {
           </div>
         </td>
         <td>
+          <FormButton text="До кошика" padding="10px" onClick={handleAddFavoritesToCart} />
           <Button style={{ backgroundColor: "none" }} onClick={() => handleRemoveFromFavorites()}>
             <DeleteIcon />
           </Button>

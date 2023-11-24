@@ -33,7 +33,6 @@ const logInUser = (login, password) => async (dispatch) => {
       dispatch(setLoggedInUser(login));
       localStorage.setItem("userLogin", login);
       localStorage.setItem("token", token);
-      // !
       dispatch(setAuthToken(token));
       getCustomerFromServer();
       dispatch(logIn());
@@ -47,6 +46,8 @@ const logInUser = (login, password) => async (dispatch) => {
       } else if (serverCart.data === null && cartItems.length === 0) {
         // go ahead
       } else if (serverCart.data.products.length === 0) {
+        // ! ?
+        // ? or updateCart for better?
         await editCart(cartItems);
       } else if (serverCart.data.products.length > 0) {
         const serverCartItems = [];
@@ -54,16 +55,17 @@ const logInUser = (login, password) => async (dispatch) => {
           ...i.product,
           cartQuantity: i.cartQuantity,
         }));
+        // TODO
         const updatedProducts = serverCart.data.products.map((i) => ({
           ...i.product,
           cartQuantity: i.cartQuantity,
         }));
-
         serverCartItems.push(...updatedProducts);
         const updatedCartItems = [...cartItems, ...serverCartItems];
         localStorage.setItem("Cart", JSON.stringify(updatedCartItems));
         dispatch(initializeCart(updatedCartItems));
         await updateCart(updatedCartItems);
+        // TODO
       }
 
       if (serverFavorites.data === null) {

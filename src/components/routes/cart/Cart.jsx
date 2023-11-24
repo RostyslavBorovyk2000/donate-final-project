@@ -1,21 +1,25 @@
 import React from "react";
 import axios from "axios";
-import { useSelector, useDispatch } from "react-redux";
-import { resetCart } from "../../../redux/actions/cartActions";
+import { useDispatch, useSelector } from "react-redux";
+// import { useSelector, useDispatch } from "react-redux";
+// import { resetCart } from "../../../redux/actions/cartActions";
 import CartItem from "./CartItem";
 import { FormButton } from "../../button/Button";
-import { NEW_CART_URL, MAKE_ORDERS } from "../../../endpoints/endpoints";
+import { NEW_CART_URL } from "../../../endpoints/endpoints";
+import { resetCart } from "../../../redux/actions/cartActions";
+import { deleteCart } from "../../../api/updateCart";
 import styles from "./Cart.module.scss";
-import { openModal } from "../../../redux/actionsCreators/modalActionsCreators";
+// import { openModal } from "../../../redux/actionsCreators/modalActionsCreators";
 
 
 function Cart() {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.items);
   const currentDate = new Date();
   const formattedDate = `${currentDate.getFullYear()}${(currentDate.getMonth() + 1).toString().padStart(2, "0")}${currentDate.getDate().toString().padStart(2, "0")}`;
   const orderNumber = `52-${formattedDate}`;
   const isCartEmpty = cartItems.length === 0;
+  const dispatch = useDispatch();
 
   // ! api
   async function getCartFromServer() {
@@ -29,9 +33,10 @@ function Cart() {
   }
 
   const handlePurchase = async () => {
-    dispatch(openModal());
+    // dispatch(openModal());
     try {
       const cartData = await getCartFromServer();
+      console.log(cartData);
       if (cartData !== null) {
         const { email, telephone, _id: customerId } = cartData.customerId;
         const newOrder = {
@@ -43,22 +48,29 @@ function Cart() {
           letterHtml: `<h1>Ваше замовлення прийнято. Номер замовлення - ${orderNumber}.</h1><p>Ми переможемо!</p>`,
         };
 
+        console.log(newOrder);
+
         axios
-          .post(MAKE_ORDERS, newOrder)
+          .post("http://localhost:4000/api/orders", newOrder)
+          // .get("http://localhost:4000/api/orders")
           .then((response) => {
+            if (response.status === 200) {
+              localStorage.setItem("Cart", JSON.stringify([]));
+              dispatch(resetCart());
+              deleteCart();
+            }
             console.log(response);
 
-            axios
-              .delete(NEW_CART_URL)
-              .then((result) => {
-                console.log(result);
-              })
-              .catch((err) => {
-                console.log(err);
-              });
-            dispatch(resetCart());
-            localStorage.removeItem("Cart");
-            localStorage.removeItem("CountCartProducts");
+            // axios
+            //   .delete(NEW_CART_URL)
+            //   .then((result) => {
+            //     console.log(result);
+            //   })
+            //   .catch((err) => {
+            //     console.log(err);
+            //   });
+            // dispatch(resetCart());
+            // localStorage.setItem("Cart", JSON.stringify([]));
           })
           .catch((err) => {
             console.log(err);
