@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-import React, { useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import Basket from "./icons/basket/Basket";
@@ -28,7 +28,7 @@ export function Icons({
   const showBasketIcon = category !== "Благодійний лот" && category !== "Донат";
 
   // window
-  const [showLoginModal, setShowLoginModal] = React.useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
   const timerRef = useRef();
   function promptLogin() {
     setShowLoginModal(true);

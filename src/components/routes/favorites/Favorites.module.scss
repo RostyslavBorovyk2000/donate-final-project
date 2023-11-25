@@ -127,3 +127,20 @@
     }
 
 }
+
+.button {
+    display: flex;
+}
+
+.buttonHidden {
+    display: none;
+}
+
+.buttonDelete {
+    margin: 0px 20px;
+}
+
+.loginModal {
+    width: 150px;
+    text-align: center;
+}

@@ -1,16 +1,24 @@
+import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { Cloudinary } from "@cloudinary/url-gen";
 // import { NEW_FAVORITES_URL } from "../../../endpoints/endpoints";
-import { removeFavorites } from "../../../redux/actions/cartActions";
-import { counterDecrement } from "../../../redux/actionsCreators/counterActionsCreators";
+import { removeFavorites, addToCart } from "../../../redux/actions/cartActions";
+import { counterIncrement, counterDecrement } from "../../../redux/actionsCreators/counterActionsCreators";
 import getFavorites from "../../../api/getFavorites";
-import getCart from "../../../api/getCart";
+// import getCart from "../../../api/getCart";
 import Button, { FormButton } from "../../button/Button";
 import styles from "./Favorites.module.scss";
 import DeleteIcon from "../cart/DeleteIcon";
 
+function LoginModal() {
+  return (
+    <div className={styles.loginModal}>
+      Вже в кошику
+    </div>
+  );
+}
 
 
 function FavoritesItem({ item }) {
@@ -20,6 +28,23 @@ function FavoritesItem({ item }) {
   // eslint-disable-next-line max-len, no-underscore-dangle
   // const isItemInCart = useSelector((state) => state.cart.items.some((cartItem) => cartItem._id === item._id));
   const cartItems = useSelector((state) => state.cart.items);
+  // eslint-disable-next-line max-len, no-underscore-dangle
+  const isProductInCart2 = cartItems.some((cartItem) => cartItem._id === item._id);
+
+  // window
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const timerRef = useRef();
+  function promptLogin() {
+    setShowLoginModal(true);
+    timerRef.current = setTimeout(() => {
+      setShowLoginModal(false);
+    }, 1000);
+  }
+  useEffect(() => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+  }, []);
 
   const cld = new Cloudinary({
     cloud: { cloudName: "dzaxltnel" },
@@ -33,58 +58,50 @@ function FavoritesItem({ item }) {
     }
   }
 
-  // async function getFavoritesFromServer() {
-  //   try {
-  //     const response = await axios.get(NEW_FAVORITES_URL);
-  //     return response.data;
-  //   } catch (err) {
-  //     console.error("Помилка при отриманні даних:", err);
-  //     return null;
-  //   }
-  // }
-
   const handleAddFavoritesToCart = async () => {
     try {
-      const serverCart = await getCart();
-      const serverFavorites = await getFavorites();
-      console.log(serverCart);
-      // console.log(serverFavorites);
-      // console.log(isItemInFavorites);
-      // console.log(isItemInCart);
+      // eslint-disable-next-line max-len, no-underscore-dangle
+      const isProductInCart = cartItems.some((cartItem) => cartItem._id === item._id);
+      // eslint-disable-next-line max-len, no-underscore-dangle
+      console.log(item._id);
+      console.log(isProductInCart);
 
-      const updatedProduct = serverFavorites.data.products.map((product) => {
+      if (!isProductInCart) {
+        await axios
         // eslint-disable-next-line max-len, no-underscore-dangle
-        const isProductInCart = cartItems.some((cartItem) => cartItem._id === product._id);
+          .put(`http://localhost:4000/api/cart/${item._id}`)
+          .then((updatedCart) => {
+            console.log(updatedCart);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+        const currentProducts = JSON.parse(localStorage.getItem("Cart")) || [];
+        currentProducts.push(item);
+        localStorage.setItem("Cart", JSON.stringify(currentProducts));
+        dispatch(addToCart(item));
+        dispatch(counterIncrement());
 
-        if (!isProductInCart) {
-          return {
-            ...product,
-            cartQuantity: product.cartQuantity,
-          };
-        }
-        return null;
-      }).filter(Boolean);
-      console.log(updatedProduct);
-        
-      // const serverCartItems = [];
-      // serverCartItems.push(...updatedProducts);
-      // const updatedCartItems = [...cartLSItems, ...serverCartItems];
-      // localStorage.setItem("Cart", JSON.stringify(updatedCartItems));
-      // dispatch(initializeCart(updatedCartItems));
-      // await updateCart(updatedCartItems);
-      // // cleaning after add
-      // localStorage.setItem("Favorites", JSON.stringify([]));
-      // dispatch(resetFavorites());
-      // deleteWishlist();
+        await axios
+          // eslint-disable-next-line max-len, no-underscore-dangle
+          .delete(`http://localhost:4000/api/wishlist/${item._id}`)
+          .catch((err) => {
+            console.log(err);
+          });
+        // eslint-disable-next-line max-len, no-underscore-dangle
+        dispatch(removeFavorites(item._id));
+        dispatch(counterDecrement());
+      }
+      // Тут можна вивести повідомлення, що товар уже є в кошику
     } catch (error) {
-      console.error("Помилка під час отримання обраного вибору:", error);
+      console.error("Помилка під час додавання товару в кошик:", error);
     }
   };
 
+
   async function deleteFavoritesFromServer() {
     const cartData = await getFavorites();
-    
-    if (cartData.products.length !== null) {
+    if (cartData.data.products.length !== null) {
       // eslint-disable-next-line no-underscore-dangle
       const idToDelete = item._id ? item._id : item.id;
       // const idToDelete = item._id;
@@ -139,8 +156,13 @@ function FavoritesItem({ item }) {
           </div>
         </td>
         <td>
-          <FormButton text="До кошика" padding="10px" onClick={handleAddFavoritesToCart} />
-          <Button style={{ backgroundColor: "none" }} onClick={() => handleRemoveFromFavorites()}>
+          {showLoginModal && <LoginModal onClose={() => setShowLoginModal(false)} />}
+          <div className={!showLoginModal ? styles.button : styles.buttonHidden}>
+            <FormButton text="До кошика" padding="10px" onClick={!isProductInCart2 ? handleAddFavoritesToCart : promptLogin} />
+          </div>
+        </td>
+        <td>
+          <Button className={styles.buttonDelete} style={{ backgroundColor: "none" }} onClick={() => handleRemoveFromFavorites()}>
             <DeleteIcon />
           </Button>
         </td>
