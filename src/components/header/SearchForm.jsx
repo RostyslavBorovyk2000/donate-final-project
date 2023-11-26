@@ -46,20 +46,6 @@ function SearchForm({ handleSearch }) {
     }
   };
 
-  const handleCategoryClick = async (category) => {
-    try {
-      const response = await axios.get(`http://localhost:4000/api/products?category=${category}`);
-      setSearchResults(response.data);
-      setCategoryName(category);
-      setShowInput(true);
-    } catch (error) {
-      console.error("Помилка при отриманні товарів за категорією:", error);
-      setSearchResults([]);
-      setCategoryName('');
-      setShowInput(false);
-    }
-  };
-
   const handleInputChange = (e) => {
     const { value } = e.target;
     dispatch(updateInputValue(value));
@@ -127,8 +113,6 @@ function SearchForm({ handleSearch }) {
     )}
   </div>
 )}
-
-
       <div className={styles.searchButtons}>
         <Button
           type="button"
