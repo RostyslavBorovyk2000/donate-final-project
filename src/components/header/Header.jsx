@@ -30,7 +30,7 @@ function Header() {
   const inputValueFromRedux = useSelector((state) => state.inputValue.inputValue);
   const [inputValue, setInputValue] = useState(inputValueFromRedux);
   const searchResultsRef = useRef(null);
-
+  const [debounceTimeoutId, setDebounceTimeoutId] = useState(null);
   const [selectedProduct, setSelectedProduct] = useState(null);
 
   const getProductDetails = async (productId) => {
@@ -52,7 +52,7 @@ function Header() {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [searchResultsRef]);
+  }, [searchResultsRef, searchResults]);
 
   const toggleBar = () => {
     setShowBurgerMenu(!showBurgerMenu);
@@ -96,21 +96,25 @@ function Header() {
   const [categoryName, setCategoryName] = useState('');
 
   const performSearch = async (query) => {
+    console.log(query);
     try {
-      const response = await axios.get(`http://localhost:4000/api/products`);
-      const filteredResults = response.data.filter((result) =>
-        result.shortName.toLowerCase().includes(query.toLowerCase())
-      );
-      setSearchResults(filteredResults);
-
-     
-      if (filteredResults.length > 0) {
-        setCategoryName(filteredResults[0].category);
+      const searchPhrases = {
+        query: query,
+      };
+  
+      const response = await axios.post("http://localhost:4000/api/products/search", searchPhrases);
+      const products = response.data; 
+  
+      
+      setSearchResults(products);
+  
+      if (products.length > 0) {
+        setCategoryName(products[0].category);
       } else {
-        setCategoryName(''); 
+        setCategoryName('');
       }
     } catch (error) {
-      console.error("Помилка при пошуку товарів:", error);
+      console.error("Error while searching for products:", error);
       setSearchResults([]);
       setCategoryName('');
     }
@@ -124,20 +128,30 @@ function Header() {
       await getProductDetails(result.id);
     }
   };
-  const handleInputChange = (e) => {
+
+   const handleInputChange = (e) => {
     const { value } = e.target;
     dispatch(updateInputValue(value));
     setInputValue(value);
+
+    if (debounceTimeoutId) {
+      clearTimeout(debounceTimeoutId);
+    }
 
     if (value === "") {
       setSearchResults([]);
       handleResultClick();
     } else {
-      const words = value.split(' ');
-      performSearch(words[0]);
+
+      const newTimeoutId = setTimeout(() => {
+        performSearch(value);
+      }, 1000);
+      
+      setDebounceTimeoutId(newTimeoutId);
     }
   };
-  
+
+
   return (
     <header className={styles.header}>
       <div className={styles.mobileHeader}>
@@ -167,26 +181,8 @@ function Header() {
         </Link>
       </li>
     ))}
-    {searchResults.length > 0 && searchResults[0].subcategory && (
-      <p className={styles.categoryName}>
-        <Link to={`/products-search?query=${inputValue}`}>{searchResults[0].subcategory}</Link>
-      </p>
-    )}
-    {categoryName && (
-      <p className={styles.categoryName}>
-        {categoryName === 'Одяг' ? (
-          <Link to="/categories/military-clothing">Одяг</Link>
-        ) : categoryName === 'Донат' ? (
-          <Link to="/categories/donation">Донат</Link>
-        ) : categoryName === 'Благодійний лот' || categoryName === 'Благодійний лот' ? (
-          <Link to="/categories/charity-auction">Лот</Link>
-        ) : null
-      }
-      </p>
-    )}
-  </div>
+    </div>
 )}
-
 
         {isMobileScreen && <BurgerMenu toggleBar={toggleBar} />}
       </div>

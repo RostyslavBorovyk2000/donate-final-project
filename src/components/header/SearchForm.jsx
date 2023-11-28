@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
 import Button from "../button/Button";
@@ -14,7 +14,8 @@ function SearchForm({ handleSearch }) {
   const [categoryName, setCategoryName] = useState('');
   const inputValueFromRedux = useSelector((state) => state.inputValue.inputValue);
   const [inputValue, setInputValue] = useState(inputValueFromRedux);
-
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [debounceTimeoutId, setDebounceTimeoutId] = useState(null);
   const getProductDetails = async (productId) => {
     try {
       const response = await axios.get(`http://localhost:4000/api/products/${productId}`);
@@ -24,40 +25,29 @@ function SearchForm({ handleSearch }) {
     }
   };
 
-
   const performSearch = async (query) => {
     try {
-      const response = await axios.get(`http://localhost:4000/api/products`);
-      const filteredResults = response.data.filter((result) =>
-        result.shortName.toLowerCase().includes(query.toLowerCase())
-      );
-      setSearchResults(filteredResults);
-
-     
-      if (filteredResults.length > 0) {
-        setCategoryName(filteredResults[0].category);
+      const searchPhrases = {
+        query: query,
+      };
+  
+      const response = await axios.post("http://localhost:4000/api/products/search", searchPhrases);
+      const products = response.data;
+  
+      setSearchResults(products);
+  
+      if (products.length > 0) {
+        setCategoryName(products[0].category);
+        setShowInput(true);
       } else {
-        setCategoryName(''); 
+        setCategoryName('');
+        setShowInput(false);
       }
     } catch (error) {
-      console.error("Помилка при пошуку товарів:", error);
+      console.error("Error while searching for products:", error);
       setSearchResults([]);
       setCategoryName('');
-    }
-  };
-
-  const handleInputChange = (e) => {
-    const { value } = e.target;
-    dispatch(updateInputValue(value));
-    setInputValue(value);
-  
-    if (value === "") {
-      setSearchResults([]);
       setShowInput(false);
-    } else {
-      const words = value.split(' ');
-      performSearch(words[0]);
-      setShowInput(true);
     }
   };
 
@@ -67,6 +57,28 @@ function SearchForm({ handleSearch }) {
   
     if (result) {
       await getProductDetails(result.id);
+    }
+  };
+
+   const handleInputChange = (e) => {
+    const { value } = e.target;
+    dispatch(updateInputValue(value));
+    setInputValue(value);
+
+    if (debounceTimeoutId) {
+      clearTimeout(debounceTimeoutId);
+    }
+
+    if (value === "") {
+      setSearchResults([]);
+      handleResultClick();
+    } else {
+
+      const newTimeoutId = setTimeout(() => {
+        performSearch(value);
+      }, 1000);
+      
+      setDebounceTimeoutId(newTimeoutId);
     }
   };
 
@@ -83,36 +95,21 @@ function SearchForm({ handleSearch }) {
       </div>
       {showInput && (
   <div className={styles.searchResults}>
-    {searchResults.map((result) => (
-      <li className={styles.searchResultItem} key={result.id}>
-        <Link
-          to={`/product/${result.itemNo}`}
-          className={styles.searchResultItem}
-          onClick={() => handleResultClick(result)}
-        >
-          {result.shortName}
-        </Link>
-      </li>
-    ))}
-    {searchResults.length > 0 && searchResults[0].subcategory && (
-      <p className={styles.categoryName}>
-        <Link to={`/products-search?query=${inputValue}`}>{searchResults[0].subcategory}</Link>
-      </p>
-    )}
-    {searchResults.length > 0 && (
-      <p className={styles.categoryName}>
-        {searchResults[0].category === 'Одяг' ? (
-          <Link to="/categories/military-clothing">Одяг</Link>
-        ) : searchResults[0].category === 'Донат' ? (
-          <Link to="/categories/donation">Донат</Link>
-        ) : searchResults[0].category === 'Благодійний лот' || searchResults[0].category === 'Благодійний лот' ? (
-          <Link to="/categories/charity-auction">лот або аукціон</Link>
-        ) : null
-      }
-      </p>
-    )}
+    <ul>
+      {searchResults.length > 0 && inputValue !== "" && (
+        searchResults.map((result) => (
+          <li className={styles.searchResultItem} key={result.id}>
+            <Link to={`/product/${result.itemNo}`} key={result.id} className={styles.searchResultItem}>
+              {result.shortName}
+            </Link>
+          </li>
+        ))
+      )}
+    </ul>
   </div>
 )}
+
+
       <div className={styles.searchButtons}>
         <Button
           type="button"
