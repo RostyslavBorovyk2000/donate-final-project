@@ -130,3 +130,20 @@
         }
 
 }
+
+.showLoginModal {
+    display: none;
+}
+
+.loginModal {
+    display: flex;
+    align-items: center;
+    width: 100px;
+    color: variables.$fc-main;
+    text-align: center;
+    padding-left: 20px;
+}
+
+.cardItemIcons {
+    display: block;
+}

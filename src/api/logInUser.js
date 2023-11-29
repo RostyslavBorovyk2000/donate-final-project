@@ -62,9 +62,15 @@ const logInUser = (login, password) => async (dispatch) => {
         }));
         serverCartItems.push(...updatedProducts);
         const updatedCartItems = [...cartItems, ...serverCartItems];
-        localStorage.setItem("Cart", JSON.stringify(updatedCartItems));
-        dispatch(initializeCart(updatedCartItems));
-        await updateCart(updatedCartItems);
+
+        //
+        // eslint-disable-next-line max-len, no-underscore-dangle
+        const isProductUnique = (product, index, self) => index === self.findIndex((p) => p._id === product._id);
+        const uniqueUpdatedCartItems = updatedCartItems.filter(isProductUnique);
+        //
+        localStorage.setItem("Cart", JSON.stringify(uniqueUpdatedCartItems));
+        dispatch(initializeCart(uniqueUpdatedCartItems));
+        await updateCart(uniqueUpdatedCartItems);
         // TODO
       }
 

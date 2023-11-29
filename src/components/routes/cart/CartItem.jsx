@@ -68,7 +68,6 @@ function CartItem({ item }) {
     if (isUserLoggedIn) {
       if (isItemInCart) {
         deleteCartFromServer();
-      
         // eslint-disable-next-line no-underscore-dangle
         dispatch(removeFromCart(item._id));
         dispatch(counterDecrement());
@@ -76,9 +75,9 @@ function CartItem({ item }) {
     } else if (!isUserLoggedIn) {
       if (isItemInLSCart) {
         const currentProducts = JSON.parse(localStorage.getItem("Cart")) || [];
-        currentProducts.push(item);
-        localStorage.setItem("Cart", JSON.stringify(currentProducts));
-
+        // eslint-disable-next-line no-underscore-dangle
+        const updatedProducts = currentProducts.filter((product) => product._id !== item._id);
+        localStorage.setItem("Cart", JSON.stringify(updatedProducts));
         // eslint-disable-next-line no-underscore-dangle
         dispatch(removeFromCart(item._id));
         dispatch(counterDecrement());

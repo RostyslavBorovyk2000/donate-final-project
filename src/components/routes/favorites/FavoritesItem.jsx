@@ -3,11 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { Cloudinary } from "@cloudinary/url-gen";
-// import { NEW_FAVORITES_URL } from "../../../endpoints/endpoints";
 import { removeFavorites, addToCart } from "../../../redux/actions/cartActions";
 import { counterIncrement, counterDecrement } from "../../../redux/actionsCreators/counterActionsCreators";
 import getFavorites from "../../../api/getFavorites";
-// import getCart from "../../../api/getCart";
 import Button, { FormButton } from "../../button/Button";
 import styles from "./Favorites.module.scss";
 import DeleteIcon from "../cart/DeleteIcon";
@@ -25,12 +23,11 @@ function FavoritesItem({ item }) {
   const dispatch = useDispatch();
   // eslint-disable-next-line max-len, no-underscore-dangle
   const isItemInFavorites = useSelector((state) => state.favorites.items.some((favoritesItem) => favoritesItem._id === item._id));
-  // eslint-disable-next-line max-len, no-underscore-dangle
-  // const isItemInCart = useSelector((state) => state.cart.items.some((cartItem) => cartItem._id === item._id));
   const cartItems = useSelector((state) => state.cart.items);
   // eslint-disable-next-line max-len, no-underscore-dangle
-  const isProductInCart2 = cartItems.some((cartItem) => cartItem._id === item._id);
-
+  const isProductInCart = cartItems.some((cartItem) => cartItem._id === item._id);
+  const shouldRenderButton = item.category === "Одяг";
+  
   // window
   const [showLoginModal, setShowLoginModal] = useState(false);
   const timerRef = useRef();
@@ -60,19 +57,10 @@ function FavoritesItem({ item }) {
 
   const handleAddFavoritesToCart = async () => {
     try {
-      // eslint-disable-next-line max-len, no-underscore-dangle
-      const isProductInCart = cartItems.some((cartItem) => cartItem._id === item._id);
-      // eslint-disable-next-line max-len, no-underscore-dangle
-      console.log(item._id);
-      console.log(isProductInCart);
-
       if (!isProductInCart) {
         await axios
         // eslint-disable-next-line max-len, no-underscore-dangle
           .put(`http://localhost:4000/api/cart/${item._id}`)
-          .then((updatedCart) => {
-            console.log(updatedCart);
-          })
           .catch((err) => {
             console.log(err);
           });
@@ -92,7 +80,6 @@ function FavoritesItem({ item }) {
         dispatch(removeFavorites(item._id));
         dispatch(counterDecrement());
       }
-      // Тут можна вивести повідомлення, що товар уже є в кошику
     } catch (error) {
       console.error("Помилка під час додавання товару в кошик:", error);
     }
@@ -104,7 +91,6 @@ function FavoritesItem({ item }) {
     if (cartData.data.products.length !== null) {
       // eslint-disable-next-line no-underscore-dangle
       const idToDelete = item._id ? item._id : item.id;
-      // const idToDelete = item._id;
       axios
         .delete(`http://localhost:4000/api/wishlist/${idToDelete}`)
         .catch((err) => {
@@ -157,9 +143,11 @@ function FavoritesItem({ item }) {
         </td>
         <td>
           {showLoginModal && <LoginModal onClose={() => setShowLoginModal(false)} />}
+          {shouldRenderButton && (
           <div className={!showLoginModal ? styles.button : styles.buttonHidden}>
-            <FormButton text="До кошика" padding="10px" onClick={!isProductInCart2 ? handleAddFavoritesToCart : promptLogin} />
+            <FormButton text="До кошика" padding="10px" onClick={!isProductInCart ? handleAddFavoritesToCart : promptLogin} />
           </div>
+          )}
         </td>
         <td>
           <Button className={styles.buttonDelete} style={{ backgroundColor: "none" }} onClick={() => handleRemoveFromFavorites()}>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 // import { useSelector, useDispatch } from "react-redux";
@@ -11,6 +11,14 @@ import { deleteCart } from "../../../api/updateCart";
 import styles from "./Cart.module.scss";
 // import { openModal } from "../../../redux/actionsCreators/modalActionsCreators";
 
+function LoginModal() {
+  return (
+    <div className={styles.loginModal}>
+      Спершу авторизуйтесь
+    </div>
+  );
+}
+
 
 function Cart() {
   // const dispatch = useDispatch();
@@ -20,6 +28,22 @@ function Cart() {
   const orderNumber = `52-${formattedDate}`;
   const isCartEmpty = cartItems.length === 0;
   const dispatch = useDispatch();
+  const isUserLoggedIn = localStorage.getItem("userLogin") || null;
+
+  // window
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const timerRef = useRef();
+  function promptLogin() {
+    setShowLoginModal(true);
+    timerRef.current = setTimeout(() => {
+      setShowLoginModal(false);
+    }, 2000);
+  }
+  useEffect(() => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+  }, []);
 
   // ! api
   async function getCartFromServer() {
@@ -36,7 +60,6 @@ function Cart() {
     // dispatch(openModal());
     try {
       const cartData = await getCartFromServer();
-      console.log(cartData);
       if (cartData !== null) {
         const { email, telephone, _id: customerId } = cartData.customerId;
         const newOrder = {
@@ -48,29 +71,14 @@ function Cart() {
           letterHtml: `<h1>Ваше замовлення прийнято. Номер замовлення - ${orderNumber}.</h1><p>Ми переможемо!</p>`,
         };
 
-        console.log(newOrder);
-
         axios
           .post("http://localhost:4000/api/orders", newOrder)
-          // .get("http://localhost:4000/api/orders")
           .then((response) => {
             if (response.status === 200) {
               localStorage.setItem("Cart", JSON.stringify([]));
               dispatch(resetCart());
               deleteCart();
             }
-            console.log(response);
-
-            // axios
-            //   .delete(NEW_CART_URL)
-            //   .then((result) => {
-            //     console.log(result);
-            //   })
-            //   .catch((err) => {
-            //     console.log(err);
-            //   });
-            // dispatch(resetCart());
-            // localStorage.setItem("Cart", JSON.stringify([]));
           })
           .catch((err) => {
             console.log(err);
@@ -82,6 +90,8 @@ function Cart() {
       console.error("Помилка при вході:", error);
     }
   };
+
+  // const handlePurchaseWithoutLogIn = () => console.log("!");
 
   return (
     <div className={styles.cardsSectionWrapper}>
@@ -106,7 +116,12 @@ function Cart() {
             </tbody>
           </table>
         )}
-      {isCartEmpty ? null : <FormButton text="Оформити замовлення" padding="10px" onClick={handlePurchase} />}
+      {/* {isCartEmpty ? null : <FormButton text="Оформити замовлення"
+      padding="10px" onClick={isUserLoggedIn ? handlePurchase : handlePurchaseWithoutLogIn} />} */}
+      <div className={!showLoginModal ? styles.cardItemIcons : styles.showLoginModal}>
+        {isCartEmpty ? null : <FormButton text="Оформити замовлення" padding="10px" onClick={isUserLoggedIn ? handlePurchase : promptLogin} />}
+      </div>
+      { showLoginModal && <LoginModal onClose={() => setShowLoginModal(false)} /> }
     </div>
   );
 }
