@@ -147,3 +147,94 @@
 .cardItemIcons {
     display: block;
 }
+
+.formWrapper {
+    display: flex;
+    justify-content: center;
+    // align-items: center;
+    flex-direction: column;
+    width: 300px;
+    padding-top: 50px;
+}
+
+.hidden {
+    display: none;
+}
+
+.headline {
+    padding-bottom: 30px;
+    color: variables.$fc-main;
+    font-weight: 600;
+    font-size: variables.$fs-x;
+    text-align: center;
+  }
+
+.headlineText {
+    align-items: center;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-top: 14px;
+}
+
+.input,
+.inputAttention {
+  width: 280px;
+  height: 40px;
+  margin-bottom: 17px;
+  padding: 2px 10px;
+  border: 1px solid variables.$border-color-decor;
+  border-radius: 5px;
+
+  @include devices(mobile) {
+    height: 50px;
+  }
+}
+
+.input {
+  &:focus {
+    border: none;
+    border: 1px solid variables.$border-color-main;
+    outline: none;
+  }
+}
+
+.inputAttention {
+    border: 1px solid variables.$bgc-attention;
+}
+
+.errorsWrapper {
+    padding: 0px 0px 20px;
+}
+
+.textAttention {
+    font-size: variables.$fs-s;
+    text-align: center;
+}
+
+.text,
+.textAttention {
+  font-size: variables.$fs-s;
+  text-align: center;
+}
+
+.text {
+  color: variables.$fc-text;
+}
+
+.buttonStyle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    color: #fff;
+    font-weight: 700;
+    font-size: variables.$fs-s;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
