@@ -153,7 +153,7 @@ function CartItem({ item }) {
         </div>
       </td>
       <td className={styles.cardItemPrice}>
-        {item.currentPrice}
+        {item.currentPrice * cartIt.cartQuantity}
         грн
       </td>
       <td>

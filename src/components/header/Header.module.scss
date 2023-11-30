@@ -100,7 +100,7 @@
 
     @include devices(tablet) {
         gap: 10px;
-        width: 80%;
+        // width: 80%;
         font-size: 16px;
     }
 
@@ -170,7 +170,7 @@
 }
 
 .dropdownContent a {
-    padding: 10px 0 5px;
+    padding: 10px 0px 5px;
 
     &:hover {
         padding-bottom: 4px;
@@ -186,15 +186,12 @@
 
 .navRightSideMenu {
     display: flex;
-    gap: 20px;
+    // gap: 20px;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
 
     @include devices(mobile) {
         flex-direction: column;
-    }
-
-    @include devices(tablet) {
         gap: 10px;
     }
 }
@@ -252,9 +249,15 @@ input:focus {
     cursor: pointer;
 }
 
-.icon {
+.icon,
+.iconMobile {
     display: flex;
     align-items: center;
+    width: 25px;
+}
+
+.iconMobile {
+    width: 35px;
 }
 
 .searchButtons {
@@ -367,20 +370,6 @@ input:focus {
     display: flex;
     flex-direction: column;
     align-items: center;
-
-    // .menuList {
-    //     list-style: none;
-    //     padding: 0;
-    //     margin: 0;
-    //     position: absolute;
-    //     top: 10%;
-    //     left: 0;
-    //     background-color: #fff;
-    //     box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
-    //     width: 150px;
-    //     border-radius: 4px;
-    //     display: none;
-    //     z-index: 10;
 }
 
 .menuItem {
@@ -395,23 +384,23 @@ input:focus {
     background-color: #f2f2f2;
 }
 
-.wrapperMenu:hover .menuList {
-    display: block;
-}
+// .wrapperMenu:hover .menuList {
+//     display: block;
+// }
 
-.iconsWrapper {
-    width: 90px;
+.iconsWrapper,
+.iconsWrapperLogOut {
+    width: 120px;
     position: fixed;
     top: 300px;
-    left: 40%;
+    left: 37.5%;
     padding-top: 25px;
     display: flex;
     justify-content: space-between;
 }
 
-.icon {
-    width: 35px;
-    display: flex;
+.iconsWrapperLogOut {
+    left: 48%;
 }
 
 .buttonWrapper {

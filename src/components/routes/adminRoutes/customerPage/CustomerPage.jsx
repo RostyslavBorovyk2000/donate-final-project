@@ -20,7 +20,7 @@ function CustomerPage() {
 
         <div className={styles.cartProductsWrapper}>
           <h2 className={styles.cartProductsHeadline}>Позиції в кошику:</h2>
-          <Heart />
+          <Cart />
           {/* <CustPageProdList storeData="Cart" /> */}
           <div className={styles.routesLinkWrapper}>
             <Link className={styles.routesLink} to="/cart">Перейти до кошика</Link>
@@ -29,7 +29,7 @@ function CustomerPage() {
 
         <div className={styles.favoritesWrapper}>
           <h2 className={styles.favoritesHeadline}>Обрані позиції:</h2>
-          <Cart />
+          <Heart />
           {/* <CustPageProdList storeData="Favorites" /> */}
           <div className={styles.routesLinkWrapper}>
             <Link className={styles.routesLink} to="/favorites">Перейти до обраних</Link>

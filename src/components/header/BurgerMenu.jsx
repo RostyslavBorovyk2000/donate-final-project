@@ -101,19 +101,17 @@ function BurgerMenu({ toggleBar }) {
             <Link to="/blog" className={styles.menuItem} onClick={toggleMenu}>Новини</Link>
             { isUserLoggedIn ? <Link to="/account" onClick={toggleMenu} className={styles.menuItem}>Кабінет</Link> : null }
           </div>
-          <div className={styles.iconsWrapper}>
+          <div className={isUserLoggedIn ? styles.iconsWrapper : styles.iconsWrapperLogOut}>
             {isUserLoggedIn ? (
-              <>
-                <Link to="/favorites" className={`${styles.icon} ${styles.iconMobile}`} onClick={toggleMenu}>
-                  <HeartFavorite />
-                  {favoriteCount === 0 ? null : <span>{favoriteCount}</span>}
-                </Link>
-                <Link to="/cart" className={`${styles.icon} ${styles.iconMobile}`} onClick={toggleMenu}>
-                  <Cart />
-                  {cartCount === 0 ? null : <span>{cartCount}</span>}
-                </Link>
-              </>
+              <Link to="/favorites" className={`${styles.icon} ${styles.iconMobile}`} onClick={toggleMenu}>
+                <HeartFavorite />
+                {favoriteCount === 0 ? null : <span>{favoriteCount}</span>}
+              </Link>
             ) : null}
+            <Link to="/cart" className={`${styles.icon} ${styles.iconMobile}`} onClick={toggleMenu}>
+              <Cart />
+              {cartCount === 0 ? null : <span>{cartCount}</span>}
+            </Link>
           </div>
         </div>
       )}
