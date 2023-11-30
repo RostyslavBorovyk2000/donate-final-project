@@ -1,7 +1,7 @@
 /* eslint-disable react/button-has-type */
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
-// import axios from "axios";
+import axios from "axios";
 import { Link } from "react-router-dom";
 import { useMediaQuery } from "@mui/material";
 import { updateInputValue } from "../../redux/actionsCreators/inputValueActionsCreators";
@@ -16,7 +16,6 @@ import { setLoggedOutUser } from "../../redux/actions/userActions";
 import { IconSearchMobile } from "./icons/search/IconSearch";
 import HeartFavorite from "./icons/favorites/Heart";
 import BurgerMenu from "./BurgerMenu";
-// import { REGISTRATION_URL } from "../../endpoints/endpoints";
 import logo from "../footer/icons/logo.png";
 import styles from "./Header.module.scss";
 
@@ -34,9 +33,36 @@ function Header() {
 
   const [showBurgerMenu, setShowBurgerMenu] = useState(false);
   const [showInput, setShowInput] = useState(false);
-
+  const [searchResults, setSearchResults] = useState([]);
   const inputValueFromRedux = useSelector((state) => state.inputValue.inputValue);
   const [inputValue, setInputValue] = useState(inputValueFromRedux);
+  const searchResultsRef = useRef(null);
+  const [debounceTimeoutId, setDebounceTimeoutId] = useState(null);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  console.log(selectedProduct);
+  const [categoryName, setCategoryName] = useState("");
+  console.log(categoryName);
+
+  const getProductDetails = async (productId) => {
+    try {
+      const response = await axios.get(`http://localhost:4000/api/products/${productId}`);
+      setSelectedProduct(response.data);
+    } catch (error) {
+      console.error("Помилка при отриманні деталей товару:", error);
+    }
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (searchResultsRef.current && !searchResultsRef.current.contains(event.target)) {
+        setSearchResults([]);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [searchResultsRef, searchResults]);
 
   const toggleBar = () => {
     setShowBurgerMenu(showBurgerMenu);
@@ -45,27 +71,8 @@ function Header() {
     }
   };
 
-  // async function updateFavoritesToServer(newFavorites) {
-  //   const updatedCustomer = {
-  //     favorites: newFavorites,
-  //   };
-
-  //   try {
-  //     const response = await axios.put(REGISTRATION_URL, updatedCustomer);
-  //     return response.data.favorites;
-  //   } catch (err) {
-  //     console.error("Помилка при отриманні даних:", err);
-  //     return null;
-  //   }
-  // }
-
   async function doLogOut() {
     try {
-      // const currentFavorites = JSON.parse(localStorage.getItem("Favorites")) || [];
-      // if (currentFavorites.length > 0) {
-      //   await updateFavoritesToServer(currentFavorites);
-      // }
-  
       localStorage.removeItem("userLogin");
       localStorage.removeItem("isAdmin");
       localStorage.removeItem("CountCartProducts");
@@ -85,15 +92,66 @@ function Header() {
     }
   }
 
+  const performSearch = async (query) => {
+    console.log(query);
+    try {
+      const searchPhrases = {
+        // query: query,
+        query,
+      };
+  
+      const response = await axios.post("http://localhost:4000/api/products/search", searchPhrases);
+      const products = response.data;
+      
+      setSearchResults(products);
+  
+      if (products.length > 0) {
+        setCategoryName(products[0].category);
+      } else {
+        setCategoryName("");
+      }
+    } catch (error) {
+      console.error("Error while searching for products:", error);
+      setSearchResults([]);
+      setCategoryName("");
+    }
+  };
+
+  // ! ? do we need it?
   useEffect(() => {
-    setInputValue(inputValueFromRedux);
+    // setInputValue(inputValueFromRedux);
     setIsUserLoggedInState(!!localStorage.getItem("userLogin"));
-  }, [inputValueFromRedux, isUserLoggedInLS]);
+  }, [isUserLoggedInLS]);
+  // }, [inputValueFromRedux, isUserLoggedInLS]);
+
+  const handleResultClick = async (result) => {
+    setSearchResults([]);
+    setShowInput(false);
+  
+    if (result) {
+      await getProductDetails(result.id);
+    }
+  };
 
   const handleInputChange = (e) => {
     const { value } = e.target;
     dispatch(updateInputValue(value));
     setInputValue(value);
+
+    if (debounceTimeoutId) {
+      clearTimeout(debounceTimeoutId);
+    }
+
+    if (value === "") {
+      setSearchResults([]);
+      handleResultClick();
+    } else {
+      const newTimeoutId = setTimeout(() => {
+        performSearch(value);
+      }, 1000);
+      
+      setDebounceTimeoutId(newTimeoutId);
+    }
   };
 
   return (
@@ -186,26 +244,26 @@ export default Header;
 //   // !
 //   console.log(selectedProduct);
 
-//   const getProductDetails = async (productId) => {
-//     try {
-//       const response = await axios.get(`http://localhost:4000/api/products/${productId}`);
-//       setSelectedProduct(response.data);
-//     } catch (error) {
-//       console.error("Помилка при отриманні деталей товару:", error);
+// const getProductDetails = async (productId) => {
+//   try {
+//     const response = await axios.get(`http://localhost:4000/api/products/${productId}`);
+//     setSelectedProduct(response.data);
+//   } catch (error) {
+//     console.error("Помилка при отриманні деталей товару:", error);
+//   }
+// };
+
+// useEffect(() => {
+//   const handleClickOutside = (event) => {
+//     if (searchResultsRef.current && !searchResultsRef.current.contains(event.target)) {
+//       setSearchResults([]);
 //     }
 //   };
-
-//   useEffect(() => {
-//     const handleClickOutside = (event) => {
-//       if (searchResultsRef.current && !searchResultsRef.current.contains(event.target)) {
-//         setSearchResults([]);
-//       }
-//     };
-//     document.addEventListener("mousedown", handleClickOutside);
-//     return () => {
-//       document.removeEventListener("mousedown", handleClickOutside);
-//     };
-//   }, [searchResultsRef, searchResults]);
+//   document.addEventListener("mousedown", handleClickOutside);
+//   return () => {
+//     document.removeEventListener("mousedown", handleClickOutside);
+//   };
+// }, [searchResultsRef, searchResults]);
 
 //   const toggleBar = () => {
 //     setShowBurgerMenu(!showBurgerMenu);
@@ -250,60 +308,60 @@ export default Header;
 //   // !
 //   console.log(categoryName);
 
-//   const performSearch = async (query) => {
-//     console.log(query);
-//     try {
-//       const searchPhrases = {
-//         // query: query,
-//         query,
-//       };
-  
-//       const response = await axios.post("http://localhost:4000/api/products/search", searchPhrases);
-//       const products = response.data;
-      
-//       setSearchResults(products);
-  
-//       if (products.length > 0) {
-//         setCategoryName(products[0].category);
-//       } else {
-//         setCategoryName("");
-//       }
-//     } catch (error) {
-//       console.error("Error while searching for products:", error);
-//       setSearchResults([]);
+// const performSearch = async (query) => {
+//   console.log(query);
+//   try {
+//     const searchPhrases = {
+//       // query: query,
+//       query,
+//     };
+
+//     const response = await axios.post("http://localhost:4000/api/products/search", searchPhrases);
+//     const products = response.data;
+    
+//     setSearchResults(products);
+
+//     if (products.length > 0) {
+//       setCategoryName(products[0].category);
+//     } else {
 //       setCategoryName("");
 //     }
-//   };
-
-//   const handleResultClick = async (result) => {
+//   } catch (error) {
+//     console.error("Error while searching for products:", error);
 //     setSearchResults([]);
-//     setShowInput(false);
-  
-//     if (result) {
-//       await getProductDetails(result.id);
-//     }
-//   };
+//     setCategoryName("");
+//   }
+// };
 
-//   const handleInputChange = (e) => {
-//     const { value } = e.target;
-//     dispatch(updateInputValue(value));
-//     setInputValue(value);
+// const handleResultClick = async (result) => {
+//   setSearchResults([]);
+//   setShowInput(false);
 
-//     if (debounceTimeoutId) {
-//       clearTimeout(debounceTimeoutId);
-//     }
+//   if (result) {
+//     await getProductDetails(result.id);
+//   }
+// };
 
-//     if (value === "") {
-//       setSearchResults([]);
-//       handleResultClick();
-//     } else {
-//       const newTimeoutId = setTimeout(() => {
-//         performSearch(value);
-//       }, 1000);
-      
-//       setDebounceTimeoutId(newTimeoutId);
-//     }
-//   };
+// const handleInputChange = (e) => {
+//   const { value } = e.target;
+//   dispatch(updateInputValue(value));
+//   setInputValue(value);
+
+//   if (debounceTimeoutId) {
+//     clearTimeout(debounceTimeoutId);
+//   }
+
+//   if (value === "") {
+//     setSearchResults([]);
+//     handleResultClick();
+//   } else {
+//     const newTimeoutId = setTimeout(() => {
+//       performSearch(value);
+//     }, 1000);
+    
+//     setDebounceTimeoutId(newTimeoutId);
+//   }
+// };
 
 
 //   return (
