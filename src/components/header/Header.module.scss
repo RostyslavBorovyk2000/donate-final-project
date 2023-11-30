@@ -23,7 +23,7 @@
 }
 
 .inputMobileHeader {
-    width: 60%; 
+    width: 60%;
     padding: 10px 10px;
     background-color: variables.$bgc-second;
     border: none;
@@ -60,6 +60,7 @@
     @media screen and (max-width: 767px) {
         display: none;
     }
+
     @include devices(tablet) {
         justify-content: space-between;
         // padding: 20px;
@@ -99,9 +100,10 @@
 
     @include devices(tablet) {
         gap: 10px;
-        // width: 80%;
+        width: 80%;
         font-size: 16px;
     }
+
     @media only screen and (min-width: 800px) {
         display: flex;
         font-size: 16px;
@@ -129,15 +131,15 @@
 
     &.navItemLaptop {
         display: none;
-    
+
         @media only screen and (min-width: 1024px) {
             display: flex;
         }
     }
-    
+
     &.navItemTablet {
         display: flex;
-    
+
         @media only screen and (min-width: 1024px) {
             display: none;
         }
@@ -184,11 +186,15 @@
 
 .navRightSideMenu {
     display: flex;
-    justify-content: center;
+    gap: 20px;
     align-items: center;
+    justify-content: space-between;
 
     @include devices(mobile) {
         flex-direction: column;
+    }
+
+    @include devices(tablet) {
         gap: 10px;
     }
 }
@@ -246,15 +252,9 @@ input:focus {
     cursor: pointer;
 }
 
-.icon,
-.iconMobile {
+.icon {
     display: flex;
     align-items: center;
-    width: 25px;
-}
-
-.iconMobile {
-    width: 35px;
 }
 
 .searchButtons {
@@ -295,10 +295,12 @@ input:focus {
     border-radius: 6px;
     cursor: pointer;
 }
-.wrapperMenu{
+
+.wrapperMenu {
     display: flex;
     align-items: center;
 }
+
 .toggleButton {
     background: none;
     border: none;
@@ -308,7 +310,7 @@ input:focus {
     justify-content: space-around;
     width: 45px;
     height: 45px;
-  
+
     .bar {
         background-color: #333;
         height: 3px;
@@ -320,17 +322,19 @@ input:focus {
         transition: 0.3s ease;
         border-radius: 5px;
     }
-  
+
     &.cross {
         .bar:nth-child(1) {
             // transform: rotate(45deg) translate(2px, 2px);
-        transform: translate(0px, 15px) rotate(-45deg);
+            transform: translate(0px, 15px) rotate(-45deg);
         }
+
         .bar:nth-child(2) {
             transform: translate(1px, 3px) rotate(45deg);
         }
+
         .bar:nth-child(3) {
-        opacity: 0;
+            opacity: 0;
         }
     }
 }
@@ -350,8 +354,8 @@ input:focus {
     overflow-x: hidden;
     transition: 0.5s;
     background-color: #fff;
-  }
-  
+}
+
 .menuListWrapper.open {
     width: 100%;
 }
@@ -363,6 +367,20 @@ input:focus {
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    // .menuList {
+    //     list-style: none;
+    //     padding: 0;
+    //     margin: 0;
+    //     position: absolute;
+    //     top: 10%;
+    //     left: 0;
+    //     background-color: #fff;
+    //     box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+    //     width: 150px;
+    //     border-radius: 4px;
+    //     display: none;
+    //     z-index: 10;
 }
 
 .menuItem {
@@ -372,20 +390,29 @@ input:focus {
     display: block;
     transition: 0.3s ease;
 }
+
 .menuItem:hover {
     background-color: #f2f2f2;
 }
 
+.wrapperMenu:hover .menuList {
+    display: block;
+}
+
 .iconsWrapper {
-    width: 120px;
+    width: 90px;
     position: fixed;
     top: 300px;
-    left: 37.5%;
+    left: 40%;
     padding-top: 25px;
     display: flex;
     justify-content: space-between;
 }
 
+.icon {
+    width: 35px;
+    display: flex;
+}
 
 .buttonWrapper {
     display: flex;
@@ -396,4 +423,78 @@ input:focus {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.searchResults {
+    position: absolute;
+    width: 60%;
+    top: 12%;
+    left: 20%;
+    border-radius: 15px;
+    background: #eee;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1;
+
+}
+
+.searchResultItem {
+    padding: 10px 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #ddd;
+    font-family: "CeraProRegular", serif;
+}
+
+.searchResultItem li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.categoryName {
+    font-size: 15px;
+    font-weight: 700;
+    color: #5b7742;
+    padding: 10px;
+    margin-left: 10px;
+    text-transform: uppercase;
+}
+
+@media screen and (min-width: 1025px) {
+    .searchResults {
+        position: absolute;
+        width: 720px;
+        top: 66px;
+        left: 8%;
+        border-radius: 15px;
+        background: #eee;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        max-height: 300px;
+        overflow-y: auto;
+        z-index: 1;
+    }
+
+    .searchResultItem {
+        padding: 12px 15px;
+        cursor: pointer;
+        border-bottom: 1px solid #ddd;
+        font-family: "CeraProRegular", serif;
+    }
+
+    .searchResultItem li {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .categoryName {
+        font-size: 18px;
+        /* Increase font size */
+        font-weight: 700;
+        color: #5b7742;
+        padding: 12px;
+        margin-left: 15px;
+        text-transform: uppercase;
+    }
 }
