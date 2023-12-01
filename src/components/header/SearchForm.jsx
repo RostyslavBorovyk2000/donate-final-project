@@ -1,47 +1,3 @@
-// import React from "react";
-// import PropTypes from "prop-types";
-// import Button from "../button/Button";
-// import styles from "./Header.module.scss";
-
-// function SearchForm({
-//   inputValue, handleInputChange, handleSearch,
-// }) {
-//   return (
-//     <div className={styles.searching}>
-//       <div className={styles.inputWrapper}>
-//         <input
-//           className={styles.input}
-//           type="text"
-//           placeholder="Знайти..."
-//           value={inputValue}
-//           onChange={handleInputChange}
-//           onKeyDown={(e) => {
-//             if (e.key === "Enter") {
-//               handleSearch();
-//             }
-//           }}
-//         />
-//       </div>
-//       <div className={styles.searchButtons}>
-//         <Button
-//           toPage={`/products-search?query=${inputValue}`}
-//           type="submit"
-//           className={styles.searchBtn}
-//           text="Знайти"
-//           width="80px"
-//         />
-//       </div>
-//     </div>
-//   );
-// }
-
-// SearchForm.propTypes = {
-//   inputValue: PropTypes.string.isRequired,
-//   handleInputChange: PropTypes.func.isRequired,
-//   handleSearch: PropTypes.func.isRequired,
-// };
-
-// export default SearchForm;
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import PropTypes from "prop-types";
@@ -55,19 +11,20 @@ function SearchForm({ handleSearch }) {
   const dispatch = useDispatch();
   const [searchResults, setSearchResults] = useState([]);
   const [showInput, setShowInput] = useState(false);
-  const [categoryName, setCategoryName] = useState("");
+  // const [categoryName, setCategoryName] = useState("");
   //  !
-  console.log(categoryName);
+  // console.log(categoryName);
   const inputValueFromRedux = useSelector((state) => state.inputValue.inputValue);
   const [inputValue, setInputValue] = useState(inputValueFromRedux);
-  const [selectedProduct, setSelectedProduct] = useState(null);
+  // const [selectedProduct, setSelectedProduct] = useState(null);
   //  !
-  console.log(selectedProduct);
+  // console.log(selectedProduct);
   const [debounceTimeoutId, setDebounceTimeoutId] = useState(null);
   const getProductDetails = async (productId) => {
     try {
-      const response = await axios.get(`http://localhost:4000/api/products/${productId}`);
-      setSelectedProduct(response.data);
+      await axios.get(`http://localhost:4000/api/products/${productId}`);
+      // const response = await axios.get(`http://localhost:4000/api/products/${productId}`);
+      // setSelectedProduct(response.data);
     } catch (error) {
       console.error("Помилка при отриманні деталей товару:", error);
     }
@@ -86,16 +43,16 @@ function SearchForm({ handleSearch }) {
       setSearchResults(products);
   
       if (products.length > 0) {
-        setCategoryName(products[0].category);
+        // setCategoryName(products[0].category);
         setShowInput(true);
       } else {
-        setCategoryName("");
+        // setCategoryName("");
         setShowInput(false);
       }
     } catch (error) {
       console.error("Error while searching for products:", error);
       setSearchResults([]);
-      setCategoryName("");
+      // setCategoryName("");
       setShowInput(false);
     }
   };

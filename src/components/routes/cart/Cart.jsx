@@ -1,8 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-// import { useSelector, useDispatch } from "react-redux";
-// import { resetCart } from "../../../redux/actions/cartActions";
 import {
   Form, Field, ErrorMessage, Formik,
 } from "formik";
@@ -13,7 +11,7 @@ import { NEW_CART_URL } from "../../../endpoints/endpoints";
 import { resetCart } from "../../../redux/actions/cartActions";
 import { deleteCart } from "../../../api/updateCart";
 import styles from "./Cart.module.scss";
-// import { openModal } from "../../../redux/actionsCreators/modalActionsCreators";
+
 
 function LoginModal() {
   return (
@@ -23,9 +21,16 @@ function LoginModal() {
   );
 }
 
+function LoginModalPurchase() {
+  return (
+    <div className={styles.loginModalPurchase}>
+      Покупка оформлена!
+    </div>
+  );
+}
+
 
 function Cart() {
-  // const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.items);
   const currentDate = new Date();
   const formattedDate = `${currentDate.getFullYear()}${(currentDate.getMonth() + 1).toString().padStart(2, "0")}${currentDate.getDate().toString().padStart(2, "0")}`;
@@ -37,11 +42,24 @@ function Cart() {
 
   // window
   const [showLoginModal, setShowLoginModal] = useState(false);
+  const [showLoginModalPurchase, setShowLoginModalPurchase] = useState(false);
   const timerRef = useRef();
   function promptLogin() {
     setShowLoginModal(true);
     timerRef.current = setTimeout(() => {
       setShowLoginModal(false);
+    }, 20000);
+  }
+  useEffect(() => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+  }, []);
+
+  function promptPurchase() {
+    setShowLoginModalPurchase(true);
+    timerRef.current = setTimeout(() => {
+      setShowLoginModalPurchase(false);
     }, 2000);
   }
   useEffect(() => {
@@ -61,14 +79,11 @@ function Cart() {
     }
   }
 
-  // const handlePurchaseWithoutLogIn = () => console.log("!");
-
   const showForm = () => {
     setOpenForm(true);
   };
 
   const handlePurchase = async (region, city, address, postal) => {
-    // dispatch(openModal());
     try {
       const cartData = await getCartFromServer();
       if (cartData !== null) {
@@ -95,6 +110,8 @@ function Cart() {
               localStorage.setItem("Cart", JSON.stringify([]));
               dispatch(resetCart());
               deleteCart();
+              setOpenForm(false);
+              promptPurchase();
             }
           })
           .catch((err) => {
@@ -127,8 +144,10 @@ function Cart() {
     <div className={styles.cardsSectionWrapper}>
       <h1 className={styles.cardsSectionHeadline}>Кошик</h1>
       <p className={styles.cardsSectionText}>Ваші замовлення</p>
-
-      {isCartEmpty ? <p className={styles.cartEmpty}>Ваш кошик порожній</p>
+      {/* eslint-disable-next-line max-len */}
+      { showLoginModalPurchase && <LoginModalPurchase onClose={() => setShowLoginModalPurchase(false)} /> }
+      {/* eslint-disable-next-line max-len */}
+      {isCartEmpty ? <p className={!showLoginModalPurchase ? styles.cartEmpty : styles.hidden}>Ваш кошик порожній</p>
         : (
           <>
             <table className={styles.cardsListWrapper}>
@@ -154,7 +173,8 @@ function Cart() {
             />
           </>
         )}
-      <div className={openForm ? styles.formWrapper : styles.hidden}>
+      <div className={openForm && !isCartEmpty ? styles.formWrapper : styles.hidden}>
+        {/* isCartEmpty ? styles.hidden :  */}
         <h1 className={styles.headline}>Замовлення</h1>
         <p className={`${styles.text} ${styles.headlineText}`}> Заповніть форму замовлення</p>
         <Formik
