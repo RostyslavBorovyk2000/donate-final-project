@@ -212,6 +212,9 @@
 
 
 .searching {
+    // !
+    // position: relative;
+    // !
     display: flex;
     gap: 10px;
     width: 100%;
@@ -224,6 +227,9 @@
 }
 
 .inputWrapper {
+    // !
+    position: relative;
+    // !
     width: 100%;
     display: flex;
     justify-content: center;
@@ -238,7 +244,6 @@
 }
 
 input:focus {
-
     border: 1px solid #7c8d66;
     outline: none;
 }
@@ -455,18 +460,27 @@ input:focus {
     text-transform: uppercase;
 }
 
-@media screen and (min-width: 1025px) {
+@media screen and (min-width: 768px) {
     .searchResults {
         position: absolute;
-        width: 720px;
-        top: 66px;
-        left: 8%;
+        // width: 720px;
+        // top: 66px;
+        // left: 8%;
+        // !
+        // width: calc(80% - 20px);
+        width: 80%;
+        top: 70%;
+        left: 70px;
+        // !
         border-radius: 15px;
         background: #eee;
         box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
         max-height: 300px;
         overflow-y: auto;
         z-index: 1;
+        // !
+        margin-top: 15px;
+        // !
     }
 
     .searchResultItem {

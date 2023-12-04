@@ -92,22 +92,23 @@ function SearchForm() {
           value={inputValue}
           onChange={handleInputChange}
         />
+        {/* </div> */}
+        {showInput && (
+        <div className={styles.searchResults}>
+          <ul>
+            {searchResults.length > 0 && inputValue !== "" && (
+              searchResults.map((result) => (
+                <li className={styles.searchResultItem} key={result.id}>
+                  <Link to={`/product/${result.itemNo}`} key={result.id} className={styles.searchResultItem}>
+                    {result.shortName}
+                  </Link>
+                </li>
+              ))
+            )}
+          </ul>
+        </div>
+        )}
       </div>
-      {showInput && (
-      <div className={styles.searchResults}>
-        <ul>
-          {searchResults.length > 0 && inputValue !== "" && (
-            searchResults.map((result) => (
-              <li className={styles.searchResultItem} key={result.id}>
-                <Link to={`/product/${result.itemNo}`} key={result.id} className={styles.searchResultItem}>
-                  {result.shortName}
-                </Link>
-              </li>
-            ))
-          )}
-        </ul>
-      </div>
-      )}
 
 
       {/* <div className={styles.searchButtons}>
