@@ -13,6 +13,7 @@
     justify-content: space-between;
     width: 100%;
     padding: 40px 15px 17px;
+    position: relative;
 
     @include devices(mobile) {
         display: flex;
@@ -426,9 +427,9 @@ input:focus {
 
 .searchResults {
     position: absolute;
-    width: 60%;
-    top: 12%;
-    left: 20%;
+    width: calc(80% + 20px);
+    top: 105%;
+    left: 9%;
     border-radius: 15px;
     background: #eee;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
@@ -436,6 +437,44 @@ input:focus {
     overflow-y: auto;
     z-index: 1;
 
+    @media only screen and (min-width: 320px) {
+        width: 90%;
+        top: 82%;
+        left: 6%;
+    }
+    @media only screen and (min-width: 425px) {
+        width: 80%;
+        top: 82%;
+        left: 16%;
+    }
+    @media only screen and (min-width: 450px) {
+        width: 80%;
+        top: 82%;
+        left: 17%;
+    }
+        @media only screen and (min-width: 600px) {
+        width: 79%;
+        top: 82%;
+        left: 18%;
+    }
+    @media only screen and (min-width: 700px) {
+        width: 80%;
+        top: 82%;
+        left: 18%;
+    }
+    @include devices(tablet) {
+        width: calc(80% + 18px);
+        top: 105%;
+        left: 8%;
+    }
+    @media only screen and (min-width: 900px) {
+        left: 9%;
+    }
+    @media only screen and (min-width: 1024px) {
+        width: 82%;
+        left: 9%;
+        top: 105%;
+    }
 }
 
 .searchResultItem {
@@ -461,27 +500,6 @@ input:focus {
 }
 
 @media screen and (min-width: 768px) {
-    .searchResults {
-        position: absolute;
-        // width: 720px;
-        // top: 66px;
-        // left: 8%;
-        // !
-        // width: calc(80% - 20px);
-        width: 80%;
-        top: 70%;
-        left: 70px;
-        // !
-        border-radius: 15px;
-        background: #eee;
-        box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-        max-height: 300px;
-        overflow-y: auto;
-        z-index: 1;
-        // !
-        margin-top: 15px;
-        // !
-    }
 
     .searchResultItem {
         padding: 12px 15px;
