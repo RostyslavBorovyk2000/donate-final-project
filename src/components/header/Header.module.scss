@@ -211,6 +211,7 @@
 
 
 .searching {
+    position: relative;
     display: flex;
     gap: 10px;
     width: 100%;
@@ -223,6 +224,7 @@
 }
 
 .inputWrapper {
+    position: relative;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -235,6 +237,7 @@
     border-radius: 15px;
     width: 80%;
 }
+
 
 input:focus {
 
@@ -417,7 +420,7 @@ input:focus {
 .searchResults {
     position: absolute;
     width: 60%;
-    top: 12%;
+    top: 13%;
     left: 20%;
     border-radius: 15px;
     background: #eee;
@@ -453,15 +456,16 @@ input:focus {
 @media screen and (min-width: 1025px) {
     .searchResults {
         position: absolute;
-        width: 720px;
-        top: 66px;
-        left: 8%;
+        width: calc(85% - 20px);
+        top: 70%;
+        left: 70px;
         border-radius: 15px;
         background: #eee;
         box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
         max-height: 300px;
         overflow-y: auto;
         z-index: 1;
+        margin-top: 15px;
     }
 
     .searchResultItem {
