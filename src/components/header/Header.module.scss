@@ -23,16 +23,17 @@
 }
 
 .inputMobileHeader {
-    width: 60%;
+    width: 80%;
     padding: 10px 10px;
     background-color: variables.$bgc-second;
-    border: none;
+    // border: none;
     border-radius: 10px;
+    border: 1px solid variables.$border-color-main;
 
-    &:focus {
-        border: 1px solid variables.$border-color-main;
-        outline: none;
-    }
+    // &:focus {
+    //     border: 1px solid variables.$border-color-main;
+    //     outline: none;
+    // }
 }
 
 .buttonMobileHeader {
@@ -300,8 +301,12 @@ input:focus {
 }
 
 .wrapperMenu {
-    display: flex;
-    align-items: center;
+    display: none;
+
+    @include devices(mobile) {
+        display: flex;
+        align-items: center;
+    }
 }
 
 .toggleButton {
