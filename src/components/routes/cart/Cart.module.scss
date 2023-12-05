@@ -157,13 +157,25 @@
     display: block;
 }
 
+.formSectionWrapper {
+    display: flex;
+    justify-content: space-around;
+    padding-top: 50px;
+    width: 100%;
+}
+
 .formWrapper {
     display: flex;
     justify-content: center;
     // align-items: center;
     flex-direction: column;
-    width: 300px;
-    padding-top: 50px;
+    width: 40%;
+}
+
+.checkOrderWrapper {
+    width: 50%;
+    padding: 50px;
+    background-color: rgba(0, 0, 0, 0.125);
 }
 
 .hidden {
@@ -171,7 +183,7 @@
 }
 
 .headline {
-    padding-bottom: 30px;
+    padding-bottom: 10px;
     color: variables.$fc-main;
     font-weight: 600;
     font-size: variables.$fs-x;
@@ -182,12 +194,66 @@
     align-items: center;
 }
 
+.textForm {
+    font-size: variables.$fs-x;
+    padding: 20px 0px 14px;
+}
+
 .form {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
-    padding-top: 14px;
+}
+
+.deliverySection {
+    display: flex;
+    flex-direction: column;
+    padding: 0px 0px 10px;
+
+    & input {
+        margin-right: 10px;
+    }
+}
+
+.shopAdres {
+    height: 40px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.dataCustomerWrapper {
+    width: 100%;
+    min-height: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-weight: 700;
+    // margin-bottom: 20px;
+}
+
+.customerFirstNameChange {
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
+.customerFirstNameChange:hover {
+    text-decoration: underline;
+    color: #7c8d66;
+}
+
+.customerFirstNameChange:focus {
+    outline: none;
+}
+
+.nameCustomer {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
 }
 
 .input,
