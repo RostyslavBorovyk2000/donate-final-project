@@ -374,3 +374,18 @@
   @include mixins.font-family-bold;
   text-transform: uppercase;
 }
+
+.hidden {
+  display: none;
+}
+
+.loginModal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 300px;
+  min-height: 40px;
+  color: variables.$fc-main;
+  text-align: center;
+  font-size: variables.$fs-l;
+}

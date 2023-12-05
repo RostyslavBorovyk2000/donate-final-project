@@ -48,7 +48,7 @@ function Cart() {
     setShowLoginModal(true);
     timerRef.current = setTimeout(() => {
       setShowLoginModal(false);
-    }, 20000);
+    }, 2000);
   }
   useEffect(() => {
     if (timerRef.current) {

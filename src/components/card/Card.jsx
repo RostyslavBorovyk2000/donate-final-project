@@ -15,8 +15,9 @@ import Button from "../button/Button";
 export function Card({ item }) {
   const {
     itemNo,
-    name,
-    price,
+    shortName,
+    currentPrice,
+    currentValue,
     goal,
     nameCloudinary,
     category,
@@ -108,8 +109,8 @@ export function Card({ item }) {
           <Icons
             imageURL={imageURL}
             itemNo={itemNo}
-            name={name}
-            price={price}
+            name={shortName}
+            price={currentPrice}
             id={_id}
             category={category}
             handleAddFavorites={handleAddFavorites}
@@ -125,10 +126,10 @@ export function Card({ item }) {
         </div>
         <Link to={`/product/${itemNo}`} className={styles.cardLink}>
           <div className={styles.cardItemTextWrapper}>
-            <h3 className={styles.cardItemHeadline}>{name}</h3>
-            {price ? (
+            <h3 className={styles.cardItemHeadline}>{shortName}</h3>
+            {currentPrice ? (
               <p className={styles.cardItemPrice}>
-                {price}
+                {currentPrice}
                 {" "}
                 грн
               </p>
@@ -136,7 +137,7 @@ export function Card({ item }) {
               <p className={styles.cardItemGoalLot}>
                 Ставка:
                 {" "}
-                {goal}
+                {currentValue}
                 {" "}
                 грн
               </p>

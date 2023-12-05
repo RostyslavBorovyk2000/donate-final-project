@@ -1,5 +1,5 @@
 /* eslint-disable react/button-has-type */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -16,14 +16,13 @@ import Button from "../button/Button";
 import CountdownTimer from "./CountdownTimer";
 import DocumentTitle from "../routes/DocumentTitle";
 import styles from "./ProductView.module.scss";
-// import { openModal } from "../../redux/actionsCreators/modalActionsCreators";
-// import Modal from "../modal/Modal";
 import { addFavorites, addToCart } from "../../redux/actions/cartActions";
 import { counterIncrement } from "../../redux/actionsCreators/counterActionsCreators";
+import { GET_CUSTOMER } from "../../endpoints/endpoints";
+// import { setAuthToken } from "../../redux/actions/authActions";
 import heart from "./icons/heart/heart.svg";
 import heartFilled from "./icons/heart/heart-filled.svg";
 
-// ! replace
 function convertToImgUrl(nameCloudinary) {
   const cld = new Cloudinary({
     cloud: { cloudName: "dzaxltnel" },
@@ -35,6 +34,23 @@ function convertToImgUrl(nameCloudinary) {
   return imageURL;
 }
 
+function LoginModalBid() {
+  return (
+    <div className={styles.loginModal}>
+      Вашу ставку надіслано. Чекайте на дзвінок менеджера для підтвердження ставки.
+    </div>
+  );
+}
+
+function LoginModal() {
+  return (
+    <div className={styles.loginModal}>
+      Спершу авторизуйтесь
+    </div>
+  );
+}
+
+
 function ProductView() {
   const dispatch = useDispatch();
   const product = useSelector((state) => state.product.product);
@@ -43,18 +59,43 @@ function ProductView() {
     (favItem) => favItem.itemNo === params.itemNo,
   ));
 
-  // eslint-disable-next-line no-unused-vars
-  // const [progress, setProgress] = useState(15);
-  // const [currentBid, setCurrentBid] = useState("");
-  // const isModalOpen = useSelector((state) => state.modal.isOpen);
-  // eslint-disable-next-line no-unused-vars
-  const [progress, setProgress] = useState(27);
-  const [currentBid, setCurrentBid] = useState(product?.initialPrice || "");
+  const progress = product ? ((product.currentValue * 100 / product.goal).toFixed(1)) : 0;
+  // const [currentBid, setCurrentBid] = useState(product?.initialPrice || "");
+  // console.log(currentBid);
   const [newCurrentBid, setNewCurrentBid] = useState("");
   const [errorInput, setErrorInput] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [isInCart, setIsInCart] = useState(false);
   const [isButtonClicked, setButtonClicked] = useState(false);
+  const isUserLoggedIn = localStorage.getItem("userLogin") || null;
+  const [showLoginModalBid, setShowLoginModalBid] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const timerRef = useRef();
+
+  function promptPurchase() {
+    setShowLoginModalBid(true);
+    timerRef.current = setTimeout(() => {
+      setShowLoginModalBid(false);
+    }, 8000);
+  }
+  useEffect(() => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+  }, []);
+
+  function promptLogin() {
+    setShowLoginModal(true);
+    timerRef.current = setTimeout(() => {
+      setShowLoginModal(false);
+    }, 2000);
+  }
+  useEffect(() => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+  }, []);
+
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -78,7 +119,7 @@ function ProductView() {
             imageURL: convertToImgUrl(data.nameCloudinary[0]),
           }),
         );
-        setCurrentBid(initialPrice);
+        // setCurrentBid(initialPrice);
       } catch (error) {
         console.error("Error fetching product:", error);
       }
@@ -93,7 +134,17 @@ function ProductView() {
     return <div>Product not found...</div>;
   }
 
-  const handleBidClick = () => {
+  async function getCustomerFromServer() {
+    try {
+      const response = await axios.get(GET_CUSTOMER);
+      return response.data;
+    } catch (err) {
+      console.error("Помилка при отриманні даних:", err);
+      return null;
+    }
+  }
+
+  const handleBidClick = async (lot) => {
     if (parseFloat(newCurrentBid) < parseFloat(product.initialPrice)) {
       setErrorInput(
         `Помилка: Запропонована Вами ставка ${newCurrentBid} нижче поточної.`,
@@ -101,11 +152,57 @@ function ProductView() {
       return;
     }
     if (parseFloat(newCurrentBid) > parseFloat(product.initialPrice)) {
-      setCurrentBid(newCurrentBid);
+      try {
+        const cartData = await getCustomerFromServer();
+
+        const { email, telephone, _id: customerId } = cartData;
+        const newOrder = {
+          products: [],
+          customerId,
+          email,
+          mobile: telephone,
+          bid: newCurrentBid,
+          lot,
+          letterSubject: "Дякуємо за вашу ставку в аукціоні!",
+          letterHtml: `<h1> Ви зробили ставку в розмірі ${newCurrentBid} грн в благодійному аукціоні за лот: ${lot}. Чекайте на дзвінок нашого менеджера для підтвердження ставки!</p>`,
+        };
+
+        axios
+          .post("http://localhost:4000/api/orders", newOrder)
+          .then((response) => {
+            if (response.status === 200) {
+              promptPurchase();
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } catch (error) {
+        // !
+        // setShowError(true);
+        console.error("Помилка при вході:", error);
+      }
+      // setCurrentBid(newCurrentBid);
       setNewCurrentBid("");
       setErrorInput("");
     }
   };
+
+  // function sendCartToEmptyServer() {
+  //   const token = localStorage.getItem("token");
+  //   store.dispatch(setAuthToken(token));
+  
+  //   const newCart = {
+  //     products: selectCartForApi(state),
+  //   };
+  
+  //   axios
+  //     .post(NEW_CART_URL, newCart)
+  //     .then(null)
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }
 
   // !
   const handleAddFavorites = () => {
@@ -158,7 +255,8 @@ function ProductView() {
                   <div className={styles.donateInfoAmount}>
                     <p className={styles.donateInfoResult}>
                       {" "}
-                      {(product.goal * progress) / 100}
+                      {/* {(product.goal * progress) / 100} */}
+                      {product.currentValue}
                       {" "}
                       грн
                     </p>
@@ -220,7 +318,8 @@ function ProductView() {
                       {" "}
                     </span>
                     <span>
-                      {currentBid}
+                      {/* {currentBid} */}
+                      {product.currentValue}
                       {" "}
                       грн
                     </span>
@@ -370,7 +469,16 @@ function ProductView() {
                   )}
                 </div>
                 <div className={styles.rateUpBtnWrapper}>
-                  <Button text="Підняти ставку" onClick={handleBidClick} />
+                  { showLoginModal && <LoginModal onClose={() => setShowLoginModal(false)} /> }
+                  {/* eslint-disable-next-line max-len */}
+                  { showLoginModalBid && <LoginModalBid onClose={() => setShowLoginModalBid(false)} /> }
+                  {!showLoginModalBid && !showLoginModal
+                    ? <Button text="Підняти ставку" onClick={isUserLoggedIn ? () => handleBidClick(product.name) : promptLogin} />
+                    : <Button className={styles.hidden} />}
+                  {/* {!showLoginModal
+                    ? <Button text="Підняти ставку" onClick={() => handleBidClick(product.name)} />
+                  : <Button text="Підняти ставку" onClick={() => handleBidClick(product.name)}
+                  className={styles.hidden} />} */}
                   <ShareProducts />
                 </div>
               </>
