@@ -7,7 +7,7 @@ import {
 import { object, string } from "yup";
 import CartItem from "./CartItem";
 import { FormButton } from "../../button/Button";
-import { NEW_CART_URL } from "../../../endpoints/endpoints";
+import { NEW_CART_URL, GET_CUSTOMER } from "../../../endpoints/endpoints";
 import { resetCart } from "../../../redux/actions/cartActions";
 import { deleteCart } from "../../../api/updateCart";
 import styles from "./Cart.module.scss";
@@ -37,11 +37,16 @@ function Cart() {
   const orderNumber = `52-${formattedDate}`;
   const isCartEmpty = cartItems.length === 0;
   const dispatch = useDispatch();
-  const isUserLoggedIn = localStorage.getItem("userLogin") || null;
+  const isUserLoggedIn = localStorage.getItem("userLogin");
   const [openForm, setOpenForm] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showLoginModalPurchase, setShowLoginModalPurchase] = useState(false);
   const [selectedOption, setSelectedOption] = useState("");
+  const [customerFirstName, setCustomerFirstName] = useState("");
+  const [customerLastName, setCustomerLastName] = useState("");
+  const [customerPhone, setCustomerPhone] = useState("");
+  const [customerNameInput, setCustomerNameInput] = useState(false);
+  const [customerPhoneInput, setCustomerPhoneInput] = useState(false);
   const timerRef = useRef();
 
   function promptLogin() {
@@ -68,8 +73,53 @@ function Cart() {
     }
   }, []);
 
-  const handleChange = (event) => {
+  // const handleChangeText = (event, setFieldValue) => {
+  //   const { id, value } = event.target;
+  //   switch (id) {
+  //     case "name":
+  //       setNameFieldValue(value);
+  //       setFieldValue("name", value);
+  //       break;
+  //     case "phone":
+  //       setPhoneFieldValue(value);
+  //       setFieldValue("phone", value);
+  //       break;
+  //     case "addressNp":
+  //       setAdressNpFieldValue(value);
+  //       setFieldValue("addressNp", value);
+  //       break;
+  //     case "courierRegion":
+  //       setAdressCourierRegionFieldValue(value);
+  //       setFieldValue("courierRegion", value);
+  //       break;
+  //     case "courierCity":
+  //       setAdressCourierCityFieldValue(value);
+  //       setFieldValue("courierCity", value);
+  //       break;
+  //     case "courierAddress":
+  //       setAdressCourierAddressFieldValue(value);
+  //       setFieldValue("courierAddress", value);
+  //       break;
+  //     case "courierPostal":
+  //       setAdressCourierPostalFieldValue(value);
+  //       setFieldValue("courierPostal", value);
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  // };
+  
+  const handleChangeRadio = (event) => {
     setSelectedOption(event.target.value);
+  };
+  
+
+  const handleChangeCustomerName = () => {
+    setCustomerNameInput(true);
+  };
+
+  const handleChangeCustomerPhone = () => {
+    setCustomerPhoneInput(true);
   };
 
   async function getCartFromServer() {
@@ -84,25 +134,33 @@ function Cart() {
 
   const showForm = async () => {
     setOpenForm(true);
+    const customerData = await getCustomerFromServer();
+    const { firstName, lastName, telephone } = customerData;
+    setCustomerFirstName(firstName);
+    setCustomerLastName(lastName);
+    setCustomerPhone(telephone);
   };
 
-  const handlePurchase = async (name, phone, region, city, address, postal) => {
+  const handlePurchase = async (name, phone, region, city, address, postal, addressNp = "") => {
+    console.log(name, phone, region, city, address, postal, addressNp = "");
     try {
       const cartData = await getCartFromServer();
       if (cartData !== null) {
-        const { email, _id: customerId } = cartData.customerId;
+        const { email, telephone, _id: customerId } = cartData.customerId;
         const newOrder = {
           customerId,
+          name,
+          phone,
           deliveryAddress: {
             region,
             city,
             address,
             postal,
+            addressNp,
           },
           canceled: false,
           email,
-          name,
-          mobile: phone,
+          mobile: telephone,
           letterSubject: "Дякуємо за покупку та весок на підтримку ЗСУ!",
           letterHtml: `<h1>Ваше замовлення прийнято. Номер замовлення - ${orderNumber}.</h1><p>Ми переможемо!</p>`,
         };
@@ -144,6 +202,16 @@ function Cart() {
       .matches(/[0-9]/, "Дозволені символи для пароля: 0-9"),
   });
 
+  async function getCustomerFromServer() {
+    try {
+      const response = await axios.get(GET_CUSTOMER);
+      return response.data;
+    } catch (err) {
+      console.error("Помилка при отриманні даних:", err);
+      return null;
+    }
+  }
+
   
   return (
     <div className={styles.cardsSectionWrapper}>
@@ -173,6 +241,7 @@ function Cart() {
             <FormButton
               text="Оформити замовлення"
               padding="10px"
+              // onClick={showForm}
               onClick={isUserLoggedIn ? showForm : promptLogin}
               className={openForm ? styles.hidden : styles.buttonStyle}
             />
@@ -187,19 +256,22 @@ function Cart() {
             initialValues={{
               name: "",
               phone: "",
-              region: "",
-              city: "",
-              address: "",
-              postal: "",
+              courierRegion: "",
+              courierCity: "",
+              courierAddress: "",
+              courierPostal: "",
+              addressNp: "",
             }}
             onSubmit={(values, { setSubmitting }) => {
+              console.log("Форма відправлена", values);
               handlePurchase(
                 values.name,
                 values.phone,
-                values.region,
-                values.city,
-                values.address,
-                values.postal,
+                values.courierRegion,
+                values.courierCity,
+                values.courierAddress,
+                values.courierPostal,
+                values.addressNp,
               );
               setSubmitting(false);
             }}
@@ -210,7 +282,8 @@ function Cart() {
               <Form className={styles.form}>
                 <div className={styles.dataCustomerWrapper}>
                   <div className={styles.nameCustomer}>
-                    <div>
+                    <p className={customerNameInput ? styles.hidden : null}>{`Повне ім'я: ${customerLastName} ${customerFirstName}`}</p>
+                    <div className={!customerNameInput ? styles.hidden : null}>
                       <Field name="name">
                         {({ field, meta }) => (
                           <input
@@ -223,9 +296,18 @@ function Cart() {
                         )}
                       </Field>
                     </div>
+                    {/* eslint-disable-next-line max-len */}
+                    <button
+                      type="button"
+                      className={customerNameInput ? styles.hidden : styles.customerFirstNameChange}
+                      onClick={handleChangeCustomerName}
+                    >
+                      Змінити
+                    </button>
                   </div>
                   <div className={styles.nameCustomer}>
-                    <div>
+                    <p className={customerPhoneInput ? styles.hidden : null}>{customerPhone}</p>
+                    <div className={!customerPhoneInput ? styles.hidden : null}>
                       <Field name="phone">
                         {({ field, meta }) => (
                           <input
@@ -238,6 +320,15 @@ function Cart() {
                         )}
                       </Field>
                     </div>
+                    {/* eslint-disable-next-line max-len */}
+                    <button
+                      type="button"
+                      // eslint-disable-next-line max-len
+                      className={customerPhoneInput ? styles.hidden : styles.customerFirstNameChange}
+                      onClick={handleChangeCustomerPhone}
+                    >
+                      Змінити
+                    </button>
                   </div>
                 </div>
 
@@ -249,7 +340,7 @@ function Cart() {
                       id="shop"
                       value="shop"
                       checked={selectedOption === "shop"}
-                      onChange={handleChange}
+                      onChange={handleChangeRadio}
                     />
                     {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
                     <label htmlFor="shop" className={styles.text}>Самовивіз з магазину</label>
@@ -260,7 +351,7 @@ function Cart() {
                       id="courier"
                       value="courier"
                       checked={selectedOption === "courier"}
-                      onChange={handleChange}
+                      onChange={handleChangeRadio}
                     />
                     {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
                     <label htmlFor="courier" className={styles.text}>Кур&apos;єр на зазначену адресу</label>
@@ -271,7 +362,7 @@ function Cart() {
                       id="np"
                       value="np"
                       checked={selectedOption === "np"}
-                      onChange={handleChange}
+                      onChange={handleChangeRadio}
                     />
                     {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
                     <label htmlFor="option3" className={styles.text}>Самовивіз з Нової Пошти</label>
@@ -281,44 +372,44 @@ function Cart() {
                   {selectedOption === "shop" && <div className={styles.shopAdres}>Адреса магазину: м. Київ, вул. Незалежность 11 а</div>}
                   {selectedOption === "courier" && (
                     <div>
-                      <Field name="region">
+                      <Field name="courierRegion">
                         {({ field, meta }) => (
                           <input
                             {...field}
-                            id="region"
+                            id="courierRegion"
                             // eslint-disable-next-line max-len
                             className={meta.touched && meta.error ? styles.inputAttention : styles.input}
                             placeholder="Область"
                           />
                         )}
                       </Field>
-                      <Field name="city">
+                      <Field name="courierCity">
                         {({ field, meta }) => (
                           <input
                             {...field}
-                            id="city"
+                            id="courierCity"
                             // eslint-disable-next-line max-len
                             className={meta.touched && meta.error ? styles.inputAttention : styles.input}
                             placeholder="Населений пункт"
                           />
                         )}
                       </Field>
-                      <Field name="address">
+                      <Field name="courierAddress">
                         {({ field, meta }) => (
                           <input
                             {...field}
-                            id="address"
+                            id="courierAddress"
                             // eslint-disable-next-line max-len
                             className={meta.touched && meta.error ? styles.inputAttention : styles.input}
                             placeholder="Адреса (вулиця, будинок, квартира)"
                           />
                         )}
                       </Field>
-                      <Field name="postal">
+                      <Field name="courierPostal">
                         {({ field, meta }) => (
                           <input
                             {...field}
-                            id="postal"
+                            id="courierPostal"
                             // eslint-disable-next-line max-len
                             className={meta.touched && meta.error ? styles.inputAttention : styles.input}
                             placeholder="Поштовий індекс"
@@ -354,6 +445,8 @@ function Cart() {
                   disabled={isSubmitting}
                   text="Придбати"
                   padding="10px"
+                  // onClick={isUserLoggedIn ? handlePurchase : promptLogin}
+                  onClick={handlePurchase}
                 />
               </Form>
             )}
