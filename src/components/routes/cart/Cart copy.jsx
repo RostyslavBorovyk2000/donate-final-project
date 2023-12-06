@@ -32,6 +32,7 @@ function LoginModalPurchase() {
 
 function Cart() {
   const cartItems = useSelector((state) => state.cart.items);
+  // const cartItems = useSelector((state) => state.cart.items);
   const currentDate = new Date();
   const formattedDate = `${currentDate.getFullYear()}${(currentDate.getMonth() + 1).toString().padStart(2, "0")}${currentDate.getDate().toString().padStart(2, "0")}`;
   const orderNumber = `52-${formattedDate}`;
@@ -47,6 +48,13 @@ function Cart() {
   const [customerPhone, setCustomerPhone] = useState("");
   const [customerNameInput, setCustomerNameInput] = useState(false);
   const [customerPhoneInput, setCustomerPhoneInput] = useState(false);
+  const [nameFieldValue, setNameFieldValue] = useState("");
+  const [phoneFieldValue, setPhoneFieldValue] = useState("");
+  const [adressNpFieldValue, setAdressNpFieldValue] = useState("");
+  const [adressCourierRegionFieldValue, setAdressCourierRegionFieldValue] = useState("");
+  const [adressCourierCityFieldValue, setAdressCourierCityFieldValue] = useState("");
+  const [adressCourierAddressFieldValue, setAdressCourierAddressFieldValue] = useState("");
+  const [adressCourierPostalFieldValue, setAdressCourierPostalFieldValue] = useState("");
   const timerRef = useRef();
 
   function promptLogin() {
@@ -73,41 +81,41 @@ function Cart() {
     }
   }, []);
 
-  // const handleChangeText = (event, setFieldValue) => {
-  //   const { id, value } = event.target;
-  //   switch (id) {
-  //     case "name":
-  //       setNameFieldValue(value);
-  //       setFieldValue("name", value);
-  //       break;
-  //     case "phone":
-  //       setPhoneFieldValue(value);
-  //       setFieldValue("phone", value);
-  //       break;
-  //     case "addressNp":
-  //       setAdressNpFieldValue(value);
-  //       setFieldValue("addressNp", value);
-  //       break;
-  //     case "courierRegion":
-  //       setAdressCourierRegionFieldValue(value);
-  //       setFieldValue("courierRegion", value);
-  //       break;
-  //     case "courierCity":
-  //       setAdressCourierCityFieldValue(value);
-  //       setFieldValue("courierCity", value);
-  //       break;
-  //     case "courierAddress":
-  //       setAdressCourierAddressFieldValue(value);
-  //       setFieldValue("courierAddress", value);
-  //       break;
-  //     case "courierPostal":
-  //       setAdressCourierPostalFieldValue(value);
-  //       setFieldValue("courierPostal", value);
-  //       break;
-  //     default:
-  //       break;
-  //   }
-  // };
+  const handleChangeText = (event, setFieldValue) => {
+    const { id, value } = event.target;
+    switch (id) {
+      case "name":
+        setNameFieldValue(value);
+        setFieldValue("name", value);
+        break;
+      case "phone":
+        setPhoneFieldValue(value);
+        setFieldValue("phone", value);
+        break;
+      case "addressNp":
+        setAdressNpFieldValue(value);
+        setFieldValue("addressNp", value);
+        break;
+      case "courierRegion":
+        setAdressCourierRegionFieldValue(value);
+        setFieldValue("courierRegion", value);
+        break;
+      case "courierCity":
+        setAdressCourierCityFieldValue(value);
+        setFieldValue("courierCity", value);
+        break;
+      case "courierAddress":
+        setAdressCourierAddressFieldValue(value);
+        setFieldValue("courierAddress", value);
+        break;
+      case "courierPostal":
+        setAdressCourierPostalFieldValue(value);
+        setFieldValue("courierPostal", value);
+        break;
+      default:
+        break;
+    }
+  };
   
   const handleChangeRadio = (event) => {
     setSelectedOption(event.target.value);
@@ -285,13 +293,14 @@ function Cart() {
                     <p className={customerNameInput ? styles.hidden : null}>{`Повне ім'я: ${customerLastName} ${customerFirstName}`}</p>
                     <div className={!customerNameInput ? styles.hidden : null}>
                       <Field name="name">
-                        {({ field, meta }) => (
+                        {({ field, meta, form }) => (
                           <input
                             {...field}
                             id="name"
                             // eslint-disable-next-line max-len
                             className={meta.touched && meta.error ? styles.inputAttention : styles.input}
                             placeholder="Ім'я та Прізвище"
+                            onChange={(e) => handleChangeText(e, form.setFieldValue)}
                           />
                         )}
                       </Field>
@@ -309,13 +318,14 @@ function Cart() {
                     <p className={customerPhoneInput ? styles.hidden : null}>{customerPhone}</p>
                     <div className={!customerPhoneInput ? styles.hidden : null}>
                       <Field name="phone">
-                        {({ field, meta }) => (
+                        {({ field, meta, form }) => (
                           <input
                             {...field}
                             id="phone"
                             // eslint-disable-next-line max-len
                             className={meta.touched && meta.error ? styles.inputAttention : styles.input}
                             placeholder="Телефон"
+                            onChange={(e) => handleChangeText(e, form.setFieldValue)}
                           />
                         )}
                       </Field>
@@ -373,46 +383,50 @@ function Cart() {
                   {selectedOption === "courier" && (
                     <div>
                       <Field name="courierRegion">
-                        {({ field, meta }) => (
+                        {({ field, meta, form }) => (
                           <input
                             {...field}
                             id="courierRegion"
                             // eslint-disable-next-line max-len
                             className={meta.touched && meta.error ? styles.inputAttention : styles.input}
                             placeholder="Область"
+                            onChange={(e) => handleChangeText(e, form.setFieldValue)}
                           />
                         )}
                       </Field>
                       <Field name="courierCity">
-                        {({ field, meta }) => (
+                        {({ field, meta, form }) => (
                           <input
                             {...field}
                             id="courierCity"
                             // eslint-disable-next-line max-len
                             className={meta.touched && meta.error ? styles.inputAttention : styles.input}
                             placeholder="Населений пункт"
+                            onChange={(e) => handleChangeText(e, form.setFieldValue)}
                           />
                         )}
                       </Field>
                       <Field name="courierAddress">
-                        {({ field, meta }) => (
+                        {({ field, meta, form }) => (
                           <input
                             {...field}
                             id="courierAddress"
                             // eslint-disable-next-line max-len
                             className={meta.touched && meta.error ? styles.inputAttention : styles.input}
                             placeholder="Адреса (вулиця, будинок, квартира)"
+                            onChange={(e) => handleChangeText(e, form.setFieldValue)}
                           />
                         )}
                       </Field>
                       <Field name="courierPostal">
-                        {({ field, meta }) => (
+                        {({ field, meta, form }) => (
                           <input
                             {...field}
                             id="courierPostal"
                             // eslint-disable-next-line max-len
                             className={meta.touched && meta.error ? styles.inputAttention : styles.input}
                             placeholder="Поштовий індекс"
+                            onChange={(e) => handleChangeText(e, form.setFieldValue)}
                           />
                         )}
                       </Field>
@@ -420,13 +434,14 @@ function Cart() {
                   )}
                   {selectedOption === "np" && (
                     <Field name="addressNp">
-                      {({ field, meta }) => (
+                      {({ field, meta, form }) => (
                         <input
                           {...field}
                           id="addressNp"
                           // eslint-disable-next-line max-len
                           className={meta.touched && meta.error ? styles.inputAttention : styles.input}
                           placeholder="Місто та № відділення Нової Пошти"
+                          onChange={(e) => handleChangeText(e, form.setFieldValue)}
                         />
                       )}
                     </Field>
@@ -446,11 +461,77 @@ function Cart() {
                   text="Придбати"
                   padding="10px"
                   // onClick={isUserLoggedIn ? handlePurchase : promptLogin}
-                  onClick={handlePurchase}
+                  // onClick={handlePurchase}
                 />
               </Form>
             )}
           </Formik>
+          <button type="button" onClick={() => console.log("Кнопка натиснута")}>Тестова Кнопка</button>
+        </div>
+        <div className={styles.checkOrderWrapper}>
+          <h3 className={styles.headline}>Підсумок</h3>
+          <p className={`${styles.text} ${styles.headlineText}`}>Перевірте інформацію</p>
+          <div className={styles.checkOrderInfo}>
+            <div>
+              <p>Покупець:</p>
+              <span>
+                {nameFieldValue === "" ? customerLastName : nameFieldValue}
+                &nbsp;
+              </span>
+              <span>
+                {nameFieldValue === "" ? customerFirstName : null}
+              </span>
+            </div>
+            <div>
+              <p>Контактний номер телефону:</p>
+              {phoneFieldValue === "" ? customerPhone : phoneFieldValue}
+            </div>
+            <div>
+              <p>Замовлення:</p>
+              {cartItems.map((item) => (
+                // eslint-disable-next-line no-underscore-dangle
+                <p key={item._id}>
+                  {/* eslint-disable-next-line max-len */}
+                  {item.shortName}
+                  ,&nbsp;
+                  {item.cartQuantity}
+                  &nbsp;шт.,&nbsp;
+                  {item.currentPrice}
+                  &nbsp;грн
+                </p>
+              ))}
+              <p>
+                Всього на сумму:
+                &nbsp;
+                {cartItems.reduce((total, item) => total + item.currentPrice, 0)}
+                &nbsp;грн
+              </p>
+            </div>
+            <div>
+              <p>Доставлення</p>
+              {selectedOption === "shop" && <p>- cамовивіз з магазину: м. Київ, вул. Незалежность 11 а</p>}
+              {selectedOption === "courier" && (
+                <div>
+                  - кур&apos;єром на адресу:
+                  &nbsp;
+                  <br />
+                  {adressCourierRegionFieldValue}
+                  <br />
+                  {adressCourierCityFieldValue}
+                  <br />
+                  {adressCourierAddressFieldValue}
+                  <br />
+                  {adressCourierPostalFieldValue}
+                </div>
+              )}
+              {selectedOption === "np" && (
+                <p>
+                  - на відділеня Нової пошти:
+                  {adressNpFieldValue}
+                </p>
+              )}
+            </div>
+          </div>
         </div>
       </div>
       { showLoginModal && <LoginModal onClose={() => setShowLoginModal(false)} /> }
