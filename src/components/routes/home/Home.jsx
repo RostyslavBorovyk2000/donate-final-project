@@ -1,3 +1,4 @@
+/* eslint-disable linebreak-style */
 import CategorysList from "../../categoriesList/CategoriesList";
 import FilteredCardList from "../../cardlists/FilteredCardList";
 // import { MainFilteredCardList } from "../../cardlists/FilteredCardList";

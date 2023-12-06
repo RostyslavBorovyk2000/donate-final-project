@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/button-has-type */
 import React, { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
@@ -39,9 +40,9 @@ function Header() {
   const searchResultsRef = useRef(null);
   const [debounceTimeoutId, setDebounceTimeoutId] = useState(null);
   const [selectedProduct, setSelectedProduct] = useState(null);
-  console.log(selectedProduct);
+  // console.log(selectedProduct);
   const [categoryName, setCategoryName] = useState("");
-  console.log(categoryName);
+  // console.log(categoryName);
 
   const getProductDetails = async (productId) => {
     try {

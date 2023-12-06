@@ -1,3 +1,4 @@
+/* eslint-disable linebreak-style */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable no-underscore-dangle */
 import PropTypes from "prop-types";
