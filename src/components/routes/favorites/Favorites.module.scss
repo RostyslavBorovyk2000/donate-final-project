@@ -9,9 +9,15 @@
 
 .cardsListWrapper {
     display: flex;
+    flex-direction: column;
     flex-wrap: wrap;
     padding-top: 20px;
     padding-bottom: 20px;
+
+    @include devices(mobile) {
+        row-gap: 50px;
+        padding-bottom: 70px;
+    }
 }
 
 .cardsSectionHeadline {
@@ -32,12 +38,17 @@
 
 .cardItemWrapper {
     position: relative;
-    display: grid;
-    grid-template-columns: 300px 100px 30px;
+    display: flex;
+    justify-content: space-between;
     align-items: center;
-    width: 100%;
+    flex-wrap: wrap;
     border-radius: 25px;
     margin-top: 11px;
+    border: 1px solid rgba(114, 114, 114, 1);
+
+    @include devices(mobile) {
+        padding: 10px;
+    }
 }
 
 
@@ -47,8 +58,14 @@
     
 }
 .productInfo{
+    width: 40%;
     display: flex;
+    justify-content: flex-start;
     align-items: center;
+
+    @include devices(mobile) {
+        width: inherit;
+    }
 }
 
 .cardItemImage {
@@ -84,10 +101,27 @@
     width: 130px;
 }
 
+.cardItemPriceWrapper {
+    @media screen and (min-width: 320px) and (max-width: 480px) {
+        width: 100%;
+        padding: 0px 0px 25px;
+        font-size: 18px;
+    }
+}
+
+// .quantityButtonWrapper {
+//     order: 2;
+
+//     @include devices(mobile) {
+//         margin-left: 50px;
+//     }
+// }
+
 .cardItemPrice {
-    color: variables.$fc-main;
+    display: flex;
+    justify-content: center;
+    color: rgba(114, 114, 114, 1);
     font-weight: 700;
-    width: 100px;
 }
 .tableRow{
     display: grid;
@@ -107,8 +141,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    width: 180px;
-    margin: 0 15px;
+    margin-left: 15px;
 }
 .name {
     @include mixins.font-family-medium;
@@ -128,8 +161,20 @@
 
 }
 
-.button {
+.buttonsWrapper {
     display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 30%;
+
+    @include devices(mobile) {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+.button {
+    display: block;
 }
 
 .buttonHidden {

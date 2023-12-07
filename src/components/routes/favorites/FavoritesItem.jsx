@@ -110,52 +110,48 @@ function FavoritesItem({ item }) {
   
    
   return (
-    <tbody key={item.id} className={styles.cardItemWrapper}>
-      <tr>
-        <td>
-          <div className={styles.productInfo}>
-            <Link to={`/product/${item.itemNo}`}>
-              <div className={styles.cardItemImageWrapper}>
-                {/* eslint-disable-next-line max-len */}
-                <img src={imageURL || item.imageURL} alt={item.name} className={styles.cardItemImage} />
-              </div>
-            </Link>
-            <div className={styles.nameContainer}>
-              <p className={styles.name}>{item.name}</p>
-              <p className={styles.sku}>
-                <span>Код товару:</span>
-                {" "}
-                {item.itemNo}
-              </p>
+    <div className={styles.cardItemWrapper}>
+      <div className={styles.productInfo}>
+        <Link to={`/product/${item.itemNo}`}>
+          <div className={styles.cardItemImageWrapper}>
+            {/* eslint-disable-next-line max-len */}
+            <img src={imageURL || item.imageURL} alt={item.name} className={styles.cardItemImage} />
+          </div>
+        </Link>
+        <div className={styles.nameContainer}>
+          <p className={styles.name}>{item.shortName}</p>
+          <p className={styles.sku}>
+            <span>Код товару:</span>
+            {" "}
+            {item.itemNo}
+          </p>
+        </div>
+      </div>
+      <div className={styles.cardItemPriceWrapper}>
+        <div className={styles.cardItemPrice}>
+          {item.currentPrice ? (
+            <div>
+              {item.currentPrice}
+              {" "}
+              грн
             </div>
-          </div>
-        </td>
-        <td>
-          <div className={styles.cardItemPrice}>
-            {item.price || item.currentPrice ? (
-              <div>
-                {item.price || item.currentPrice}
-                {" "}
-                грн
-              </div>
-            ) : "-"}
-          </div>
-        </td>
-        <td>
-          {showLoginModal && <LoginModal onClose={() => setShowLoginModal(false)} />}
-          {shouldRenderButton && (
-          <div className={!showLoginModal ? styles.button : styles.buttonHidden}>
-            <FormButton text="До кошика" padding="10px" onClick={!isProductInCart ? handleAddFavoritesToCart : promptLogin} />
-          </div>
-          )}
-        </td>
-        <td>
+          ) : "-"}
+        </div>
+      </div>
+      <div className={styles.buttonsWrapper}>
+        {showLoginModal && <LoginModal onClose={() => setShowLoginModal(false)} />}
+        {shouldRenderButton && (
+        <div className={!showLoginModal ? styles.button : styles.buttonHidden}>
+          <FormButton text="До кошика" padding="10px" onClick={!isProductInCart ? handleAddFavoritesToCart : promptLogin} />
+        </div>
+        )}
+        <div className={styles.quantityButtonWrapper}>
           <Button className={styles.buttonDelete} style={{ backgroundColor: "none" }} onClick={() => handleRemoveFromFavorites()}>
             <DeleteIcon />
           </Button>
-        </td>
-      </tr>
-    </tbody>
+        </div>
+      </div>
+    </div>
   );
 }
 

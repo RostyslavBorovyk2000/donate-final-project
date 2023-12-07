@@ -9,9 +9,15 @@
 
 .cardsListWrapper {
     display: flex;
+    flex-direction: column;
     flex-wrap: wrap;
     padding-top: 20px;
     padding-bottom: 20px;
+
+    @include devices(mobile) {
+        row-gap: 50px;
+        padding-bottom: 70px;
+    }
 }
 
 .cardsSectionHeadline {
@@ -32,12 +38,17 @@
 
 .cardItemWrapper {
     position: relative;
-    display: grid;
-    grid-template-columns: 300px 100px 200px 30px;
+    display: flex;
+    justify-content: space-between;
     align-items: center;
-    width: 100%;
+    flex-wrap: wrap;
     border-radius: 25px;
     margin-top: 11px;
+    border: 1px solid rgba(114, 114, 114, 1);
+
+    @include devices(mobile) {
+        padding: 10px;
+    }
 }
 
 
@@ -47,8 +58,14 @@
     
 }
 .productInfo{
-        display: flex;
-        align-items: center;
+    width: 40%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+    @include devices(mobile) {
+        width: inherit;
+    }
 }
 .cardItemImage {
     width: 70px;
@@ -78,13 +95,41 @@
 }
 
 .quantityCounterWrapper{
-    display: flex;
-    align-items: center;
-    width: 100px;
+    order: 1;
+    width: 150px;
 }
 
+.quantityButtonWrapper {
+    order: 2;
+
+    @include devices(mobile) {
+        margin-left: 50px;
+    }
+}
+
+.buttonsWrapper {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 30%;
+
+    @include devices(mobile) {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+.cardItemPriceWrapper {
+    @media screen and (min-width: 320px) and (max-width: 480px) {
+        width: 100%;
+        padding: 0px 0px 25px;
+        font-size: 18px;
+    }
+}
 
 .cardItemPrice {
+    display: flex;
+    justify-content: center;
     color: rgba(114, 114, 114, 1);
     font-weight: 700;
 }
@@ -94,8 +139,7 @@
     text-align: center;
 }
 .tableRow{
-    display: grid;
-    grid-template-columns: 300px 100px 240px;
+    display: flex;
     justify-content: space-between;
     justify-items: start;
     align-items: center;
@@ -111,7 +155,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    margin: 0 15px;
+    margin-left: 15px;
 }
 .name {
     @include mixins.font-family-medium;
@@ -119,15 +163,15 @@
     line-height: 16px;
 }
 .sku{
-        @include mixins.font-family-regular;
-        margin-bottom: 10px;
-        color: #727272;
-        font-size: 15px;
-        line-height: 16px;
-        span {
-            color: #a5a5a5;
-            text-transform: uppercase;
-        }
+    @include mixins.font-family-regular;
+    margin-bottom: 10px;
+    color: #727272;
+    font-size: 15px;
+    line-height: 16px;
+    span {
+        color: #a5a5a5;
+        text-transform: uppercase;
+    }
 
 }
 

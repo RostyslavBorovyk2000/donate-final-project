@@ -113,7 +113,7 @@
 .quantityCounter {
   @include devices(tablet) {
     order: 1;
-    margin-bottom: 20px;
+    // margin-bottom: 20px;
   }
 }
 .decrease,
@@ -134,7 +134,7 @@
   line-height: 10px;
   border: none;
   text-align: center;
-  width: 50px;
+  width: 40px;
 }
 
 .buyButtons {

@@ -7,7 +7,7 @@ import {
 import { object, string } from "yup";
 import CartItem from "./CartItem";
 import { FormButton } from "../../button/Button";
-import { NEW_CART_URL } from "../../../endpoints/endpoints";
+import { NEW_CART_URL, MAKE_ORDERS } from "../../../endpoints/endpoints";
 import { resetCart } from "../../../redux/actions/cartActions";
 import { deleteCart } from "../../../api/updateCart";
 import styles from "./Cart.module.scss";
@@ -89,7 +89,7 @@ function Cart() {
           };
   
           axios
-            .post("http://localhost:4000/api/orders", newOrder)
+            .post(MAKE_ORDERS, newOrder)
             .then((response) => {
               if (response.status === 200) {
                 localStorage.setItem("Cart", JSON.stringify([]));
@@ -144,7 +144,7 @@ function Cart() {
           };
   
           axios
-            .post("http://localhost:4000/api/orders", newOrder)
+            .post(MAKE_ORDERS, newOrder)
             .then((response) => {
               if (response.status === 200) {
                 localStorage.setItem("Cart", JSON.stringify([]));
@@ -191,21 +191,12 @@ function Cart() {
       {isCartEmpty ? <p className={!showLoginModalPurchase ? styles.cartEmpty : styles.hidden}>Ваш кошик порожній</p>
         : (
           <>
-            <table className={styles.cardsListWrapper}>
-              <thead>
-                <tr className={styles.tableRow}>
-                  <th>Продукти</th>
-                  <th>Ціна</th>
-                  <th>Кількість</th>
-                </tr>
-              </thead>
-              <tbody>
-                {cartItems.map((item) => (
-                  // eslint-disable-next-line no-underscore-dangle
-                  <CartItem key={item._id} item={item} />
-                ))}
-              </tbody>
-            </table>
+            <div className={styles.cardsListWrapper}>
+              {cartItems.map((item) => (
+                // eslint-disable-next-line no-underscore-dangle
+                <CartItem key={item._id} item={item} />
+              ))}
+            </div>
             <FormButton
               text="Оформити замовлення"
               padding="10px"

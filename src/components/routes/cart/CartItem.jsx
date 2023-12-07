@@ -135,11 +135,10 @@ function CartItem({ item }) {
 
   
   return (
-    <tr className={styles.cardItemWrapper}>
-      <td className={styles.productInfo}>
+    <div className={styles.cardItemWrapper}>
+      <div className={styles.productInfo}>
         <Link to={`/product/${item.itemNo}`}>
           <div className={styles.cardItemImageWrapper}>
-            {/* <img src={imageURL} alt={item.name} className={styles.cardItemImage} /> */}
             <img src={imageURL || item.imageURL} alt={item.name} className={styles.cardItemImage} />
           </div>
         </Link>
@@ -151,25 +150,27 @@ function CartItem({ item }) {
             {item.itemNo}
           </p>
         </div>
-      </td>
-      <td className={styles.cardItemPrice}>
-        {item.currentPrice * cartIt.cartQuantity}
-        грн
-      </td>
-      <td>
+      </div>
+      <div className={styles.cardItemPriceWrapper}>
+        <div className={styles.cardItemPrice}>
+          {(item.currentPrice * cartIt.cartQuantity).toFixed(2)}
+          грн
+        </div>
+      </div>
+      <div className={styles.buttonsWrapper}>
         <div className={styles.quantityCounterWrapper}>
           <QuantityCounter
             quantity={cartIt.cartQuantity}
             handleChangeQuantity={handleChangeQuantity}
           />
         </div>
-      </td>
-      <td>
-        <Button style={{ backgroundColor: "none" }} onClick={() => handleRemoveFromCart()}>
-          <DeleteIcon />
-        </Button>
-      </td>
-    </tr>
+        <div className={styles.quantityButtonWrapper}>
+          <Button style={{ backgroundColor: "none" }} onClick={() => handleRemoveFromCart()}>
+            <DeleteIcon />
+          </Button>
+        </div>
+      </div>
+    </div>
   );
 }
 
