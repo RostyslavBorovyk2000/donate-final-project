@@ -13,6 +13,7 @@ import { ReactComponent as PaypalIcon } from "./icons/paymentMethods/paypal.svg"
 import { ReactComponent as MastercardIcon } from "./icons/paymentMethods/mastercard.svg";
 import { ReactComponent as VisaIcon } from "./icons/paymentMethods/visa.svg";
 import { ReactComponent as LiqpayIcon } from "./icons/paymentMethods/liqpay.svg";
+import { Pagination } from "../pagination/Pagination";
 import FooterAccordion from "./FooterAccordion";
 import Subscribe from "./Subscribe";
 import styles from "./Footer.module.scss";

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 // import PropTypes from "prop-types";
-import { GET_PRODUCTS_URL } from "../../endpoints/endpoints";
 import CardList from "./CardList";
 import Spinner from "../spinner/Spinner";
 import shuffleArray from "../../scripts/shuffleArray";
