@@ -12,14 +12,6 @@ import { resetCart } from "../../../redux/actions/cartActions";
 import { deleteCart } from "../../../api/updateCart";
 import styles from "./Cart.module.scss";
 
-function LoginModal() {
-  return (
-    <div className={styles.loginModal}>
-      Спершу авторизуйтесь
-    </div>
-  );
-}
-
 function LoginModalPurchase() {
   return (
     <div className={styles.loginModalPurchase}>
@@ -27,7 +19,6 @@ function LoginModalPurchase() {
     </div>
   );
 }
-
 
 
 function Cart() {
@@ -39,22 +30,9 @@ function Cart() {
   const dispatch = useDispatch();
   const isUserLoggedIn = localStorage.getItem("userLogin") || null;
   const [openForm, setOpenForm] = useState(false);
-  const [showLoginModal, setShowLoginModal] = useState(false);
   const [showLoginModalPurchase, setShowLoginModalPurchase] = useState(false);
   const [selectedOption, setSelectedOption] = useState("");
   const timerRef = useRef();
-
-  function promptLogin() {
-    setShowLoginModal(true);
-    timerRef.current = setTimeout(() => {
-      setShowLoginModal(false);
-    }, 2000);
-  }
-  useEffect(() => {
-    if (timerRef.current) {
-      clearTimeout(timerRef.current);
-    }
-  }, []);
 
   function promptPurchase() {
     setShowLoginModalPurchase(true);
@@ -86,61 +64,119 @@ function Cart() {
     setOpenForm(true);
   };
 
-  const handlePurchase = async (name, phone, region, city, address, postal) => {
-    try {
-      const cartData = await getCartFromServer();
-      if (cartData !== null) {
-        const { email, _id: customerId } = cartData.customerId;
-        const newOrder = {
-          customerId,
-          deliveryAddress: {
-            region,
-            city,
-            address,
-            postal,
-          },
-          canceled: false,
-          email,
-          name,
-          mobile: phone,
-          letterSubject: "Дякуємо за покупку та весок на підтримку ЗСУ!",
-          letterHtml: `<h1>Ваше замовлення прийнято. Номер замовлення - ${orderNumber}.</h1><p>Ми переможемо!</p>`,
-        };
-
-        axios
-          .post("http://localhost:4000/api/orders", newOrder)
-          .then((response) => {
-            if (response.status === 200) {
-              localStorage.setItem("Cart", JSON.stringify([]));
-              dispatch(resetCart());
-              deleteCart();
-              setOpenForm(false);
-              promptPurchase();
-            }
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+  const handlePurchase = async (name = "", phone = "", email = "", region = "", city = "", address = "", postal = "", addressNp = "") => {
+    if (isUserLoggedIn !== null) {
+      try {
+        const cartData = await getCartFromServer();
+        // const lsData = localStorage.getItem("cart") || null;
+        if (cartData !== null) {
+          const { _id: customerId } = cartData.customerId;
+          const newOrder = {
+            customerId,
+            deliveryAddress: {
+              region,
+              city,
+              address,
+              postal,
+              addressNp,
+            },
+            canceled: false,
+            email,
+            name,
+            mobile: phone,
+            letterSubject: "Дякуємо за покупку та весок на підтримку ЗСУ!",
+            letterHtml: `<h1>Ваше замовлення прийнято. Номер замовлення - ${orderNumber}.</h1><p>Ми переможемо!</p>`,
+          };
+  
+          axios
+            .post("http://localhost:4000/api/orders", newOrder)
+            .then((response) => {
+              if (response.status === 200) {
+                localStorage.setItem("Cart", JSON.stringify([]));
+                dispatch(resetCart());
+                deleteCart();
+                setOpenForm(false);
+                promptPurchase();
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        }
+      } catch (error) {
+        // !
+        // setShowError(true);
+        console.error("Помилка при вході:", error);
       }
-    } catch (error) {
-      // !
-      // setShowError(true);
-      console.error("Помилка при вході:", error);
+    } else {
+      try {
+        const cartData = JSON.parse(localStorage.getItem("Cart")) || null;
+        if (cartData !== null) {
+          const productsForOrder = cartData.map((item) => ({
+            product: {
+              category: item.category,
+              date: item.date,
+              enabled: item.enabled,
+              itemNo: item.itemNo,
+              name: item.name,
+              // eslint-disable-next-line no-underscore-dangle
+              _id: item._id,
+              quantity: item.quantity,
+              currentPrice: item.currentPrice,
+            },
+            cartQuantity: item.cartQuantity,
+          }));
+          const newOrder = {
+            products: productsForOrder,
+            deliveryAddress: {
+              region,
+              city,
+              address,
+              postal,
+              addressNp,
+            },
+            canceled: false,
+            name,
+            email,
+            mobile: phone,
+            letterSubject: "Дякуємо за покупку та весок на підтримку ЗСУ!",
+            letterHtml: `<h1>Ваше замовлення прийнято. Номер замовлення - ${orderNumber}.</h1><p>Ми переможемо!</p>`,
+          };
+  
+          axios
+            .post("http://localhost:4000/api/orders", newOrder)
+            .then((response) => {
+              if (response.status === 200) {
+                localStorage.setItem("Cart", JSON.stringify([]));
+                dispatch(resetCart());
+                setOpenForm(false);
+                promptPurchase();
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        }
+      } catch (error) {
+        // !
+        // setShowError(true);
+        console.error("Помилка при вході:", error);
+      }
     }
   };
 
   const validationSchema = object().shape({
     region: string()
-      .required("Поле області адреси доставлення є обов'язковим для заповнення")
+      // .required("Поле області адреси доставлення є обов'язковим для заповнення")
       .matches(/[a-zA-Zа-яА-ЯіІїЇ'єЄ]/, "Дозволені символи для ім'я a-z, A-Z, а-я, А-Я"),
     city: string()
-      .required("Поле населеного пункту є обов'язковим для заповнення")
+      // .required("Поле населеного пункту є обов'язковим для заповнення")
       .matches(/[a-zA-Zа-яА-ЯіІїЇ'єЄ]/, "Дозволені символи для прізвища a-z, A-Z, а-я, А-Я"),
     address: string()
-      .required("Поле адреси є обов'язковим для заповнення")
+      // .required("Поле адреси є обов'язковим для заповнення")
       .matches(/[a-zA-Zа-яА-ЯіІїЇ'єЄ]/, "Дозволені символи для прізвища a-z, A-Z, а-я, А-Я"),
     postal: string()
-      .required("Поле поштового індекса є обов'язковим для заповнення")
+      // .required("Поле поштового індекса є обов'язковим для заповнення")
       .matches(/[0-9]/, "Дозволені символи для пароля: 0-9"),
   });
 
@@ -173,7 +209,8 @@ function Cart() {
             <FormButton
               text="Оформити замовлення"
               padding="10px"
-              onClick={isUserLoggedIn ? showForm : promptLogin}
+              // onClick={isUserLoggedIn ? showForm : promptLogin}
+              onClick={showForm}
               className={openForm ? styles.hidden : styles.buttonStyle}
             />
           </>
@@ -187,19 +224,23 @@ function Cart() {
             initialValues={{
               name: "",
               phone: "",
+              email: "",
               region: "",
               city: "",
               address: "",
               postal: "",
+              addressNp: "",
             }}
             onSubmit={(values, { setSubmitting }) => {
               handlePurchase(
                 values.name,
                 values.phone,
+                values.email,
                 values.region,
                 values.city,
                 values.address,
                 values.postal,
+                values.addressNp,
               );
               setSubmitting(false);
             }}
@@ -219,6 +260,7 @@ function Cart() {
                             // eslint-disable-next-line max-len
                             className={meta.touched && meta.error ? styles.inputAttention : styles.input}
                             placeholder="Ім'я та Прізвище"
+                            // onChange={handleNameChange}
                           />
                         )}
                       </Field>
@@ -234,6 +276,17 @@ function Cart() {
                             // eslint-disable-next-line max-len
                             className={meta.touched && meta.error ? styles.inputAttention : styles.input}
                             placeholder="Телефон"
+                          />
+                        )}
+                      </Field>
+                      <Field name="email">
+                        {({ field, meta }) => (
+                          <input
+                            {...field}
+                            id="email"
+                            // eslint-disable-next-line max-len
+                            className={meta.touched && meta.error ? styles.inputAttention : styles.input}
+                            placeholder="email"
                           />
                         )}
                       </Field>
@@ -277,7 +330,7 @@ function Cart() {
                     <label htmlFor="option3" className={styles.text}>Самовивіз з Нової Пошти</label>
                   </div>
                 </div>
-                <div>
+                <div className={styles.adressWrapper}>
                   {selectedOption === "shop" && <div className={styles.shopAdres}>Адреса магазину: м. Київ, вул. Незалежность 11 а</div>}
                   {selectedOption === "courier" && (
                     <div>
@@ -360,7 +413,6 @@ function Cart() {
           </Formik>
         </div>
       </div>
-      { showLoginModal && <LoginModal onClose={() => setShowLoginModal(false)} /> }
     </div>
   );
 }
