@@ -1,14 +1,15 @@
-// import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from "react-redux";
 // import { initializeFavorites } from "../../../redux/actions/cartActions";
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import DocumentTitle from "../../DocumentTitle";
 // import CustPageProdList from "./CustPageProdList";
 import Heart from "./Heart";
 import Cart from "./Cart";
-import { GET_CUSTOMER, MAKE_ORDERS } from "../../../../endpoints/endpoints";
+import { MAKE_ORDERS, GET_CUSTOMER } from "../../../../endpoints/endpoints";
+import { setAuthToken } from "../../../../redux/actions/authActions";
 import styles from "./CustomerPage.module.scss";
 
 
@@ -17,8 +18,15 @@ function CustomerPage() {
   const [orders, setOrders] = useState([]);
   const productsCartNumber = useSelector((state) => state.cart.itemCount);
   const productsFavoritesNumber = useSelector((state) => state.favorites.itemCount);
+  const dispatch = useDispatch();
 
   useEffect(() => {
+    const token = localStorage.getItem("token");
+    
+    if (token) {
+      dispatch(setAuthToken(token));
+      getCustomerFromServer();
+    }
     async function getCustomerFromServer() {
       try {
         const response = await axios.get(GET_CUSTOMER);
@@ -27,9 +35,7 @@ function CustomerPage() {
         console.error("Помилка при отриманні даних:", err);
       }
     }
-
-    getCustomerFromServer();
-  }, []);
+  }, [dispatch]);
 
   const getOrders = async () => {
     try {
@@ -113,14 +119,14 @@ function CustomerPage() {
               <>
                 <p>{item.orderNo}</p>
                 <p>{item.date}</p>
-                <p>
+                <div>
                   {item.products.map((i) => (
                     <>
                       <p>{i.product.name}</p>
                       <p>{i.product.currentPrice}</p>
                     </>
                   ))}
-                </p>
+                </div>
               </>
             ))}
           </div>
