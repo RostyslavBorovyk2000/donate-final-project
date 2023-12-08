@@ -15,9 +15,14 @@
   text-transform: uppercase;
 }
 
-.favoritesWrapper,
-.cartProductsWrapper {
-  padding-top: 50px;
+// .favoritesWrapper,
+// .cartProductsWrapper {
+//   padding-top: 50px;
+// }
+
+.favoritesWrapper svg,
+.cartProductsWrapper svg {
+  width: 30px;
 }
 
 .favoritesHeadline,
@@ -33,7 +38,7 @@
 
 .routesLinkWrapper {
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
 }
 
 .routesLink {
@@ -42,4 +47,55 @@
 
 .routesLink:hover {
   text-decoration: underline;
+}
+
+.dataWrapper {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 50px;
+}
+
+.customerDataWrapper {
+  width: 45%;
+  // width: 400px;
+  padding: 30px;
+  background-color: rgba(0, 0, 0, 0.125);
+}
+
+.customerDataWrapper h3 {
+  padding-bottom: 20px;
+}
+
+.name {
+  display: flex;
+  justify-content: space-between;
+}
+
+.name p {
+  width: 230px;
+}
+
+.iconsSectionWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 35%;
+}
+
+.cartDataWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.iconSection {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+
+  & p {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }

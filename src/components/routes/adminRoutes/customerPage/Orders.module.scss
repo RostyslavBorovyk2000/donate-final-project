@@ -1,0 +1,83 @@
+@use "../../../../styles/variables";
+@import "../../../../styles/mediaqueries";
+
+.ordersWrapper {
+  margin-top: 50px;
+
+  & h2 {
+    padding-bottom: 20px;
+  }
+}
+
+.buttonsWrapper {
+  display: flex;
+  justify-content: space-between;
+  width: 200px;
+  // margin-top: 50px;
+}
+
+.button {
+  cursor: pointer;
+  color: #7c8d66;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.button:hover {
+  text-decoration: underline;
+}
+
+.button:focus {
+  outline: none;
+}
+
+.hidden {
+  display: none;
+}
+
+.ordersList {
+  max-height: 500px;
+  overflow-x: auto;
+  display: flex;
+  flex-direction: column;
+  row-gap: 15px;
+  margin-bottom: 30px;
+}
+
+// order
+.orderWrapper {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid variables.$border-color-main;
+  padding: 10px;
+}
+
+.orderNo,
+.orderItems {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.orderItems {
+  width: 60%;
+  display: flex;
+  row-gap: 20px;
+
+  & div {
+    width: 100%;
+    display: flex;
+    // flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #d1e2bb;
+  }
+}
+
+.name {
+  width: 300px;
+}
