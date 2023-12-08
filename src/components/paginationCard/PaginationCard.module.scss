@@ -1,57 +1,42 @@
 .listCoods {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 10px;
+    display: block;
+    margin: 0  auto;
 }
 
-.listCoodsIteam {
-    width: 15%;
+.listCoodsIteam{
+    margin-top: 10px;
 }
 
-@media screen and (min-width: 320px) and (max-width: 768px) {
-    .listCoods {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
 
-    .listCoodsIteam {
-        width: 90%;
-    }
-}
-
-@media screen and (min-width: 320px) and (max-width: 768px) {
-    .listCoods {
+@media(min-width: 590px) {
+    
+    .listCoods{
         display: flex;
         flex-wrap: wrap;
-        justify-content: space-between;
-    }
-
-    .listCoodsIteam {
-        width: 90%;
-    }
-}
-
-@media screen and (min-width: 768px) and (max-width: 1024px) {
-    .listCoods {
-        grid-template-columns: repeat(3, 1fr);
-    }
-
-    .listCoodsIteam {
-        width: auto;
-    }
-}
-
-@media screen and (min-width: 1024px) {
-    .listCoods {
-        display: flex;
         justify-content: center;
-        flex-wrap: wrap;
         gap: 10px;
     }
 
-    .listCoodsIteam {
-        width: 15%;
+    .listCoodsIteam{
+        width: 45%;
     }
+
 }
+
+
+@media(min-width: 768px) {
+
+    .listCoodsIteam{
+        width: 30%;
+    }
+
+}
+
+@media(min-width: 1024px){
+
+    .listCoodsIteam{
+        width: 20%;
+    }
+
+}
+
