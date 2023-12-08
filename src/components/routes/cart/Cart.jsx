@@ -197,6 +197,16 @@ function Cart() {
                 <CartItem key={item._id} item={item} />
               ))}
             </div>
+            <div className={styles.totalPriceWrapper}>
+              <div className={styles.totalPrice}>
+                <p>Всього на суму:</p>
+                <p>
+                  {/* eslint-disable-next-line max-len */}
+                  {cartItems.reduce((total, item) => total + item.currentPrice * item.cartQuantity, 0)}
+                  &nbsp;грн
+                </p>
+              </div>
+            </div>
             <FormButton
               text="Оформити замовлення"
               padding="10px"

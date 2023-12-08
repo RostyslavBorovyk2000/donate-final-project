@@ -5,9 +5,12 @@
 .cardsSectionWrapper {
     padding: 50px 15px;
 }
+.cardsSectionWrapper h2 {
+    padding-top: 50px;
+}
 
-
-.cardsListWrapper {
+.cardsListWrapper,
+.cardsListDonatWrapper {
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
@@ -17,6 +20,42 @@
     @include devices(mobile) {
         row-gap: 50px;
         padding-bottom: 70px;
+    }
+}
+
+.cardsListDonatWrapper {
+    width: 600px;
+
+    @include devices(mobile) {
+        width: 100%;
+    }
+}
+
+.cardsListDonatWrapper .cardItemPriceWrapper {
+    display: none;
+}
+
+.cardsListDonatWrapper .cardItemWrapper {
+    width: 100%;
+}
+
+.cardsListDonatWrapper .productInfo {
+    width: 400px;
+
+    @include devices(tablet) {
+        width: 400px;
+    }
+    @include devices(mobile) {
+        width: 100%;
+    }
+}
+
+.cardsListDonatWrapper .buttonsWrapper {
+    @include devices(tablet) {
+        justify-content: center;
+    }
+    @include devices(mobile) {
+        width: 100%;
     }
 }
 
@@ -69,8 +108,8 @@
 }
 
 .cardItemImage {
-    width: 70px;
-    height: 70px;
+    width: 150px;
+    // height: 70px;
     object-fit: cover;
     border-radius: 25px;
 }
@@ -140,13 +179,15 @@
 .nameContainer{
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
+    // height: 65px;
     margin-left: 15px;
 }
 .name {
     @include mixins.font-family-medium;
     font-size: 16px;
     line-height: 16px;
+    padding-bottom: 10px;
 }
 .sku{
     @include mixins.font-family-regular;

@@ -119,12 +119,14 @@ function FavoritesItem({ item }) {
           </div>
         </Link>
         <div className={styles.nameContainer}>
-          <p className={styles.name}>{item.shortName}</p>
-          <p className={styles.sku}>
-            <span>Код товару:</span>
-            {" "}
-            {item.itemNo}
-          </p>
+          <Link to={`/product/${item.itemNo}`}>
+            <p className={styles.name}>{item.name}</p>
+            <p className={styles.sku}>
+              <span>Код товару:</span>
+              {" "}
+              {item.itemNo}
+            </p>
+          </Link>
         </div>
       </div>
       <div className={styles.cardItemPriceWrapper}>

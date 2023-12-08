@@ -6,7 +6,6 @@
     padding: 50px 15px;
 }
 
-
 .cardsListWrapper {
     display: flex;
     flex-direction: column;
@@ -16,7 +15,7 @@
 
     @include devices(mobile) {
         row-gap: 50px;
-        padding-bottom: 70px;
+        padding-bottom: 20px;
     }
 }
 
@@ -68,8 +67,8 @@
     }
 }
 .cardItemImage {
-    width: 70px;
-    height: 70px;
+    width: 150px;
+    // height: 70px;
     object-fit: cover;
     border-radius: 25px;
 }
@@ -154,13 +153,15 @@
 .nameContainer{
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
+    // height: 65px;
     margin-left: 15px;
 }
 .name {
     @include mixins.font-family-medium;
     font-size: 16px;
     line-height: 16px;
+    padding-bottom: 10px;
 }
 .sku{
     @include mixins.font-family-regular;
@@ -173,6 +174,33 @@
         text-transform: uppercase;
     }
 
+}
+
+.totalPriceWrapper {
+    display: flex;
+    justify-content: flex-end;
+    font-size: 16px;
+
+    @include devices(mobile) {
+        justify-content: center;
+    }
+}
+
+.totalPrice {
+    display: flex;
+    justify-content: space-between;
+    width: 300px;
+    padding: 20px 20px;
+    font-weight: 700;
+    font-size: 18px;
+
+    @include devices(mobile) {
+        padding-bottom: 50px;
+    }
+}
+
+.totalPrice p:first-child {
+    color: #7c8d66;
 }
 
 .showLoginModal {
