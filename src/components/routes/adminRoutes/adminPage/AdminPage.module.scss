@@ -1,36 +1,12 @@
-@use"../../../../styles/variables";
+@use "../../../../styles/variables";
 @use "../../../../styles/mixins";
 @import "../../../../styles/mediaqueries";
 
-
-.mainSection{
-    display: flex;
-    justify-content: space-around;
-    align-content: center;
-    gap: 20px;
-
-    @include devices(mobile) {
-        flex-wrap: wrap;
-    }
-}
-
-.sectionContainer {
-    margin-bottom: 20px;
+.mainSection {
     display: flex;
     flex-direction: column;
-    max-width: 25%;
-    box-shadow: 9px 9px 5px -4px rgba(124,141,102,1);
-    // max-height: 400px; 
-//   overflow: hidden;
-//   transition: max-height 0.3s ease; 
-
-    @include devices(mobile) {
-         max-width: 300px;
-    }
-
-    
+    gap: 10px;
 }
-
 
 .adminSectionHeadline {
     color: variables.$fc-main;
@@ -42,38 +18,78 @@
     @include devices(mobile) {
         font-size: variables.$fs-l;
     }
-    
 }
 
-.subscribers {
+.section-container {
+    margin-bottom: 20px;
+    max-width: 25%;
+    box-shadow: 9px 9px 5px -4px rgba(124, 141, 102, 1);
+    transition: max-height 0.3s ease;
+
+    @include devices(mobile) {
+        max-width: 300px;
+    }
+
+    &.collapsed {
+        max-height: 0;
+        overflow: hidden;
+    }
+}
+
+.section-container__title {
     color: variables.$fc-main;
     font-weight: 700;
+    margin-top: 20px;
+    margin-bottom: 5px;
+    border-bottom: 0.3px solid variables.$fc-main;
+    cursor: pointer;
 }
 
-.emailQuantity {
-    color: variables.$fc-text;
-    margin-bottom: 10px;
+.blockShowHide {
+    display: flex;
+    gap: 15px;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+    box-shadow: 7px 7px 5px -4px variables.$fc-main;
+}
+.buttonShowHide {
+    background-color: variables.$fc-main;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 2px 10px;
+    margin-bottom: 5px;
 }
 
-ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+.showRow {
+    display: flex;
+    gap: 5px;
+    transition: 2s;
 }
 
-.list {
-    margin-bottom: 10px;
-    overflow: hidden;
-    transition: max-height 0.3s ease-out; 
+.showRowSort {
+    display: flex;
+    gap: 5px;
+    margin-left: 50px;
 }
 
 .titleContainer {
-    color: variables.$fc-main;
-    font-weight: 700;
-    margin-top: 20px; 
-    margin-bottom: 5px;
-    border-bottom: 0.3px solid #7c8d66;
-    cursor: pointer; 
+    padding-top: 5px;
+    color: variables.$fc-text;
 }
 
+.showList {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 20px 0 10px 0;
+    max-height: 500px;
+    overflow-y: auto;
+}
 
+.emailQuantity {
+    margin-top: 10px;
+    width: 50%;
+}

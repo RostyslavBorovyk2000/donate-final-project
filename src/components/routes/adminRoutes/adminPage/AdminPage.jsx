@@ -1,3 +1,4 @@
+/* eslint-disable react/button-has-type */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
@@ -10,16 +11,29 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import DocumentTitle from "../../DocumentTitle";
 import styles from "./AdminPage.module.scss";
-import { setAuthToken } from "../../../../redux/actions/authActions";
-import { SUBSCRIBE_URL, GET_CUSTOMER, GET_PRODUCTS_URL } from "../../../../endpoints/endpoints";
+import { SUBSCRIBE_URL, GET_PRODUCTS_URL } from "../../../../endpoints/endpoints";
 
 
 function AdminPage() {
   const [subscribers, setSubscribers] = useState([]);
-  const [customers, setCustomers] = useState([]);
   const [products, setProducts] = useState([]);
   const [totalSubscribers, setTotalSubscribers] = useState(0);
   const [subscribersThisMonth, setSubscribersThisMonth] = useState(0);
+
+  const [sectionVisibility, setSectionVisibility] = useState({
+    products: false,
+    subscribers: false,
+    activeDonations: false,
+    closeDonations: false,
+    exceededDonations: false,
+  });
+
+  const toggleSectionVisibility = (section) => {
+    setSectionVisibility((prevVisibility) => ({
+      ...prevVisibility,
+      [section]: !prevVisibility[section],
+    }));
+  };
   
 
   useEffect(() => {
@@ -40,16 +54,6 @@ function AdminPage() {
         console.error("Error get subscribers:", error);
       }
     };
-    const getCustomers = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        setAuthToken(token);
-        const response = await axios.get(GET_CUSTOMER);
-        setCustomers(response.data);
-      } catch (error) {
-        console.error("Error get customers", error);
-      }
-    };
 
     const getProducts = async () => {
       try {
@@ -61,7 +65,6 @@ function AdminPage() {
     };
 
     getSubscribers();
-    getCustomers();
     getProducts();
   }, []);
 
@@ -82,6 +85,37 @@ function AdminPage() {
     (item) => item.category === "Благодійний лот" && item.currentValue > item.goal,
   );
 
+  // const getAllProducts = products.length;
+
+  const getAllProducts = products.filter(
+    (product) => product.category === "Одяг",
+  );
+
+  const getAllHat = products.filter(
+    (product) => product.subcategory === "Шапки" || product.subcategory === "Кепки",
+  );
+
+  const getAllShoes = products.filter(
+    (product) => product.subcategory === "Взуття",
+  );
+
+  const getAllDress = products.filter(
+    (product) => product.subcategory === "Одяг верхній",
+  );
+
+  const getAllFormSets = products.filter(
+    (product) => product.subcategory === "Комплекти форми",
+  );
+
+  const getAllPants = products.filter(
+    (product) => product.subcategory === "Штани",
+  );
+
+  const getAllHeatSink = products.filter(
+    (product) => product.subcategory === "Термобілизна",
+  );
+  
+
   return (
     <>
       <DocumentTitle title="Кабінет адміністратора" />
@@ -91,50 +125,100 @@ function AdminPage() {
         </div>
         <div className={styles.mainSection}>
         <div className={styles.sectionContainer}>
-          <h3 className={styles.titleContainer}>Підписники:</h3>
-          <p className={styles.emailQuantity}>
-            Всього:
-            {" "}
-            <strong>
-              {totalSubscribers}
-            </strong>
-            {" "}
-            підписників.
-          </p>
-
-          <p className={styles.emailQuantity}>
-            За поточний місяць:
-            {" "}
-            <strong>
-              {subscribersThisMonth}
-            </strong>
-            {" "}
-            підписників.
-          </p>
+          <div className={styles.blockShowHide}>
+          <h3 className={styles.titleContainer}>Товари:</h3>
+<button className={styles.buttonShowHide} onClick={() => toggleSectionVisibility("products")}>
+{sectionVisibility.products ? "Приховати" : "Показати"}
+</button>
+          </div>
+          {sectionVisibility.products && (
+          <ul className={styles.showList}>
+            <div className={styles.showRow}>
+            <p>Всього товарів:</p>
+            <strong>{getAllProducts.length}</strong>
+шт.
+            </div>
+            <p><u><strong>з них:</strong></u></p>
+            <div className={styles.showRowSort}>
+            <p>верхній одяг:</p>
+            <strong>{getAllDress.length}</strong>
+шт.
+            </div>
+            <div className={styles.showRowSort}>
+            <p>комплекти форми:</p>
+            <strong>{getAllFormSets.length}</strong>
+шт.
+            </div>
+            <div className={styles.showRowSort}>
+            <p>штани:</p>
+            <strong>{getAllPants.length}</strong>
+шт.
+            </div>
+            <div className={styles.showRowSort}>
+            <p>термобілизна:</p>
+            <strong>{getAllHeatSink.length}</strong>
+шт.
+            </div>
+            <div className={styles.showRowSort}>
+            <p>головних уборів:</p>
+            <strong>{getAllHat.length}</strong>
+шт.
+            </div>
+            <div className={styles.showRowSort}>
+            <p>взуття:</p>
+            <strong>{getAllShoes.length}</strong>
+шт.
+            </div>
+          </ul>
+          )}
         </div>
-
-
-
-        {/* <p className={styles.customerQuantity}>
-            Кількість клієнтів:
-            {" "}
-            {customers.length}
-            {" "}
-            клієнтів
-          </p> */}
-        {/* <ul>
-            {customers.map((customer) => (
-              <li key={customer.id}>{customer.firstName}</li>
-            ))}
-          </ul> */}
         <div className={styles.sectionContainer}>
-          <h3 className={styles.titleContainer}>Донати на які ще не завершився дедлайн</h3>
-          <ul>
+        <div className={styles.blockShowHide}>
+          <h3 className={styles.titleContainer}>Підписники:</h3>
+          <button className={styles.buttonShowHide} onClick={() => toggleSectionVisibility("subscribers")}>
+{sectionVisibility.subscribers ? "Приховати" : "Показати"}
+          </button>
+        </div>
+          {sectionVisibility.subscribers && (
+          <div className={styles.emailQuantity}>
+<p>
+                Всього:
+                {" "}
+                <strong>
+                  {totalSubscribers}
+                </strong>
+                {" "}
+                підписників.
+</p>
+          
+<p>
+                  За поточний місяць:
+                  {" "}
+                  <strong>
+                    {subscribersThisMonth}
+                  </strong>
+                  {" "}
+                  підписників.
+</p>
+          </div>
+          )}
+        </div>
+        
+
+        <div className={styles.sectionContainer}>
+        <div className={styles.blockShowHide}>
+          <h3 className={styles.titleContainer}>Донати, на які ще не завершився дедлайн:</h3>
+          <button className={styles.buttonShowHide} onClick={() => toggleSectionVisibility("activeDonations")}>
+{sectionVisibility.activeDonations ? "Приховати" : "Показати"}
+          </button>
+        </div>
+          {sectionVisibility.activeDonations && (
+          <ul className={styles.showList}>
             {activeDonations.map((donation) => (
               // eslint-disable-next-line no-underscore-dangle
               <li className={styles.list} key={donation._id}>
                 <strong>{donation.name}</strong>
-                <p className={styles.emailQuantity}>
+                <p>
                   Зібрано:
                   {" "}
                   {donation.currentValue}
@@ -143,7 +227,7 @@ function AdminPage() {
                   {" "}
                   {donation.goal}
                 </p>
-                <p className={styles.emailQuantity}>
+                <p>
                   Дедлайн:
                   {" "}
                   {new Date(donation.deadline).toLocaleDateString()}
@@ -151,16 +235,23 @@ function AdminPage() {
               </li>
             ))}
           </ul>
+          )}
         </div>
 
         <div className={styles.sectionContainer}>
-          <h3 className={styles.titleContainer}>Донати на які завершився дедлайн</h3>
-          <ul>
+        <div className={styles.blockShowHide}>
+          <h3 className={styles.titleContainer}>Донати, на які завершився дедлайн:</h3>
+          <button className={styles.buttonShowHide} onClick={() => toggleSectionVisibility("closeDonations")}>
+{sectionVisibility.closeDonations ? "Приховати" : "Показати"}
+          </button>
+        </div>
+          {sectionVisibility.closeDonations && (
+          <ul className={styles.showList}>
             {closeDonations.map((donation) => (
               // eslint-disable-next-line no-underscore-dangle
               <li className={styles.list} key={donation._id}>
                 <strong>{donation.name}</strong>
-                <p className={styles.emailQuantity}>
+                <p>
                   Зібрано:
                   {" "}
                   {donation.currentValue}
@@ -169,7 +260,7 @@ function AdminPage() {
                   {" "}
                   {donation.goal}
                 </p>
-                <p className={styles.emailQuantity}>
+                <p>
                   Дедлайн:
                   {" "}
                   {new Date(donation.deadline).toLocaleDateString()}
@@ -177,16 +268,23 @@ function AdminPage() {
               </li>
             ))}
           </ul>
+          )}
         </div>
 
         <div className={styles.sectionContainer}>
-          <h3 className={styles.titleContainer}>Благодійні лоти, на які перевищено збір</h3>
-          <ul>
+        <div className={styles.blockShowHide}>
+          <h3 className={styles.titleContainer}>Благодійні лоти, на які перевищено збір:</h3>
+          <button className={styles.buttonShowHide} onClick={() => toggleSectionVisibility("exceededDonations")}>
+{sectionVisibility.exceededDonations ? "Приховати" : "Показати"}
+          </button>
+        </div>
+          {sectionVisibility.exceededDonations && (
+          <ul className={styles.showList}>
             {exceededDonations.map((donation) => (
               <li key={donation._id}>
                 <strong>{donation.name}</strong>
-                <p className={styles.emailQuantity}>{donation.category}</p>
-                <p className={styles.emailQuantity}>
+                <p>{donation.category}</p>
+                <p>
                   Зібрано:
                   {" "}
                   {donation.currentValue}
@@ -198,6 +296,7 @@ function AdminPage() {
               </li>
             ))}
           </ul>
+          )}
         </div>
         
         </div>
