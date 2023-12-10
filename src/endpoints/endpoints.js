@@ -6,3 +6,4 @@ export const GET_CUSTOMER = "http://localhost:4000/api/customers/customer";
 export const NEW_CART_URL = "http://localhost:4000/api/cart";
 export const NEW_FAVORITES_URL = "http://localhost:4000/api/wishlist";
 export const MAKE_ORDERS = "http://localhost:4000/api/orders";
+export const GET_BLOG = "http://localhost:4000/api/pages/blog";
