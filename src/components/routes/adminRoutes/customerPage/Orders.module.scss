@@ -14,6 +14,11 @@
   justify-content: space-between;
   width: 200px;
   // margin-top: 50px;
+
+  @include devices(mobile) {
+    justify-content: space-around;
+    width: 100%;
+  }
 }
 
 .button {
@@ -50,9 +55,27 @@
 .orderWrapper {
   width: 100%;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   border: 1px solid variables.$border-color-main;
   padding: 10px;
+
+  @media screen and (min-width: 320px) and (max-width: 600px) {
+    // flex-wrap: wrap;
+    flex-direction: column;
+    row-gap: 20px;
+  }
+}
+
+.orderNoWrapper {
+  width: 300px;
+  display: flex;
+  justify-content: space-around;
+  column-gap: 20px;
+  @media screen and (min-width: 320px) and (max-width: 600px) {
+  }
+  @include devices(mobile) {
+    width: 100%;
+  }
 }
 
 .orderNo,
@@ -68,6 +91,10 @@
   display: flex;
   row-gap: 20px;
 
+  @include devices(mobile) {
+    width: 100%;
+  }
+
   & div {
     width: 100%;
     display: flex;
@@ -80,4 +107,8 @@
 
 .name {
   width: 300px;
+
+  @include devices(mobile) {
+    width: 70%;
+  }
 }

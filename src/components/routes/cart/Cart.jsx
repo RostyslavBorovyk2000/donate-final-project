@@ -403,12 +403,14 @@ function Cart() {
                   <ErrorMessage name="postal" component="p" className={styles.textAttention} />
                 </div>
 
-                <FormButton
-                  type="submit"
-                  disabled={isSubmitting}
-                  text="Придбати"
-                  padding="10px"
-                />
+                <div className={styles.buttonWrapper}>
+                  <FormButton
+                    type="submit"
+                    disabled={isSubmitting}
+                    text="Придбати"
+                    padding="10px"
+                  />
+                </div>
               </Form>
             )}
           </Formik>

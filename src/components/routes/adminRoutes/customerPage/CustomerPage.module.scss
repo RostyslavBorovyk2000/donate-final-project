@@ -50,9 +50,15 @@
 }
 
 .dataWrapper {
+  width: 100%;
   display: flex;
   justify-content: space-between;
   margin-top: 50px;
+
+  @media screen and (min-width: 320px) and (max-width: 720px) {
+    flex-direction: column;
+    row-gap: 20px;
+  }
 }
 
 .customerDataWrapper {
@@ -60,6 +66,13 @@
   // width: 400px;
   padding: 30px;
   background-color: rgba(0, 0, 0, 0.125);
+
+  @media screen and (min-width: 376px) and (max-width: 720px) {
+    width: 350px;
+  }
+  @media screen and (min-width: 320px) and (max-width: 375px) {
+    width: 100%;
+  }
 }
 
 .customerDataWrapper h3 {
@@ -80,6 +93,19 @@
   align-items: center;
   justify-content: space-between;
   width: 35%;
+
+  @include devices(tablet) {
+    width: 45%;
+  }
+  @media screen and (min-width: 376px) and (max-width: 720px) {
+    width: 100%;
+    justify-content: flex-start;
+    column-gap: 20px;
+  }
+  @media screen and (min-width: 320px) and (max-width: 375px) {
+    width: 100%;
+    flex-direction: column;
+  }
 }
 
 .cartDataWrapper {

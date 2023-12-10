@@ -1,6 +1,6 @@
 import CategorysList from "../../categoriesList/CategoriesList";
-import FilteredCardList from "../../cardlists/FilteredCardList";
-// import { MainFilteredCardList } from "../../cardlists/FilteredCardList";
+// import FilteredCardList from "../../cardlists/FilteredCardList";
+import MainFilteredCardList from "../../cardlists/FilteredCardList";
 import MainSlider from "../../slider/MainSlider";
 import DocumentTitle from "../DocumentTitle";
 import pic from "../../../images/bet-on-victory-ban-1.jpeg";
@@ -19,8 +19,8 @@ function MainPage() {
           <p className={styles.cardsSectionText}>Найпопулярніші позиції</p>
         </div>
 
-        <FilteredCardList property="isPopular" value />
-        {/* <MainFilteredCardList property="isPopular" value /> */}
+        {/* <FilteredCardList property="isPopular" value /> */}
+        <MainFilteredCardList property="isPopular" value />
                 
       </section>
       <section className={styles.homeTextSection}>

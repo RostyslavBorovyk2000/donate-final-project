@@ -129,6 +129,8 @@ export function Card({ item }) {
             <h3 className={styles.cardItemHeadline}>{shortName}</h3>
             {currentPrice ? (
               <p className={styles.cardItemPrice}>
+                Ціна:
+                {" "}
                 {currentPrice}
                 {" "}
                 грн
