@@ -8,14 +8,14 @@ export default function SliderPrice({ tempSliderValue, setTempSliderValue, apply
   return (
     <div className={styles.filtrationSliderSection}>
       <div className={styles.filtrationSliderWrapper}>
-        <p className={styles.filtrationSliderText}>Оберіть ціну:</p>
+        <h3 className={styles.filtrationSliderText}>Ціна, грн</h3>
         <Slider
           className={styles.slider}
           thumbClassName={styles.thumb}
           trackClassName={styles.track}
           value={tempSliderValue}
           onChange={(value) => setTempSliderValue(value)}
-          min={0}
+          min={100}
           max={10000}
           pearling
           minDistance={5}

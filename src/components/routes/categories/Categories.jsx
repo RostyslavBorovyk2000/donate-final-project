@@ -8,7 +8,7 @@ export default function Categories() {
     <section className={styles.cardsSectionWrapper}>
       <h1 className={styles.cardsSectionHeadline}>Категорії</h1>
       <p className={styles.cardsSectionText}>Всі донати, відкриті аукціони та військовий одяг</p>
-
+      
       <AllCategoriesCardList />
 
       <div className={styles.pictureWrapper}>

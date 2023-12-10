@@ -5,6 +5,7 @@
   display: flex;
   justify-content: space-between;
   flex-direction: column;
+  margin-bottom: 20px;
 
   @include devices(mobile) {
     flex-direction: column;
@@ -15,6 +16,8 @@
 
 .filtrationSliderWrapper {
   width: 150px;
+  margin-top: 10px;
+
 
   @include devices(mobile) {
     padding-bottom: 20px;
@@ -30,29 +33,43 @@
   }
 }
 
-.filtrationSliderText {
-  text-align: center;
+.values {
+  margin: 5px 0;
 }
+
+.filtrationSliderText {
+  font-size: 20px;
+    line-height: 2;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
 
 .slider {
   width: 100%;
-  height: 25px;
+  height: 15px;
 
   & .thumb {
-    width: 25px;
-    height: 25px;
+    width: 15px;
+    height:15px;
     color: #fff;
     line-height: 25px;
     text-align: center;
     background-color: variables.$bgc-main;
     border-radius: 50%;
+    top: 5px;
     cursor: grab;
+    transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;
+    &:hover {
+      box-shadow: 0 0 0 8px rgba(121, 162, 86, 0.25);
+    }
   }
 
   & .track {
     top: 10px;
     bottom: 10px;
     height: 5px;
-    background: #ccc;
+    background: #e8e5e5;
+    border-radius: 4px;
   }
 }

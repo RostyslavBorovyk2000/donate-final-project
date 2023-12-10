@@ -3,12 +3,11 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import CardList from "./CardList";
-import SliderPrice from "../sliderPrice/SliderPrice";
 import Spinner from "../spinner/Spinner";
 import styles from "./AllCategoriesCardList.module.scss";
 import { getProducts } from "../../api/getProducts";
-import Button from "../button/Button";
-
+import { SortComponent, SortLotsComponent } from "../sortComponent/SortComponent";
+import SliderPrice from "../sliderPrice/SliderPrice";
 
 function getUniqueList(list) {
   return [...new Set(list)];
@@ -16,26 +15,45 @@ function getUniqueList(list) {
 
 export default function CategoriesCardList() {
   const [items, setItems] = useState([]);
-  const [selectedValue, setSelectedValue] = useState("all");
-  const [tempSliderValue, setTempSliderValue] = useState([0, 10000]);
+  const [selectedValue, setSelectedValue] = useState("Одяг");
   const [isLoading, setIsLoading] = useState(false);
   const [selectedSubCategory, setSelectedSubCategory] = useState([]);
   const [selectedBrand, setSelectedBrand] = useState([]);
   const [selectedColor, setSelectedColor] = useState([]);
-  const [selectedStatus, setSelectedStatus] = useState("all");
+  const [sortType, setSortType] = useState("default");
+  const [selectedStatus, setSelectedStatus] = useState("Активний збір");
   const productsList = useSelector((state) => state.products.items);
   const filtersList = useSelector((state) => state.filters.items);
   const navigate = useNavigate();
+  const [tempSliderValue, setTempSliderValue] = useState([100, 10000]);
+  const [prevTempSliderValue, setPrevTempSliderValue] = useState(null);
 
+ 
 
   const applyFilter = () => {
-    fetchProducts();
+    if (
+      prevTempSliderValue
+      && tempSliderValue[0] === prevTempSliderValue[0]
+      && tempSliderValue[1] === prevTempSliderValue[1]
+    ) {
+      return;
+    }
+
+    const filtered = items.filter(
+      (product) => product.currentPrice
+      >= tempSliderValue[0] && product.currentPrice
+      <= tempSliderValue[1],
+    );
+
+    setItems(filtered);
+    setPrevTempSliderValue([...tempSliderValue]);
   };
 
   useEffect(() => {
     fetchProducts();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedValue, selectedSubCategory, selectedBrand,
-    selectedColor, selectedStatus, productsList]);
+    selectedColor, productsList, selectedStatus]);
 
   function fetchProducts() {
     setIsLoading(true);
@@ -58,27 +76,18 @@ export default function CategoriesCardList() {
       params.color = selectedColor;
     }
 
-    if (tempSliderValue) {
-      params.prices = tempSliderValue;
-    }
-    if (selectedValue === "all") {
-      params.category = undefined;
-      params.subcategory = undefined;
-      params.brand = undefined;
-      params.color = undefined;
-      params.prices = undefined;
-    } else if (selectedValue !== "Одяг") {
-      params.category = selectedValue;
-      params.subcategory = null;
-      params.brand = null;
-      params.color = null;
-      params.prices = null;
-    }
-    if (selectedStatus === "Донат") {
+    if (selectedValue === "Донат") {
       params.status = selectedStatus;
     }
- 
-    
+
+    // const priceRange = {
+    //   minPrice: tempSliderValue[0],
+    //   maxPrice: tempSliderValue[1],
+    // };
+  
+    // params.price = priceRange;
+
+
     const queryParams = new URLSearchParams(params).toString();
     navigate(`/categories?${queryParams}`);
 
@@ -95,7 +104,6 @@ export default function CategoriesCardList() {
         setIsLoading(false);
       });
   }
-
   useEffect(() => {
     setItems(productsList);
   }, [productsList]);
@@ -123,28 +131,67 @@ export default function CategoriesCardList() {
 
   const handleStatusChange = (e) => {
     const status = e.target.value;
-    setSelectedStatus(status === selectedStatus ? "all" : status);
+    setSelectedStatus(status === selectedStatus ? "" : status);
   };
+
+
+  const sortProducts = (products, type) => {
+    const locale = "uk";
+
+    switch (type) {
+      case "alphabetAsc":
+        return [...products].sort((a, b) => a.name.localeCompare(b.name, locale));
+      case "alphabetDesc":
+        return [...products].sort((a, b) => b.name.localeCompare(a.name, locale));
+      case "priceAsc":
+        return [...products].sort((a, b) => {
+          const priceA = parseFloat(a.currentPrice);
+          const priceB = parseFloat(b.currentPrice);
+          return isNaN(priceA) || priceA === null ? 1 : isNaN(priceB)
+          || priceB === null ? -1 : priceA - priceB;
+        });
+      case "priceDesc":
+        return [...products].sort((a, b) => {
+          const priceA = parseFloat(a.currentPrice);
+          const priceB = parseFloat(b.currentPrice);
+          return isNaN(priceA) || priceA === null ? -1 : isNaN(priceB)
+          || priceB === null ? 1 : priceB - priceA;
+        });
+      case "newestFirst":
+        return [...products].sort((a, b) => new Date(b.startDate) - new Date(a.startDate));
+      case "endDate":
+        return [...products].sort((a, b) => new Date(a.endDate) - new Date(b.endDate));
+      case "lowestBid":
+        return [...products].sort((a, b) => a.currentValue - b.currentValue);
+      case "highestBid":
+        return [...products].sort((a, b) => b.currentValue - a.currentValue);
+      default:
+        return products;
+    }
+  };
+  
+  
 
   return (
     <div className={styles.filtrationWrapper}>
       <div className={styles.subCategoryOptions}>
-        {getUniqueList(
-          filtersList.filter(({ type }) => type === "category").map(({ name }) => name),
-        ).map((selectCategory) => (
-          <Button
-            type="button"
-            key={selectCategory}
-            onClick={() => handleChange({ target: { value: selectCategory } })}
-          >
-            {selectCategory}
-          </Button>
-        ))}
+        <select className={styles.select} value={selectedValue} onChange={handleChange}>
+          {getUniqueList(
+            filtersList.filter(({ type }) => type === "category").map(({ name }) => name),
+          ).map((selectCategory) => (
+            <option key={selectCategory} value={selectCategory}>
+              {selectCategory}
+            </option>
+          ))}
+        </select>
+
+
         {selectedValue === "Одяг" && (
         <aside className={styles.filtration}>
+          <SortComponent sortType={sortType} setSortType={setSortType} />
           <div className={styles.filtrationSelectWrapper}>
             <div className={styles.categoryOptions} />
-            <h3>Підкатегорія</h3>
+            <h3 className={styles.filtrationOptions}>Підкатегорія</h3>
             {getUniqueList(
               filtersList
                 .filter(({ type }) => type === "subcategory")
@@ -166,7 +213,7 @@ export default function CategoriesCardList() {
               </label>
             ))}
 
-            <h3>Виробник/Бренд</h3>
+            <h3 className={styles.filtrationOptions}>Виробник</h3>
             {getUniqueList(
               filtersList
                 .filter(({ type }) => type === "brand")
@@ -188,7 +235,7 @@ export default function CategoriesCardList() {
               </label>
             ))}
 
-            <h3>Колір</h3>
+            <h3 className={styles.filtrationOptions}>Колір</h3>
             {getUniqueList(
               filtersList
                 .filter(({ type }) => type === "color")
@@ -210,21 +257,17 @@ export default function CategoriesCardList() {
               </label>
             ))}
           </div>
-            
-
           <SliderPrice
             tempSliderValue={tempSliderValue}
             setTempSliderValue={setTempSliderValue}
             applyFilter={applyFilter}
           />
 
-
         </aside>
         )}
         {selectedValue === "Донат" && (
           <div>
             <select name="status" value={selectedStatus} onChange={handleStatusChange}>
-              <option value="all">Усі статуси</option>
               {getUniqueList(
                 filtersList
                   .filter(({ type }) => type === "status")
@@ -233,21 +276,25 @@ export default function CategoriesCardList() {
                 <option key={status} value={status} className={styles.option}>
                   {status}
                 </option>
+              
               ))}
             </select>
             
           </div>
           
         )}
+
+
+        {selectedValue === "Благодійний лот" && (
+        <SortLotsComponent sortType={sortType} setSortType={setSortType} />
+        )}
       </div>
       
+  
+      {isLoading ? <Spinner /> : <CardList items={sortProducts(items, sortType)} />}
 
-      {isLoading ? (
-        <Spinner />
-      ) : (
-        <CardList items={items} />
-      )}
     </div>
 
   );
 }
+

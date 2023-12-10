@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "./ProductView.module.scss";
 
-// ! replace
 function CountdownTimer({ targetDate }) {
   const calculateTimeLeft = () => {
     const difference = +new Date(targetDate) - +new Date();
@@ -18,6 +17,7 @@ function CountdownTimer({ targetDate }) {
 
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
   const [isTimerExpired, setIsTimerExpired] = useState(false);
+  const [status, setStatus] = useState("Активний збір"); // Додано стан для статусу
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -25,6 +25,7 @@ function CountdownTimer({ targetDate }) {
       setTimeLeft(updatedTimeLeft);
       if (updatedTimeLeft === null) {
         setIsTimerExpired(true);
+        setStatus("Завершений збір"); // Встановлення статусу при закінченні таймера
       }
     }, 1000);
 
@@ -34,7 +35,7 @@ function CountdownTimer({ targetDate }) {
   return (
     <div className={isTimerExpired ? styles.timerExpired : null}>
       {isTimerExpired ? (
-        <span className={styles.timerExpiredText}>Збір закрито</span>
+        <span className={styles.timerExpiredText}>{status}</span>
       ) : (
         <div>
           {timeLeft ? (

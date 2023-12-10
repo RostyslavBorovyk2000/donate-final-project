@@ -71,4 +71,5 @@ FilteredCardList.propTypes = {
     PropTypes.arrayOf(PropTypes.string),
     PropTypes.bool,
   ]).isRequired,
+  
 };
