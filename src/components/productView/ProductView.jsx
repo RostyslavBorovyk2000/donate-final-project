@@ -8,6 +8,7 @@ import QuantityCounter from "./CounterQuantity";
 import { setProduct } from "../../redux/actions/productActions";
 import ShoesSelector from "./sizeSelector/ShoesSelector";
 import ClothesSelector from "./sizeSelector/ClothesSelector";
+import OuterwearSelector from "./sizeSelector/OuterwearSelector";
 import ProductViewSlider from "./ProductViewSlider";
 import TabComponent from "./Tabs";
 import { ProgressBar } from "./ProgressBar";
@@ -357,7 +358,7 @@ function ProductView() {
             // ))
             // || null} */}
 
-            {["Взуття", "Комплекти форми", "Одяг верхній"].includes(
+            {["Одяг"].includes(
               product.category,
             ) && (
               <>
@@ -368,9 +369,9 @@ function ProductView() {
               </>
             )}
 
-            {(product.category === "Взуття" && <ShoesSelector />)
-              || ((product.category === "Комплекти форми"
-                || product.category === "Одяг верхній") && <ClothesSelector />)
+            {(product.subcategory === "Взуття" && <ShoesSelector />)
+              || ((product.subcategory === "Комплекти форми"
+                || product.subcategory === "Одяг верхній" || product.subcategory === "Термобілизна") && <ClothesSelector />) || (product.subcategory === "Кепки" && <OuterwearSelector type="cap" />) || (product.subcategory === "Шапки" && <OuterwearSelector type="hat" />)
               || null}
 
             {(product.category === "Взуття" && (
