@@ -340,22 +340,22 @@ function ProductView() {
               </div>
             ) : null}
 
-            {(product.category === "Взуття" && (
+            {(product.category === "Одяг" && (
               <p className={styles.productPrice}>
                 {product.currentPrice}
                 {" "}
                 грн.
               </p>
-            ))
-              || ((product.category === "Комплекти форми"
-                || product.category === "Одяг верхній") && (
-                <p className={styles.productPrice}>
-                  {product.currentPrice}
-                  {" "}
-                  грн.
-                </p>
-              ))
-              || null}
+            ))}
+            {/* // || ((product.category ==="Комплекти форми"
+            //   || product.category === "Одяг верхній") && (
+            //   <p className={styles.productPrice}>
+            //     {product.currentPrice}
+            //     {" "}
+            //     грн.
+            //   </p>
+            // ))
+            // || null} */}
 
             {["Взуття", "Комплекти форми", "Одяг верхній"].includes(
               product.category,

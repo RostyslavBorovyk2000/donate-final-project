@@ -77,7 +77,6 @@ export default function MainFilteredCardList({ property, value }) {
         // const response = await axios.get(GET_PRODUCTS_URL);
         const response = await axios.get("http://localhost:4000/api/products/filter?isPopular=true&perPage=12");
         // const response = await axios.get("http://localhost:4000/api/products/filter?color=Камуфляж");
-        console.log(response);
         const products = response.data;
   
         if (!Array.isArray(products.products)) {
