@@ -223,14 +223,20 @@ function AdminPage() {
                   {" "}
                   {donation.currentValue}
                   {" "}
+грн
+{" "}
                   з
                   {" "}
                   {donation.goal}
+                  {" "}
+грн
                 </p>
                 <p>
                   Дедлайн:
                   {" "}
                   {new Date(donation.deadline).toLocaleDateString()}
+                  {" "}
+                  року
                 </p>
               </li>
             ))}
