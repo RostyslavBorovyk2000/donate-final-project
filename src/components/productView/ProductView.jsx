@@ -56,6 +56,9 @@ function ProductView() {
   const dispatch = useDispatch();
   const product = useSelector((state) => state.product.product);
   const params = useParams();
+  const isItemInCart = useSelector((state) => state.cart.items.some(
+    (cartItem) => cartItem.itemNo === params.itemNo,
+  ));
   const isItemInFavorites = useSelector((state) => state.favorites.items.some(
     (favItem) => favItem.itemNo === params.itemNo,
   ));
@@ -66,9 +69,9 @@ function ProductView() {
   const [newCurrentBid, setNewCurrentBid] = useState("");
   const [errorInput, setErrorInput] = useState("");
   const [quantity, setQuantity] = useState(1);
-  const [isInCart, setIsInCart] = useState(false);
+  // const [isInCart, setIsInCart] = useState(false);
   const [isButtonClicked, setButtonClicked] = useState(false);
-  const isUserLoggedIn = localStorage.getItem("userLogin") || null;
+  const isUserLoggedIn = localStorage.getItem("userLogin");
   const [showLoginModalBid, setShowLoginModalBid] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const timerRef = useRef();
@@ -189,54 +192,65 @@ function ProductView() {
     }
   };
 
-  // function sendCartToEmptyServer() {
-  //   const token = localStorage.getItem("token");
-  //   store.dispatch(setAuthToken(token));
-  
-  //   const newCart = {
-  //     products: selectCartForApi(state),
-  //   };
-  
-  //   axios
-  //     .post(NEW_CART_URL, newCart)
-  //     .then(null)
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // }
-
-  // !
-  const handleAddFavorites = () => {
-    let countProducts = JSON.parse(localStorage.getItem("CountFavoritesProducts")) || 0;
-
-    if (!isItemInFavorites) {
-      const currentProducts = JSON.parse(localStorage.getItem("Favorites")) || [];
-      currentProducts.push(product);
-      countProducts += 1;
-      localStorage.setItem("Favorites", JSON.stringify(currentProducts));
-      localStorage.setItem(
-        "CountFavoritesProducts",
-        JSON.stringify(countProducts),
-      );
-
-      console.log(product);
-
-      dispatch(addFavorites(product));
-      dispatch(counterIncrement());
+  async function addFavoritesToServer() {
+    try {
+      axios
+        // eslint-disable-next-line no-underscore-dangle
+        .put(`http://localhost:4000/api/wishlist/${product._id}`)
+        .catch((err) => {
+          console.log(err);
+        });
+    } catch (error) {
+      console.error("Помилка при виході:", error);
     }
-    setButtonClicked(true);
+  }
+
+  const handleAddFavorites = () => {
+    if (isUserLoggedIn) {
+      if (!isItemInFavorites) {
+        addFavoritesToServer();
+        dispatch(addFavorites(product));
+        dispatch(counterIncrement());
+        setButtonClicked(true);
+      }
+    } else if (!isUserLoggedIn) {
+      // !
+      // do nothing
+    }
   };
 
-  const handleAddToCart = () => {
-    const productWithQuantity = {
-      ...product,
-      quantity,
-    };
+  async function addCartToServer() {
+    try {
+      axios
+        // eslint-disable-next-line no-underscore-dangle
+        .put(`http://localhost:4000/api/cart/${product._id}`)
+        .catch((err) => {
+          console.log(err);
+        });
+    } catch (error) {
+      console.error("Помилка при виході:", error);
+    }
+  }
 
-    dispatch(addToCart(productWithQuantity));
-    setQuantity(1);
+  const handleAddToCart = async () => {
+    if (isUserLoggedIn) {
+      if (!isItemInCart) {
+        addCartToServer();
+        dispatch(addToCart(product));
+        dispatch(counterIncrement());
+      }
+    } else if (!isUserLoggedIn) {
+      const currentProducts = JSON.parse(localStorage.getItem("Cart")) || [];
+      // eslint-disable-next-line max-len, no-underscore-dangle
+      const isItemInLSCart = currentProducts && currentProducts.some((cartItem) => cartItem.product === product._id);
+      if (!isItemInLSCart && !isItemInCart) {
+        currentProducts.push(product);
+        localStorage.setItem("Cart", JSON.stringify(currentProducts));
 
-    setIsInCart(true);
+        dispatch(addToCart(product));
+        dispatch(counterIncrement());
+      }
+    }
   };
 
   return (
@@ -348,16 +362,6 @@ function ProductView() {
                 грн.
               </p>
             ))}
-            {/* // || ((product.category ==="Комплекти форми"
-            //   || product.category === "Одяг верхній") && (
-            //   <p className={styles.productPrice}>
-            //     {product.currentPrice}
-            //     {" "}
-            //     грн.
-            //   </p>
-            // ))
-            // || null} */}
-
             {["Одяг"].includes(
               product.category,
             ) && (
@@ -374,45 +378,24 @@ function ProductView() {
                 || product.subcategory === "Одяг верхній" || product.subcategory === "Термобілизна") && <ClothesSelector />) || (product.subcategory === "Кепки" && <OuterwearSelector type="cap" />) || (product.subcategory === "Шапки" && <OuterwearSelector type="hat" />)
               || null}
 
-            {(product.category === "Взуття" && (
+            {(product.category === "Одяг" && (
               <QuantityCounter quantity={quantity} setQuantity={setQuantity} />
-            ))
-              || ((product.category === "Комплекти форми"
-                || product.category === "Одяг верхній") && (
-                <QuantityCounter
-                  quantity={quantity}
-                  setQuantity={setQuantity}
-                />
-              ))
-              || null}
+            )) || null}
 
-            {["Взуття", "Комплекти форми", "Одяг верхній"].includes(
+            {["Одяг"].includes(
               product.category,
             ) && (
               <div className={styles.buyButtons}>
-                {/* // <button */}
-                {/* //   className={styles.buyNowBtn}
-              //   onClick={() => { dispatch(openModal()); }}
-              // >
-              //   Миттєва купівля
-              // </button> */}
-                {/* // <Button */}
-                {/* //    text="Додати в кошик"
-              // {/*    color="rgba(70, 163, 88, 1)" */}
-                {/* //    toPage="/" */}
-                {/* // /> */}
-                {/* // <button className={styles.addToCartBtn}>Додати в кошик</button> */}
-                {/* // <button className={styles.addToFavorite}> */}
-                {/* //   <img src={heart} alt="add to favorite" /> */}
                 <Button
                   className={styles.addToCartBtn}
                   onClick={handleAddToCart}
                 >
-                  {isInCart ? "В Кошику" : "Купити"}
+                  {isItemInCart ? "В Кошику" : "Купити"}
                 </Button>
                 <button
-                  className={styles.addToFavorite}
-                  onClick={handleAddFavorites}
+                  className={!showLoginModal ? styles.addToFavorite : styles.hidden}
+                  // className={styles.addToFavorite}
+                  onClick={isUserLoggedIn ? handleAddFavorites : promptLogin}
                 >
                   {isButtonClicked ? (
                     <img src={heartFilled} alt="heartIcon" />
@@ -420,10 +403,11 @@ function ProductView() {
                     <img src={heart} alt="heartIcon" />
                   )}
                 </button>
+                { showLoginModal && <LoginModal onClose={() => setShowLoginModal(false)} /> }
               </div>
             )}
 
-            {["Взуття", "Комплекти форми", "Одяг верхній"].includes(
+            {["Одяг"].includes(
               product.category,
             ) && (
               <>
@@ -436,6 +420,12 @@ function ProductView() {
                   <span>Категорії: </span>
                   {product.category}
                 </p>
+                {product.material ? (
+                  <p className={styles.categories}>
+                    <span>Матеріал: </span>
+                    {product.material}
+                  </p>
+                ) : null }
                 <p className={styles.productColors}>
                   <span>Колір: </span>
                   {product.color}
@@ -476,10 +466,6 @@ function ProductView() {
                   {!showLoginModalBid && !showLoginModal
                     ? <Button text="Підняти ставку" onClick={isUserLoggedIn ? () => handleBidClick(product.name) : promptLogin} />
                     : <Button className={styles.hidden} />}
-                  {/* {!showLoginModal
-                    ? <Button text="Підняти ставку" onClick={() => handleBidClick(product.name)} />
-                  : <Button text="Підняти ставку" onClick={() => handleBidClick(product.name)}
-                  className={styles.hidden} />} */}
                   <ShareProducts />
                 </div>
               </>
@@ -494,17 +480,13 @@ function ProductView() {
           </div>
         </div>
 
-        {["Взуття", "Комплекти форми", "Одяг верхній"].includes(
+        {["Одяг"].includes(
           product.category,
         ) && (
           <div className={styles.descriptionContainer}>
             <TabComponent productDescription={product.description} />
           </div>
         )}
-
-        {/* {isModalOpen && (
-          <Modal tittle="Ми раді повідомити, що ви успішно купили товар" />
-        )} */}
       </div>
     </section>
   );
