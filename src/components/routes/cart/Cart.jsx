@@ -122,6 +122,7 @@ function Cart() {
               // eslint-disable-next-line no-underscore-dangle
               _id: item._id,
               quantity: item.quantity,
+              size: item.selectedSize,
               currentPrice: item.currentPrice,
             },
             cartQuantity: item.cartQuantity,

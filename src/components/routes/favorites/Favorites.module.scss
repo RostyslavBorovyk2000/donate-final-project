@@ -18,16 +18,20 @@
     padding-bottom: 20px;
 
     @include devices(mobile) {
-        row-gap: 50px;
+        // row-gap: 50px;
         padding-bottom: 70px;
     }
 }
 
 .cardsListDonatWrapper {
-    width: 600px;
+    width: 100%;
+    flex-direction: row;
+    column-gap: 30px;
+    // justify-content: flex-start;
 
     @include devices(mobile) {
         width: 100%;
+        justify-content: center;
     }
 }
 
@@ -35,22 +39,42 @@
     display: none;
 }
 
+.cardsListDonatWrapper .nameContainer {
+    @include devices(mobile) {
+       max-width: 160px;
+    }
+}
+
+.cardsListDonatWrapper .cardItemImage {
+    width: 100px;
+}
+
 .cardsListDonatWrapper .cardItemWrapper {
-    width: 100%;
+    width: fit-content;
+
+    @include devices(laptop) {
+        flex-wrap: nowrap;
+        width: 370px;
+    }
 }
 
 .cardsListDonatWrapper .productInfo {
-    width: 400px;
+    width: 100%;
 
     @include devices(tablet) {
         width: 400px;
     }
     @include devices(mobile) {
-        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        // width: 100%;
     }
 }
 
 .cardsListDonatWrapper .buttonsWrapper {
+    justify-content: center;
+    width: 65px;
+
     @include devices(tablet) {
         justify-content: center;
     }
@@ -94,7 +118,8 @@
 .cardItemImageWrapper {
     border: 5px solid variables.$bgc-second;
     border-radius: 25px;
-    
+    display: flex;
+    align-items: center;
 }
 .productInfo{
     width: 40%;
