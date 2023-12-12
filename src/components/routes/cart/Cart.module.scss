@@ -40,13 +40,24 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap;
+    // flex-wrap: wrap;
     border-radius: 25px;
     margin-top: 11px;
     border: 1px solid rgba(114, 114, 114, 1);
 
+    @media screen and (min-width: 1001px) {
+        padding: 10px 0px 10px 20px;
+        // flex-wrap: wrap;
+    }
+
+    @media screen and (min-width: 768px) and (max-width: 1000px) {
+        padding: 20px 20px 20px;
+        flex-wrap: wrap;
+    }
+
     @include devices(mobile) {
-        padding: 10px;
+        flex-wrap: wrap;
+        padding: 30px 10px 10px 10px;
     }
 }
 
@@ -57,15 +68,33 @@
     
 }
 .productInfo{
-    width: 40%;
+    // width: 40%;
     display: flex;
     justify-content: flex-start;
     align-items: center;
+
+    @media screen and (min-width: 1001px) {
+        width: 70%;
+    }
 
     @include devices(mobile) {
         width: inherit;
     }
 }
+
+.productInfoTablet {
+    @media screen and (min-width: 1001px) {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+    }
+    @media screen and (min-width: 426px) and (max-width: 1000px) {
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
+    }
+}
+
 .cardItemImage {
     width: 150px;
     // height: 70px;
@@ -93,36 +122,69 @@
     background-color: variables.$bgc-attention;
 }
 
-.quantityCounterWrapper{
-    order: 1;
-    width: 150px;
-}
+// .quantityCounterWrapper{
+//     order: 1;
+//     width: 150px;
+// }
 
 .quantityButtonWrapper {
     order: 2;
 
-    @include devices(mobile) {
-        margin-left: 50px;
-    }
+    // @include devices(mobile) {
+    //     margin-left: 50px;
+    // }
 }
 
 .buttonsWrapper {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    width: 30%;
+    width: 45%;
+
+    @media screen and (min-width: 768px) {
+        width: 100%;
+        // min-height: 170px;
+    }
+
+    @media screen and (min-width: 426px) and (max-width: 767px) {
+        width: 100%;
+        min-height: 170px;
+    }
 
     @include devices(mobile) {
+        min-height: 170px;
         width: 100%;
-        justify-content: center;
+        flex-direction: column;
+        align-items: center;
     }
 }
+
+// .buttons1 {
+//     @include devices(mobile) {
+//         width: 100%;
+//         display: flex;
+//         justify-content: space-between;
+//     }
+// }
+
+// .buttons2 {
+//     @include devices(mobile) {
+//         width: 70%;
+//         display: flex;
+//         justify-content: space-between;
+//     }
+// }
 
 .cardItemPriceWrapper {
     @media screen and (min-width: 320px) and (max-width: 480px) {
         width: 100%;
-        padding: 0px 0px 25px;
+        padding: 25px 0px 25px;
         font-size: 18px;
+    }
+
+    @media screen and (min-width: 481px) {
+        display: flex;
+        align-items: center;
     }
 }
 

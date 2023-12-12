@@ -10,6 +10,7 @@ export const RESET_FAVORITES = "RESET_FAVORITES";
 export const UPDATE_CART_PRODUCT = "UPDATE_CART_PRODUCT";
 export const UPDATE_FAVORITES_PRODUCT = "UPDATE_FAVORITES_PRODUCT";
 export const UPDATE_CART_PRODUCT_QUANTITY = "UPDATE_CART_PRODUCT_QUANTITY";
+export const UPDATE_CART_ITEM_SIZE = "UPDATE_CART_ITEM_SIZE";
 
 
 export const initializeCart = (products) => ({
@@ -56,4 +57,8 @@ export const updateFavorites = (product) => ({
 export const updateCartProductQuantity = (productId, newQuantity) => ({
   type: UPDATE_CART_PRODUCT_QUANTITY,
   payload: { productId, newQuantity },
+});
+export const updateCartItemSize = (productId, newSize) => ({
+  type: UPDATE_CART_ITEM_SIZE,
+  payload: { productId, newSize },
 });

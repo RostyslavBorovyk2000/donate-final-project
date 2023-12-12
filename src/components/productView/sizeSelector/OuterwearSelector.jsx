@@ -1,12 +1,13 @@
 import React from "react";
 import styles from "../ProductView.module.scss";
 
-function OuterwearSelector({ type }) {
+function OuterwearSelector({ type, updateCartItemSize, id }) {
   const clothingSizes = ["54", "55", "56", "57", "58", "59", "60", "61", "62"];
 
   const handleSizeChange = (event) => {
     // eslint-disable-next-line no-unused-vars
     const selectedSize = event.target.value;
+    updateCartItemSize(id, selectedSize);
   };
 
   return (

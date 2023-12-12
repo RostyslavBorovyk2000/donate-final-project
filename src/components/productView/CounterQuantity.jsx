@@ -81,25 +81,28 @@ import styles from "./ProductView.module.scss";
 
 function QuantityCounter({ quantity, handleChangeQuantity }) {
   const handleIncrease = () => {
-    handleChangeQuantity(1); // Збільшуємо кількість на 1
+    handleChangeQuantity(1);
   };
 
   const handleDecrease = () => {
     if (quantity > 1) {
-      handleChangeQuantity(-1); // Зменшуємо кількість на 1, але не менше 1
+      handleChangeQuantity(-1);
     }
   };
 
   return (
     <div className={styles.quantityCounter}>
-      <button className={styles.decrease} onClick={handleDecrease} type="button">-</button>
-      <input
-        type="text"
-        value={quantity}
-        readOnly // Забороняємо редагування input зовнішньо
-        className={styles.quantity}
-      />
-      <button className={styles.increase} onClick={handleIncrease} type="button">+</button>
+      <p>Кількість:</p>
+      <div>
+        <button className={styles.decrease} onClick={handleDecrease} type="button">-</button>
+        <input
+          type="text"
+          value={quantity}
+          readOnly // Забороняємо редагування input зовнішньо
+          className={styles.quantity}
+        />
+        <button className={styles.increase} onClick={handleIncrease} type="button">+</button>
+      </div>
     </div>
   );
 }

@@ -7,7 +7,7 @@ export const syncStorageMiddleware = (storeAPI) => (next) => async (action) => {
 
   const isUserLoggedIn = localStorage.getItem("userLogin");
 
-  if (isUserLoggedIn && ["ADD_TO_CART", "REMOVE_FROM_CART", "ADD_FAVORITES", "REMOVE_FROM_FAVORITES", "UPDATE_CART_PRODUCT_QUANTITY"].includes(action.type)) {
+  if (isUserLoggedIn && ["ADD_TO_CART", "REMOVE_FROM_CART", "ADD_FAVORITES", "REMOVE_FROM_FAVORITES", "UPDATE_CART_PRODUCT_QUANTITY", "UPDATE_CART_ITEM_SIZE"].includes(action.type)) {
     const token = localStorage.getItem("token");
     if (token) {
       setAuthToken(token);
@@ -28,6 +28,7 @@ export const syncStorageMiddleware = (storeAPI) => (next) => async (action) => {
             // eslint-disable-next-line no-underscore-dangle
             product: item._id,
             cartQuantity: item.cartQuantity,
+            selectedSize: item.selectedSize,
           })),
         };
         await axios.put(NEW_CART_URL, updatedCartData);

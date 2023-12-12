@@ -8,6 +8,7 @@ import {
   RESET_CART,
   RESET_FAVORITES,
   UPDATE_CART_PRODUCT_QUANTITY,
+  UPDATE_CART_ITEM_SIZE,
 } from "../actions/cartActions";
 
 
@@ -73,6 +74,21 @@ export const cartReducer = (state = initialState.cart, action) => {
             return {
               ...item,
               cartQuantity: action.payload.newQuantity,
+            };
+          }
+          return item;
+        }),
+      };
+    
+    case UPDATE_CART_ITEM_SIZE:
+      return {
+        ...state,
+        items: state.items.map((item) => {
+          // eslint-disable-next-line no-underscore-dangle
+          if (item._id === action.payload.productId) {
+            return {
+              ...item,
+              selectedSize: action.payload.newSize,
             };
           }
           return item;

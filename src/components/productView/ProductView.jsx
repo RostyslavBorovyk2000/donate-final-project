@@ -4,11 +4,11 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { Cloudinary } from "@cloudinary/url-gen";
-import QuantityCounter from "./CounterQuantity";
+// import QuantityCounter from "./CounterQuantity";
 import { setProduct } from "../../redux/actions/productActions";
-import ShoesSelector from "./sizeSelector/ShoesSelector";
-import ClothesSelector from "./sizeSelector/ClothesSelector";
-import OuterwearSelector from "./sizeSelector/OuterwearSelector";
+// import ShoesSelector from "./sizeSelector/ShoesSelector";
+// import ClothesSelector from "./sizeSelector/ClothesSelector";
+// import OuterwearSelector from "./sizeSelector/OuterwearSelector";
 import ProductViewSlider from "./ProductViewSlider";
 import TabComponent from "./Tabs";
 import { ProgressBar } from "./ProgressBar";
@@ -68,7 +68,7 @@ function ProductView() {
   // console.log(currentBid);
   const [newCurrentBid, setNewCurrentBid] = useState("");
   const [errorInput, setErrorInput] = useState("");
-  const [quantity, setQuantity] = useState(1);
+  // const [quantity, setQuantity] = useState(1);
   // const [isInCart, setIsInCart] = useState(false);
   const [isButtonClicked, setButtonClicked] = useState(false);
   const isUserLoggedIn = localStorage.getItem("userLogin");
@@ -253,6 +253,24 @@ function ProductView() {
     }
   };
 
+  // const handleChangeQuantity = (change) => {
+  //   const newQuantity = product.cartQuantity + change;
+  //   if (newQuantity >= 1) {
+  //     const currentProducts = JSON.parse(localStorage.getItem("Cart")) || [];
+  //     const updatedProducts = currentProducts.map((p) => {
+  //       // eslint-disable-next-line no-underscore-dangle
+  //       if (p._id === product._id) {
+  //         return { ...p, cartQuantity: newQuantity };
+  //       }
+  //       return p;
+  //     });
+  //     localStorage.setItem("Cart", JSON.stringify(updatedProducts));
+      
+  //     // eslint-disable-next-line no-underscore-dangle
+  //     dispatch(updateCartProductQuantity(product._id, newQuantity));
+  //   }
+  // };
+
   return (
     <section style={{ padding: "50px 15px 100px" }}>
       <DocumentTitle title={`${product.shortName} | Донат Перемоги`} />
@@ -373,14 +391,20 @@ function ProductView() {
               </>
             )}
 
-            {(product.subcategory === "Взуття" && <ShoesSelector />)
+            {/* {(product.subcategory === "Взуття" && <ShoesSelector />)
               || ((product.subcategory === "Комплекти форми"
-                || product.subcategory === "Одяг верхній" || product.subcategory === "Термобілизна") && <ClothesSelector />) || (product.subcategory === "Кепки" && <OuterwearSelector type="cap" />) || (product.subcategory === "Шапки" && <OuterwearSelector type="hat" />)
+                || product.subcategory === "Одяг верхній"
+                || product.subcategory === "Термобілизна") && <ClothesSelector />)
+                || (product.subcategory === "Кепки" && <OuterwearSelector type="cap" />)
+                || (product.subcategory === "Шапки" && <OuterwearSelector type="hat" />)
               || null}
 
             {(product.category === "Одяг" && (
-              <QuantityCounter quantity={quantity} setQuantity={setQuantity} />
-            )) || null}
+            <QuantityCounter
+              quantity={product.cartQuantity}
+              handleChangeQuantity={handleChangeQuantity}
+            />
+            )) || null} */}
 
             {["Одяг"].includes(
               product.category,
