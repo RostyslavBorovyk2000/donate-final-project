@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import FilteredCardList from "../../cardlists/FilteredCardList";
 import { SortComponent } from "../../sortComponent/SortComponent";
 import SliderPrice from "../../sliderPrice/SliderPrice";
+import Pagination from "../../pagination/Pagination";
 import styles from "./Categories.module.scss";
 
 
@@ -20,12 +21,26 @@ export default function Clothing() {
   const [selectedColor, setSelectedColor] = useState("");
   const [sortType, setSortType] = useState("default");
 
+  //   const [coods, setCoods] = useState([]);
+
+  // useEffect(() => {
+  //     const getGoods = async () => {
+  //         try {
+  //             const res = await axios.get("http://localhost:4000/api/products");
+  //             const filteredCoods = res.data.filter(item => item.category === "Одяг");
+  //             setCoods(filteredCoods);
+  //         } catch (error) {
+  //             console.error("Error fetching data:", error);
+  //         }
+  //     };
+
+  //     getGoods();
+  // }, []);
 
 
   const applyFilter = () => {
     setSliderValue(tempSliderValue);
   };
-
 
   const handleSubCategoryChange = (e) => {
     const subCategory = e.target.value;
@@ -44,7 +59,6 @@ export default function Clothing() {
     setSelectedColor((prevSelectedColor) => (prevSelectedColor === color ? "" : color));
   };
 
-  
   return (
     <section className={styles.cardsSectionWrapper}>
       <h1 className={styles.cardsSectionHeadline}>Військовий одяг</h1>
@@ -121,6 +135,8 @@ export default function Clothing() {
         <SortComponent sortType={sortType} setSortType={setSortType} />
         <FilteredCardList property="category" value={["Одяг"]} priceRange={sliderValue} subcategory={selectedSubCategory} brand={selectedBrand} color={selectedColor} sortType={sortType} />
       </div>
+      <FilteredCardList property="category" value={["Взуття", "Комплекти форми", "Одяг верхній"]} priceRange={sliderValue} />
+      <Pagination query="Одяг" />
     </section>
   );
 }
