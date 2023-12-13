@@ -22,7 +22,7 @@ const registrationUser = (
     isAdmin,
     telephone,
     birthdate,
-    favorites: { items: [] },
+    // favorites: { items: [] },
   };
 
   return axios

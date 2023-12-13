@@ -13,6 +13,7 @@
     justify-content: space-between;
     width: 100%;
     padding: 40px 15px 17px;
+    position: relative;
 
     @include devices(mobile) {
         display: flex;
@@ -23,16 +24,17 @@
 }
 
 .inputMobileHeader {
-    width: 60%; 
+    width: 80%;
     padding: 10px 10px;
     background-color: variables.$bgc-second;
-    border: none;
+    // border: none;
     border-radius: 10px;
+    border: 1px solid variables.$border-color-main;
 
-    &:focus {
-        border: 1px solid variables.$border-color-main;
-        outline: none;
-    }
+    // &:focus {
+    //     border: 1px solid variables.$border-color-main;
+    //     outline: none;
+    // }
 }
 
 .buttonMobileHeader {
@@ -60,6 +62,7 @@
     @media screen and (max-width: 767px) {
         display: none;
     }
+
     @include devices(tablet) {
         justify-content: space-between;
         // padding: 20px;
@@ -102,6 +105,7 @@
         // width: 80%;
         font-size: 16px;
     }
+
     @media only screen and (min-width: 800px) {
         display: flex;
         font-size: 16px;
@@ -129,15 +133,15 @@
 
     &.navItemLaptop {
         display: none;
-    
+
         @media only screen and (min-width: 1024px) {
             display: flex;
         }
     }
-    
+
     &.navItemTablet {
         display: flex;
-    
+
         @media only screen and (min-width: 1024px) {
             display: none;
         }
@@ -168,7 +172,7 @@
 }
 
 .dropdownContent a {
-    padding: 10px 0 5px;
+    padding: 10px 0px 5px;
 
     &:hover {
         padding-bottom: 4px;
@@ -184,8 +188,9 @@
 
 .navRightSideMenu {
     display: flex;
-    justify-content: center;
+    // gap: 20px;
     align-items: center;
+    justify-content: center;
 
     @include devices(mobile) {
         flex-direction: column;
@@ -208,6 +213,9 @@
 
 
 .searching {
+    // !
+    // position: relative;
+    // !
     display: flex;
     gap: 10px;
     width: 100%;
@@ -220,6 +228,9 @@
 }
 
 .inputWrapper {
+    // !
+    position: relative;
+    // !
     width: 100%;
     display: flex;
     justify-content: center;
@@ -234,7 +245,6 @@
 }
 
 input:focus {
-
     border: 1px solid #7c8d66;
     outline: none;
 }
@@ -295,10 +305,16 @@ input:focus {
     border-radius: 6px;
     cursor: pointer;
 }
-.wrapperMenu{
-    display: flex;
-    align-items: center;
+
+.wrapperMenu {
+    display: none;
+
+    @include devices(mobile) {
+        display: flex;
+        align-items: center;
+    }
 }
+
 .toggleButton {
     background: none;
     border: none;
@@ -308,7 +324,7 @@ input:focus {
     justify-content: space-around;
     width: 45px;
     height: 45px;
-  
+
     .bar {
         background-color: #333;
         height: 3px;
@@ -320,17 +336,19 @@ input:focus {
         transition: 0.3s ease;
         border-radius: 5px;
     }
-  
+
     &.cross {
         .bar:nth-child(1) {
             // transform: rotate(45deg) translate(2px, 2px);
-        transform: translate(0px, 15px) rotate(-45deg);
+            transform: translate(0px, 15px) rotate(-45deg);
         }
+
         .bar:nth-child(2) {
             transform: translate(1px, 3px) rotate(45deg);
         }
+
         .bar:nth-child(3) {
-        opacity: 0;
+            opacity: 0;
         }
     }
 }
@@ -350,8 +368,8 @@ input:focus {
     overflow-x: hidden;
     transition: 0.5s;
     background-color: #fff;
-  }
-  
+}
+
 .menuListWrapper.open {
     width: 100%;
 }
@@ -372,11 +390,17 @@ input:focus {
     display: block;
     transition: 0.3s ease;
 }
+
 .menuItem:hover {
     background-color: #f2f2f2;
 }
 
-.iconsWrapper {
+// .wrapperMenu:hover .menuList {
+//     display: block;
+// }
+
+.iconsWrapper,
+.iconsWrapperLogOut {
     width: 120px;
     position: fixed;
     top: 300px;
@@ -386,6 +410,9 @@ input:focus {
     justify-content: space-between;
 }
 
+.iconsWrapperLogOut {
+    left: 48%;
+}
 
 .buttonWrapper {
     display: flex;
@@ -396,4 +423,104 @@ input:focus {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.searchResults {
+    position: absolute;
+    width: calc(80% + 20px);
+    top: 105%;
+    left: 9%;
+    border-radius: 15px;
+    background: #eee;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1;
+
+    @media only screen and (min-width: 320px) {
+        width: 90%;
+        top: 82%;
+        left: 6%;
+    }
+    @media only screen and (min-width: 425px) {
+        width: 80%;
+        top: 82%;
+        left: 16%;
+    }
+    @media only screen and (min-width: 450px) {
+        width: 80%;
+        top: 82%;
+        left: 17%;
+    }
+        @media only screen and (min-width: 600px) {
+        width: 79%;
+        top: 82%;
+        left: 18%;
+    }
+    @media only screen and (min-width: 700px) {
+        width: 80%;
+        top: 82%;
+        left: 18%;
+    }
+    @include devices(tablet) {
+        width: calc(80% + 18px);
+        top: 105%;
+        left: 8%;
+    }
+    @media only screen and (min-width: 900px) {
+        left: 9%;
+    }
+    @media only screen and (min-width: 1024px) {
+        width: 82%;
+        left: 9%;
+        top: 105%;
+    }
+}
+
+.searchResultItem {
+    padding: 10px 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #ddd;
+    font-family: "CeraProRegular", serif;
+}
+
+.searchResultItem li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.categoryName {
+    font-size: 15px;
+    font-weight: 700;
+    color: #5b7742;
+    padding: 10px;
+    margin-left: 10px;
+    text-transform: uppercase;
+}
+
+@media screen and (min-width: 768px) {
+
+    .searchResultItem {
+        padding: 12px 15px;
+        cursor: pointer;
+        border-bottom: 1px solid #ddd;
+        font-family: "CeraProRegular", serif;
+    }
+
+    .searchResultItem li {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .categoryName {
+        font-size: 18px;
+        /* Increase font size */
+        font-weight: 700;
+        color: #5b7742;
+        padding: 12px;
+        margin-left: 15px;
+        text-transform: uppercase;
+    }
 }

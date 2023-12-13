@@ -1,21 +1,21 @@
 import axios from "axios";
 import store from "../redux/store";
 import { setAuthToken } from "../redux/actions/authActions";
-import { NEW_CART_URL } from "../endpoints/endpoints";
+import { NEW_FAVORITES_URL } from "../endpoints/endpoints";
 
-export default function updateCart(cartItemsFromLocalStorage) {
-  const token = localStorage.getItem("token");
+
+export default function updateFavorites(favoritesItemsFromLocalStorage) {
+  const { token } = store.getState().auth;
   store.dispatch(setAuthToken(token));
   
-  const updatedCart = {
-    products: cartItemsFromLocalStorage.map((item) => ({
+  const updatedFavorites = {
+    products: favoritesItemsFromLocalStorage.map((item) => ({
       // eslint-disable-next-line no-underscore-dangle
       product: item._id,
-      cartQuantity: item.cartQuantity,
     })),
   };
 
-  axios.put(NEW_CART_URL, updatedCart);
+  axios.put(NEW_FAVORITES_URL, updatedFavorites);
   // ! below !
   // })
   //   .catch((error) => {
@@ -25,7 +25,7 @@ export default function updateCart(cartItemsFromLocalStorage) {
   //   });
 }
 
-export function deleteCart() {
+export function deleteWishlist() {
   const { token } = store.getState().auth;
   store.dispatch(setAuthToken(token));
   
@@ -33,7 +33,7 @@ export function deleteCart() {
   //   products: [],
   // };
 
-  axios.delete(NEW_CART_URL);
+  axios.delete(NEW_FAVORITES_URL);
   // ! below !
   // })
   //   .catch((error) => {
