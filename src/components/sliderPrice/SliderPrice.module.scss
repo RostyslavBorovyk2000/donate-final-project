@@ -16,8 +16,6 @@
 
 .filtrationSliderWrapper {
   width: 150px;
-  margin-top: 10px;
-
 
   @include devices(mobile) {
     padding-bottom: 20px;
@@ -39,9 +37,52 @@
 
 .filtrationSliderText {
   font-size: 20px;
-    line-height: 2;
     letter-spacing: 1px;
     text-transform: uppercase;
+}
+
+.pricesValueWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 0;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+.inputPriveValue{
+  height: 22px;
+  padding: 0 4px;
+  min-width: 3.1em;
+  border-radius: 2px;
+  font-size: 14px;
+  border: 1px solid #acacac;
+  box-shadow: inset 0 0 4px rgba(0,0,0,0.15);
+  
+}
+
+.dashBeforeInput {
+  flex-shrink: 0;
+  width: 12px;
+  height: 1px;
+  margin: 3px 2px 0;
+  background-color: #acacac;
+}
+
+.btnSubmit{
+  flex: 0 0 auto;
+  height: 24px;
+  font-size: 12px;
+}
+
+.btnContent{
+  box-sizing: border-box;
+  width: 100%;
+  float: left;
+  padding: 0 5px;
 }
 
 

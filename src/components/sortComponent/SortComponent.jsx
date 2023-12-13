@@ -17,10 +17,10 @@ export function SortComponent({ sortType, setSortType }) {
 
 export function SortLotsComponent({ sortType, setSortType }) {
   return (
-    <div>
+    <div className={styles.sortOptions}>
       <select name="sortType" value={sortType} onChange={(e) => setSortType(e.target.value)}>
-        <option value="newestFirst">Спочатку найновіші</option>
-        <option value="endDate">За датою завершення</option>
+        <option value="firstNew">Спочатку найновіші</option>
+        <option value="expirationDate">За датою завершення</option>
         <option value="lowestBid">Від найнижчої ставки</option>
         <option value="highestBid">Від найвищої ставки</option>
       </select>
@@ -28,11 +28,24 @@ export function SortLotsComponent({ sortType, setSortType }) {
   );
 }
 
+export function SortDonateComponent({ sortType, setSortType }) {
+  return (
+    <div className={styles.sortOptions}>
+      <select name="sortType" value={sortType} onChange={(e) => setSortType(e.target.value)}>
+        <option value="oldestFirst">Спочатку старі</option>
+        <option value="newestFirst">Спочатку нові</option>
+        <option value="endDate">За датою завершення</option>
+        <option value="percentageFound">За відсотком зібраних коштів</option>
+      </select>
+    </div>
+  );
+}
 
 
 const SortComponents = {
   SortComponent,
   SortLotsComponent,
+  SortDonateComponent,
 };
 
 export default SortComponents;

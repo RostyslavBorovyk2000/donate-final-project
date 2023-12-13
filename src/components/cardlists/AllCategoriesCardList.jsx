@@ -6,7 +6,7 @@ import CardList from "./CardList";
 import Spinner from "../spinner/Spinner";
 import styles from "./AllCategoriesCardList.module.scss";
 import { getProducts } from "../../api/getProducts";
-import { SortComponent, SortLotsComponent } from "../sortComponent/SortComponent";
+import { SortComponent, SortDonateComponent, SortLotsComponent } from "../sortComponent/SortComponent";
 import SliderPrice from "../sliderPrice/SliderPrice";
 
 function getUniqueList(list) {
@@ -21,30 +21,32 @@ export default function CategoriesCardList() {
   const [selectedBrand, setSelectedBrand] = useState([]);
   const [selectedColor, setSelectedColor] = useState([]);
   const [sortType, setSortType] = useState("default");
-  const [selectedStatus, setSelectedStatus] = useState("Активний збір");
   const productsList = useSelector((state) => state.products.items);
   const filtersList = useSelector((state) => state.filters.items);
   const navigate = useNavigate();
   const [tempSliderValue, setTempSliderValue] = useState([100, 10000]);
   const [prevTempSliderValue, setPrevTempSliderValue] = useState(null);
+  const [priceRange, setPriceRange] = useState({
+    minPrice: tempSliderValue[0],
+    maxPrice: tempSliderValue[1],
+  });
 
  
 
   const applyFilter = () => {
     if (
       prevTempSliderValue
-      && tempSliderValue[0] === prevTempSliderValue[0]
-      && tempSliderValue[1] === prevTempSliderValue[1]
+      && (tempSliderValue[0] === prevTempSliderValue[0]
+        && tempSliderValue[1] === prevTempSliderValue[1])
     ) {
       return;
     }
-
-    const filtered = items.filter(
-      (product) => product.currentPrice
-      >= tempSliderValue[0] && product.currentPrice
-      <= tempSliderValue[1],
+  
+    const filtered = productsList.filter(
+      (product) => product.currentPrice >= tempSliderValue[0]
+        && product.currentPrice <= tempSliderValue[1],
     );
-
+  
     setItems(filtered);
     setPrevTempSliderValue([...tempSliderValue]);
   };
@@ -53,7 +55,9 @@ export default function CategoriesCardList() {
     fetchProducts();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedValue, selectedSubCategory, selectedBrand,
-    selectedColor, productsList, selectedStatus]);
+    selectedColor, productsList, priceRange]);
+
+    
 
   function fetchProducts() {
     setIsLoading(true);
@@ -75,17 +79,6 @@ export default function CategoriesCardList() {
     if (selectedColor) {
       params.color = selectedColor;
     }
-
-    if (selectedValue === "Донат") {
-      params.status = selectedStatus;
-    }
-
-    // const priceRange = {
-    //   minPrice: tempSliderValue[0],
-    //   maxPrice: tempSliderValue[1],
-    // };
-  
-    // params.price = priceRange;
 
 
     const queryParams = new URLSearchParams(params).toString();
@@ -129,10 +122,6 @@ export default function CategoriesCardList() {
     setSelectedColor((prevSelectedColor) => (prevSelectedColor === color ? "" : color));
   };
 
-  const handleStatusChange = (e) => {
-    const status = e.target.value;
-    setSelectedStatus(status === selectedStatus ? "" : status);
-  };
 
 
   const sortProducts = (products, type) => {
@@ -157,9 +146,17 @@ export default function CategoriesCardList() {
           return isNaN(priceA) || priceA === null ? -1 : isNaN(priceB)
           || priceB === null ? 1 : priceB - priceA;
         });
+      case "oldestFirst":
+        return [...products].sort((a, b) => new Date(a.startDate) - new Date(b.startDate));
       case "newestFirst":
         return [...products].sort((a, b) => new Date(b.startDate) - new Date(a.startDate));
       case "endDate":
+        return [...products].sort((a, b) => new Date(a.endDate) - new Date(b.endDate));
+      case "percentageFound":
+        return products.sort((a, b) => calculateFundsPercentage(a) - calculateFundsPercentage(b));
+      case "firstNew":
+        return [...products].sort((a, b) => new Date(b.startDate) - new Date(a.startDate));
+      case "expirationDate":
         return [...products].sort((a, b) => new Date(a.endDate) - new Date(b.endDate));
       case "lowestBid":
         return [...products].sort((a, b) => a.currentValue - b.currentValue);
@@ -170,25 +167,39 @@ export default function CategoriesCardList() {
     }
   };
   
+  const calculateFundsPercentage = (item) => {
+    const currentValue = parseFloat(item.currentValue) || 0;
+    const goal = parseFloat(item.goal) || 1;
+    return (currentValue / goal) * 100;
+  };
+  
   
 
   return (
     <div className={styles.filtrationWrapper}>
       <div className={styles.subCategoryOptions}>
-        <select className={styles.select} value={selectedValue} onChange={handleChange}>
-          {getUniqueList(
-            filtersList.filter(({ type }) => type === "category").map(({ name }) => name),
-          ).map((selectCategory) => (
-            <option key={selectCategory} value={selectCategory}>
-              {selectCategory}
-            </option>
-          ))}
-        </select>
-
-
+        <div className={styles.categorySelect}>
+          <select className={styles.select} value={selectedValue} onChange={handleChange}>
+            {getUniqueList(
+              filtersList.filter(({ type }) => type === "category").map(({ name }) => name),
+            ).map((selectCategory) => (
+              <option key={selectCategory} value={selectCategory}>
+                {selectCategory}
+              </option>
+            ))}
+          </select>
+        </div>
+        
         {selectedValue === "Одяг" && (
         <aside className={styles.filtration}>
           <SortComponent sortType={sortType} setSortType={setSortType} />
+          <SliderPrice
+            tempSliderValue={tempSliderValue}
+            setTempSliderValue={setTempSliderValue}
+            applyFilter={applyFilter}
+            priceRange={priceRange}
+            setPriceRange={setPriceRange}
+          />
           <div className={styles.filtrationSelectWrapper}>
             <div className={styles.categoryOptions} />
             <h3 className={styles.filtrationOptions}>Підкатегорія</h3>
@@ -257,29 +268,12 @@ export default function CategoriesCardList() {
               </label>
             ))}
           </div>
-          <SliderPrice
-            tempSliderValue={tempSliderValue}
-            setTempSliderValue={setTempSliderValue}
-            applyFilter={applyFilter}
-          />
-
         </aside>
         )}
+
         {selectedValue === "Донат" && (
           <div>
-            <select name="status" value={selectedStatus} onChange={handleStatusChange}>
-              {getUniqueList(
-                filtersList
-                  .filter(({ type }) => type === "status")
-                  .map(({ name }) => name),
-              ).map((status) => (
-                <option key={status} value={status} className={styles.option}>
-                  {status}
-                </option>
-              
-              ))}
-            </select>
-            
+            <SortDonateComponent sortType={sortType} setSortType={setSortType} />
           </div>
           
         )}
