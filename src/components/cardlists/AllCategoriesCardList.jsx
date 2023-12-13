@@ -2,7 +2,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-// import axios from "axios";
 import CardList from "./CardList";
 import PaginationPages from "../PaginationPages/PaginationPages";
 import Spinner from "../spinner/Spinner";
@@ -86,11 +85,9 @@ export default function CategoriesCardList({ query }) {
     const queryParams = new URLSearchParams(params).toString();
     navigate(`/categories?${queryParams}`);
 
-    // console.log("API params:", params);
     getProducts(params)
       .then((data) => {
         setItems(data);
-        // console.log(data);
       })
       .catch((error) => {
         console.error("Помилка при отриманні товарів:", error);
@@ -174,36 +171,22 @@ export default function CategoriesCardList({ query }) {
     const goal = parseFloat(item.goal) || 1;
     return (currentValue / goal) * 100;
   };
-  //
-  // const filteredProd = sortProducts(items, sortType);
 
-
-  // !!!
   const [coods, setCoods] = useState([]);
-  // !!!
-  // const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [goodsPearPages] = useState(12);
   const lastCoodsIndex = currentPage * goodsPearPages;
   const firstCoodsIndex = lastCoodsIndex - goodsPearPages;
-  // !!!
   const currentCoods = coods.slice(firstCoodsIndex, lastCoodsIndex);
-  // !!!
   const paginateFunc = (pageNumber) => setCurrentPage(pageNumber);
   useEffect(() => {
     const getGoods = async () => {
-      // setLoading(true);
-      // const res = await axios.get("http://localhost:4000/api/products");
       const filteredProd = await sortProducts(items, sortType);
       if (query !== "") {
         const coodsFiltre = filteredProd.filter((product) => product.category === `${query}`);
-        // const coodsFiltre = res.data.filter((product) => product.category === `${query}`);
         setCoods(coodsFiltre);
-        // setLoading(false);
       } else {
-        // setCoods(res.data);
         setCoods(filteredProd);
-        // setLoading(false);
       }
     };
 
@@ -323,19 +306,13 @@ export default function CategoriesCardList({ query }) {
         </div>
     
         {isLoading ? <Spinner /> : (
-          <>
-            {/* <CardList items={sortProducts(items, sortType)} /> */}
-            <CardList items={currentCoods} />
-            {/* <PaginationCard coods={currentCoods} loading={loading} /> */}
-          </>
+          <CardList items={currentCoods} />
         )}
       </div>
       <div>
         <PaginationPages
           goodsPearPages={goodsPearPages}
-          // !!!
           tottalCoods={coods.length}
-          // !!!
           paginateFunc={paginateFunc}
         />
       </div>

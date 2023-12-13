@@ -200,19 +200,21 @@ function Header() {
         {showBurgerMenu && <BurgerMenu />}
         <Navigation />
 
-        {isLoggedInFromRedux ? (
-          <>
-            <Link to="/favorites">
-              <HeartFavorite />
+        <div className={styles.headerLaptopIcons}>
+          {isLoggedInFromRedux ? (
+            <div className={styles.navRightSideMenu}>
+              <Link to="/favorites">
+                <HeartFavorite />
+              </Link>
+              {favoriteCount === 0 ? null : <span>{favoriteCount}</span>}
+            </div>
+          ) : null}
+          <div className={styles.navRightSideMenu}>
+            <Link to="/cart">
+              <Cart />
             </Link>
-            {favoriteCount === 0 ? null : <span>{favoriteCount}</span>}
-          </>
-        ) : null}
-        <div className={styles.navRightSideMenu}>
-          <Link to="/cart">
-            <Cart />
-          </Link>
-          {cartCount === 0 ? null : <span>{cartCount}</span>}
+            {cartCount === 0 ? null : <span>{cartCount}</span>}
+          </div>
         </div>
 
         <Button toPage={isLoggedInFromRedux ? "/" : "/log-in"} width="40px" padding="10px" onClick={isLoggedInFromRedux ? doLogOut : null}>

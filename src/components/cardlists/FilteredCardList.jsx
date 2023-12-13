@@ -140,7 +140,8 @@ export function MainFilteredCardList({ property, value }) {
           return;
         }
 
-        setProductsPopular(products.products);
+        const mixedData = shuffleArray([...products.products]);
+        setProductsPopular(mixedData);
   
         const newData = [];
         products.products.forEach((item) => {

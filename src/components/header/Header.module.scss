@@ -198,6 +198,12 @@
     }
 }
 
+.headerLaptopIcons {
+    min-width: 80px;
+    display: flex;
+    justify-content: space-between;
+}
+
 .navSearch {
     height: 20px;
 }

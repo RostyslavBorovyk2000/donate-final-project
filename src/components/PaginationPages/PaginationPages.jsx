@@ -8,9 +8,6 @@ function PaginationPages({ goodsPearPages, tottalCoods, paginateFunc }) {
   return (
     <ul className={styles.listNumber}>
       {numberPages.map((number) => (
-        // eslint-disable-next-line max-len
-        // <li className={styles.iteamNumber} key={number} onClick={() => paginateFunc(number)}>{number}</li>
-        // eslint-disable-next-line max-len
         <button type="button" className={styles.iteamNumber} key={number} onClick={() => paginateFunc(number)}>{number}</button>
       ))}
     </ul>
