@@ -4,10 +4,11 @@ import PropTypes from "prop-types";
 import { GET_PRODUCTS_URL } from "../../endpoints/endpoints";
 import CardList from "./CardList";
 import Spinner from "../spinner/Spinner";
+import PaginationPages from "../PaginationPages/PaginationPages";
 import shuffleArray from "../../scripts/shuffleArray";
 
 export default function FilteredCardList({
-  property, value, priceRange, subcategory, brand, color, sortType,
+  property, value, priceRange, subcategory, brand, color, sortType, query,
 }) {
   const priceLow = priceRange ? priceRange[0] : 0;
   const priceHigh = priceRange ? priceRange[1] : Infinity;
@@ -116,8 +117,43 @@ export default function FilteredCardList({
     const sorted = [...filteredData].sort(sortProducts);
     setSortedData(sorted);
   }, [filteredData, sortType]);
+
+  const [coods, setCoods] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [goodsPearPages] = useState(12);
+  const lastCoodsIndex = currentPage * goodsPearPages;
+  const firstCoodsIndex = lastCoodsIndex - goodsPearPages;
+  const currentCoods = coods.slice(firstCoodsIndex, lastCoodsIndex);
+  const paginateFunc = (pageNumber) => setCurrentPage(pageNumber);
+  useEffect(() => {
+    const getGoods = async () => {
+      // const filteredProd = await sortProducts(items, sortType);
+      if (query !== "") {
+        const coodsFiltre = sortedData.filter((product) => product.category === `${query}`);
+        setCoods(coodsFiltre);
+      } else {
+        setCoods(sortedData);
+      }
+    };
+
+    getGoods();
+  }, [query, sortType, sortedData]);
     
-  return isLoading ? <p>Loading...</p> : <CardList items={sortedData} />;
+  // return isLoading ? <p>Loading...</p> : <CardList items={sortedData} />;
+  return (
+    <div>
+      <div>
+        {isLoading ? <p>Loading...</p> : <CardList items={currentCoods} />}
+      </div>
+      <div>
+        <PaginationPages
+          goodsPearPages={goodsPearPages}
+          tottalCoods={coods.length}
+          paginateFunc={paginateFunc}
+        />
+      </div>
+    </div>
+  );
 }
 
 
@@ -164,12 +200,13 @@ export function MainFilteredCardList({ property, value }) {
   
     fetchData();
   }, [property, value]);
-  
+ 
   return (
     // eslint-disable-next-line react/jsx-no-useless-fragment
     <>
       {/* {isLoading ? <Spinner /> : <CardList items={filteredData} />} */}
       {isLoading ? <Spinner /> : <CardList items={productsPopular} />}
+      {/* {isLoading ? <Spinner /> : <CardList items={currentCoods} />} */}
     </>
   );
 }

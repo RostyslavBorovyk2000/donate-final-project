@@ -1,7 +1,7 @@
 import { useState } from "react";
 import FilteredCardList from "../../cardlists/FilteredCardList";
 import { SortLotsComponent } from "../../sortComponent/SortComponent";
-import Pagination from "../../pagination/Pagination";
+// import Pagination from "../../pagination/Pagination";
 import styles from "./Categories.module.scss";
 
 
@@ -15,9 +15,9 @@ export default function Auction() {
       <h1 className={styles.cardsSectionHeadline}>Лоти аукціону доброчиності</h1>
       <p className={styles.cardsSectionText}>Відкриті аукціони</p>
       <SortLotsComponent sortType={sortType} setSortType={setSortType} />
-      <FilteredCardList property="category" value="Благодійний лот" sortType={sortType} />
+      <FilteredCardList property="category" value="Благодійний лот" sortType={sortType} query="Благодійний лот" />
       {/* <FilteredCardList property="category" value="Благодійний лот" /> */}
-      <Pagination query="Благодійний лот" />
+      {/* <Pagination query="Благодійний лот" /> */}
     </section>
   );
 }

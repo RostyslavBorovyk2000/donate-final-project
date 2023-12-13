@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import FilteredCardList from "../../cardlists/FilteredCardList";
 import { SortComponent } from "../../sortComponent/SortComponent";
 import SliderPrice from "../../sliderPrice/SliderPrice";
-import Pagination from "../../pagination/Pagination";
+// import Pagination from "../../pagination/Pagination";
 import styles from "./Categories.module.scss";
 
 
@@ -133,10 +133,10 @@ export default function Clothing() {
           ))}
         </div>
         <SortComponent sortType={sortType} setSortType={setSortType} />
-        <FilteredCardList property="category" value={["Одяг"]} priceRange={sliderValue} subcategory={selectedSubCategory} brand={selectedBrand} color={selectedColor} sortType={sortType} />
+        <FilteredCardList property="category" value={["Одяг"]} priceRange={sliderValue} subcategory={selectedSubCategory} brand={selectedBrand} color={selectedColor} sortType={sortType} query="Одяг" />
       </div>
-      <FilteredCardList property="category" value={["Взуття", "Комплекти форми", "Одяг верхній"]} priceRange={sliderValue} />
-      <Pagination query="Одяг" />
+      {/* <FilteredCardList property="category" value={["Взуття", "Комплекти форми", "Одяг верхній"]} priceRange={sliderValue} /> */}
+      {/* <Pagination query="Одяг" /> */}
     </section>
   );
 }
