@@ -45,7 +45,7 @@ function Favorites() {
       <h2 className={styles.cardsSectionHeadline}>Ви слідкуєте</h2>
       <p className={styles.cardsSectionText}>Лоти та донати</p>
       {isFavoriteEmpty ? (
-        <p className={styles.favoriteEmpty}>Ви ще не додали жодного товару</p>
+        <p className={styles.favoriteEmpty}>Ви ще не додали жодного лоту чи донат</p>
       ) : (
         <div className={styles.cardsListDonatWrapper}>
           {favoritesItems.map((item) => {

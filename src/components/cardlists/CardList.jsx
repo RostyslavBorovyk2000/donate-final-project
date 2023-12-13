@@ -12,14 +12,6 @@ export default function CardList({ items }) {
         <Card
           key={item.itemNo}
           item={item}
-          // id={item._id}
-          // itemNo={item.itemNo}
-          // name={item.shortName}
-          // price={item.currentPrice}
-          // goal={item.goal}
-          // nameCloudinary={item.nameCloudinary[0]}
-          // category={item.category}
-          // quantity={item.quantity}
         />
       ))}
     </ul>

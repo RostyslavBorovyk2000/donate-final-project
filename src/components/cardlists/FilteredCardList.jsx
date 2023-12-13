@@ -3,6 +3,7 @@ import axios from "axios";
 import PropTypes from "prop-types";
 import { GET_PRODUCTS_URL } from "../../endpoints/endpoints";
 import CardList from "./CardList";
+import Spinner from "../spinner/Spinner";
 import shuffleArray from "../../scripts/shuffleArray";
 
 export default function FilteredCardList({
@@ -117,6 +118,59 @@ export default function FilteredCardList({
   }, [filteredData, sortType]);
     
   return isLoading ? <p>Loading...</p> : <CardList items={sortedData} />;
+}
+
+
+export function MainFilteredCardList({ property, value }) {
+  const [isLoading, setIsLoading] = useState(true);
+  // const [filteredData, setFilteredData] = useState([]);
+  const [productsPopular, setProductsPopular] = useState([]);
+    
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+      try {
+        // const response = await axios.get(GET_PRODUCTS_URL);
+        const response = await axios.get("http://localhost:4000/api/products/filter?isPopular=true&perPage=12");
+        // const response = await axios.get("http://localhost:4000/api/products/filter?color=Камуфляж");
+        const products = response.data;
+  
+        if (!Array.isArray(products.products)) {
+          setIsLoading(false);
+          return;
+        }
+
+        setProductsPopular(products.products);
+  
+        const newData = [];
+        products.products.forEach((item) => {
+          if (
+            (Array.isArray(value) && value.includes(item[property]))
+            || (item[property] === value)
+          ) {
+            newData.push(item);
+          }
+        });
+
+        // const mixedData = shuffleArray([...newData]);
+        // setFilteredData(mixedData);
+      } catch (error) {
+        console.error("Помилка при завантаженні даних:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+  
+    fetchData();
+  }, [property, value]);
+  
+  return (
+    // eslint-disable-next-line react/jsx-no-useless-fragment
+    <>
+      {/* {isLoading ? <Spinner /> : <CardList items={filteredData} />} */}
+      {isLoading ? <Spinner /> : <CardList items={productsPopular} />}
+    </>
+  );
 }
 
 FilteredCardList.propTypes = {

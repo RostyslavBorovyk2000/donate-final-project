@@ -1,6 +1,6 @@
 import CategorysList from "../../categoriesList/CategoriesList";
 // import FilteredCardList from "../../cardlists/FilteredCardList";
-import MainFilteredCardList from "../../cardlists/FilteredCardList";
+import { MainFilteredCardList } from "../../cardlists/FilteredCardList";
 import MainSlider from "../../slider/MainSlider";
 import DocumentTitle from "../DocumentTitle";
 import pic from "../../../images/bet-on-victory-ban-1.jpeg";

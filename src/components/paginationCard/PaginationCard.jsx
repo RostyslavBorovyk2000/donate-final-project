@@ -11,9 +11,9 @@ function PaginationCard({ coods, loading }) {
     <ul className={styles.listCoods}>
       {coods.map((cood, index) => (
         // eslint-disable-next-line react/no-array-index-key
-        <li className={styles.listCoodsIteam} key={index}>
+        <div className={styles.listCoodsIteam} key={index}>
           <Card item={cood} />
-        </li>
+        </div>
       ))}
     </ul>
   );
