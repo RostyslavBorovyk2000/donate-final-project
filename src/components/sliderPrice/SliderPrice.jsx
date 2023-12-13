@@ -4,14 +4,20 @@ import styles from "./SliderPrice.module.scss";
 
 
 export default function SliderPrice({ tempSliderValue, setTempSliderValue, applyFilter }) {
+  const handleInputChange = (index, value) => {
+    const newValues = [...tempSliderValue];
+    newValues[index] = Number(value);
+    setTempSliderValue(newValues);
+  };
+
   return (
     <div className={styles.filtrationSliderSection}>
       <div className={styles.filtrationSliderWrapper}>
         <h3 className={styles.filtrationSliderText}>Ціна, грн</h3>
         <div className={styles.pricesValueWrapper}>
-          <input type="number" name="priceValue1" value={tempSliderValue[0]} className={styles.inputPriveValue} />
+          <input type="number" name="priceValue1" value={tempSliderValue[0]} className={styles.inputPriveValue} onChange={(e) => handleInputChange(0, e.target.value)} />
           <i className={styles.dashBeforeInput} />
-          <input style={{ marginRight: "5px" }} type="number" name="priceValue2" value={tempSliderValue[1]} className={styles.inputPriveValue} />
+          <input style={{ marginRight: "5px" }} type="number" name="priceValue2" value={tempSliderValue[1]} className={styles.inputPriveValue} onChange={(e) => handleInputChange(1, e.target.value)} />
           <button type="submit" className={styles.btnSubmit} onClick={applyFilter}>
             <span className={styles.btnContent}>OK</span>
           </button>

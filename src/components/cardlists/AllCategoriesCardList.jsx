@@ -84,11 +84,11 @@ export default function CategoriesCardList() {
     const queryParams = new URLSearchParams(params).toString();
     navigate(`/categories?${queryParams}`);
 
-    console.log("API params:", params);
+    // console.log("API params:", params);
     getProducts(params)
       .then((data) => {
         setItems(data);
-        console.log(data);
+        // console.log(data);
       })
       .catch((error) => {
         console.error("Помилка при отриманні товарів:", error);
