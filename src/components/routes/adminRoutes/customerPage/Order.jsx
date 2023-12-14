@@ -37,8 +37,12 @@ function Order({ item }) {
         // eslint-disable-next-line no-underscore-dangle
           <div key={i._id} className={styles.item}>
             <p className={styles.name}>{i.product.name}</p>
-            <p>{i.product.cartQuantity}</p>
-            <p>
+            <p className={styles.cartQuantity}>
+              {i.cartQuantity}
+              {" "}
+              шт.
+            </p>
+            <p className={styles.price}>
               {i.product.currentPrice}
               &nbsp;грн
             </p>

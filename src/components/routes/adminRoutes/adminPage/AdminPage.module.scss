@@ -1,2 +1,95 @@
 @use "../../../../styles/variables";
+@use "../../../../styles/mixins";
 @import "../../../../styles/mediaqueries";
+
+.mainSection {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.adminSectionHeadline {
+    color: variables.$fc-main;
+    font-size: variables.$fs-xxl;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+
+    @include devices(mobile) {
+        font-size: variables.$fs-l;
+    }
+}
+
+.section-container {
+    margin-bottom: 20px;
+    max-width: 25%;
+    box-shadow: 9px 9px 5px -4px rgba(124, 141, 102, 1);
+    transition: max-height 0.3s ease;
+
+    @include devices(mobile) {
+        max-width: 300px;
+    }
+
+    &.collapsed {
+        max-height: 0;
+        overflow: hidden;
+    }
+}
+
+.section-container__title {
+    color: variables.$fc-main;
+    font-weight: 700;
+    margin-top: 20px;
+    margin-bottom: 5px;
+    border-bottom: 0.3px solid variables.$fc-main;
+    cursor: pointer;
+}
+
+.blockShowHide {
+    display: flex;
+    gap: 15px;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+    box-shadow: 7px 7px 5px -4px variables.$fc-main;
+}
+.buttonShowHide {
+    background-color: variables.$fc-main;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 2px 10px;
+    margin-bottom: 5px;
+}
+
+.showRow {
+    display: flex;
+    gap: 5px;
+    transition: 2s;
+}
+
+.showRowSort {
+    display: flex;
+    gap: 5px;
+    margin-left: 50px;
+}
+
+.titleContainer {
+    padding-top: 5px;
+    color: variables.$fc-text;
+}
+
+.showList {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 20px 0 10px 0;
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.emailQuantity {
+    margin-top: 10px;
+    width: 50%;
+}

@@ -116,3 +116,15 @@
     width: 70%;
   }
 }
+
+.name,
+.price,
+.cartQuantity {
+  width: 33%;
+  display: flex;
+}
+
+.price,
+.cartQuantity {
+  justify-content: center;
+}

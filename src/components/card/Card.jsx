@@ -157,10 +157,10 @@ export function Card({ item }) {
 
         <div className={styles.buttonWrapper}>
           {category === "Благодійний лот" ? (
-            <Button text="Підняти ставку" width="80%" />
+            <Button text="Підняти ставку" width="80%" toPage={`/product/${itemNo}`} />
           ) : category === "Донат" ? (
-            <Button text="Зробити донат" width="80%" />
-          ) : <Button text="Купити" width="80%" />}
+            <Button text="Зробити донат" width="80%" toPage={`/product/${itemNo}`} />
+          ) : <Button text="Купити" width="80%" toPage={`/product/${itemNo}`} />}
         </div>
       </div>
     </li>

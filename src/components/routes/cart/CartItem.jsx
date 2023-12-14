@@ -40,7 +40,22 @@ function CartItem({ item }) {
     }
   }
 
+  // async function getCartFromServer() {
+  //   try {
+  //     const response = await axios.get(NEW_CART_URL);
+  //     return response.data;
+  //   } catch (err) {
+  //     console.error("Помилка при отриманні даних:", err);
+  //     return null;
+  //   }
+  // }
+
   async function getCartFromServer() {
+    if (!isUserLoggedIn) {
+      // console.log("Користувач не авторизований.");
+      return null;
+    }
+  
     try {
       const response = await axios.get(NEW_CART_URL);
       return response.data;
@@ -49,7 +64,6 @@ function CartItem({ item }) {
       return null;
     }
   }
-
 
   // eslint-disable-next-line no-underscore-dangle
   async function deleteCartFromServer() {
