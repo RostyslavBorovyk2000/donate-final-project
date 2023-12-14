@@ -1,7 +1,7 @@
 /* eslint-disable no-nested-ternary */
 import React, { useState, useEffect, useCallback } from "react";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import CardList from "./CardList";
 import PaginationPages from "../PaginationPages/PaginationPages";
 import Spinner from "../spinner/Spinner";
@@ -16,21 +16,38 @@ function getUniqueList(list) {
 
 export default function CategoriesCardList({ query }) {
   const [items, setItems] = useState([]);
-  const [selectedValue, setSelectedValue] = useState("Одяг");
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedSubCategory, setSelectedSubCategory] = useState([]);
-  const [selectedBrand, setSelectedBrand] = useState([]);
-  const [selectedColor, setSelectedColor] = useState([]);
   const [sortType, setSortType] = useState("default");
   const productsList = useSelector((state) => state.products.items);
   const filtersList = useSelector((state) => state.filters.items);
-  const navigate = useNavigate();
   const [tempSliderValue, setTempSliderValue] = useState([100, 10000]);
   const [prevTempSliderValue, setPrevTempSliderValue] = useState(null);
   const [priceRange, setPriceRange] = useState({
     minPrice: tempSliderValue[0],
     maxPrice: tempSliderValue[1],
   });
+
+  const [searchParams, setSearchParams] = useSearchParams({
+    brand: [],
+    color: [],
+    category: "Одяг",
+    subcategory: [],
+  });
+
+  const selectedValue = searchParams.get("category") || "Одяг";
+  const selectedSubCategory = searchParams.get("subcategory") || [];
+  const selectedBrand = searchParams.get("brand") || [];
+  const selectedColor = searchParams.get("color") || [];
+
+  function handleSearchParamsChange(field, value) {
+    setSearchParams(
+      (prev) => {
+        prev.set(field, value);
+        return prev;
+      },
+      { replace: true },
+    );
+  }
 
  
 
@@ -55,10 +72,7 @@ export default function CategoriesCardList({ query }) {
   useEffect(() => {
     fetchProducts();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedValue, selectedSubCategory, selectedBrand,
-    selectedColor, productsList, priceRange]);
-
-    
+  }, [searchParams, priceRange]);
 
   function fetchProducts() {
     setIsLoading(true);
@@ -80,11 +94,7 @@ export default function CategoriesCardList({ query }) {
     if (selectedColor) {
       params.color = selectedColor;
     }
-
-
-    const queryParams = new URLSearchParams(params).toString();
-    navigate(`/categories?${queryParams}`);
-
+    
     getProducts(params)
       .then((data) => {
         setItems(data);
@@ -96,31 +106,28 @@ export default function CategoriesCardList({ query }) {
         setIsLoading(false);
       });
   }
-  useEffect(() => {
-    setItems(productsList);
-  }, [productsList]);
+  
 
   const handleChange = (e) => {
     const selectCategory = e.target.value;
-    setSelectedValue(selectCategory === selectedValue ? "" : selectCategory);
-    setSelectedSubCategory("");
+    handleSearchParamsChange("category", selectCategory === selectedValue ? "" : selectCategory);
+    handleSearchParamsChange("subcategory", "");
   };
 
   const handleSubCategoryChange = (e) => {
     const subCategory = e.target.value;
-    setSelectedSubCategory((prevSubCategory) => (prevSubCategory === subCategory ? "" : subCategory));
+    handleSearchParamsChange("subcategory", selectedSubCategory === subCategory ? "" : subCategory);
   };
 
   const handleBrandChange = (e) => {
     const brand = e.target.value;
-    setSelectedBrand((prevSelectedBrand) => (prevSelectedBrand === brand ? "" : brand));
+    handleSearchParamsChange("brand", selectedBrand === brand ? "" : brand);
   };
 
   const handleColorChange = (e) => {
     const color = e.target.value;
-    setSelectedColor((prevSelectedColor) => (prevSelectedColor === color ? "" : color));
+    handleSearchParamsChange("color", selectedColor === color ? "" : color);
   };
-
 
 
   const sortProducts = useCallback((products, type) => {
