@@ -253,23 +253,6 @@ function ProductView() {
     }
   };
 
-  // const handleChangeQuantity = (change) => {
-  //   const newQuantity = product.cartQuantity + change;
-  //   if (newQuantity >= 1) {
-  //     const currentProducts = JSON.parse(localStorage.getItem("Cart")) || [];
-  //     const updatedProducts = currentProducts.map((p) => {
-  //       // eslint-disable-next-line no-underscore-dangle
-  //       if (p._id === product._id) {
-  //         return { ...p, cartQuantity: newQuantity };
-  //       }
-  //       return p;
-  //     });
-  //     localStorage.setItem("Cart", JSON.stringify(updatedProducts));
-      
-  //     // eslint-disable-next-line no-underscore-dangle
-  //     dispatch(updateCartProductQuantity(product._id, newQuantity));
-  //   }
-  // };
 
   return (
     <section style={{ padding: "50px 15px 100px" }}>
@@ -288,7 +271,6 @@ function ProductView() {
                   <div className={styles.donateInfoAmount}>
                     <p className={styles.donateInfoResult}>
                       {" "}
-                      {/* {(product.goal * progress) / 100} */}
                       {product.currentValue}
                       {" "}
                       грн
