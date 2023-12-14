@@ -176,6 +176,10 @@
   margin: 24px 0;
 }
 
+.buyButtons button {
+  cursor: pointer;
+}
+
 .addToCartBtn {
   margin-right: 10px;
   padding: 10px 20px;
@@ -416,7 +420,7 @@
   align-items: center;
   justify-content: center;
   width: 300px;
-  min-height: 45px;
+  height: 46px;
   color: variables.$fc-main;
   text-align: center;
   font-size: variables.$fs-l;
