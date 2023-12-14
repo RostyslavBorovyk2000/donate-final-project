@@ -7,4 +7,4 @@ export const NEW_CART_URL = "http://localhost:4000/api/cart";
 export const NEW_FAVORITES_URL = "http://localhost:4000/api/wishlist";
 export const MAKE_ORDERS = "http://localhost:4000/api/orders";
 export const GET_FILTERS_URL = "http://localhost:4000/api/filters";
-export const GET_BLOG = "http://localhost:4000/api/pages/blog";
+export const GET_PAGES = "http://localhost:4000/api/pages/customId";

@@ -38,7 +38,7 @@ function AppRoutes() {
       <Route path="/categories/charity-auction" element={<Auction />} />
       <Route path="/categories/donation" element={<Donation />} />
       <Route path="/cart" element={<Cart />} />
-      <Route path="/blog" element={<Blog />} />
+      <Route path="/pages/:customId" element={<Blog />} />
       <Route path="/contacts" element={<Contacts />} />
       <Route path="/favorites" element={<Favorites />} />
       <Route path="/delivery-payment" element={<DeliveryPayment />} />

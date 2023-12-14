@@ -52,7 +52,7 @@ function Navigation() {
             </div>
             )}
           </div>
-          <ActiveLink label="новини" to="/blog" onClick={() => setDropdownVisible(false)} className={`${styles.navList} ${styles.navLink}`} />
+          <ActiveLink label="новини" to="/pages/:customId" onClick={() => setDropdownVisible(false)} className={`${styles.navList} ${styles.navLink}`} />
           { isUserLoggedIn ? <ActiveLink label="кабінет" to={isAdmin === "false" ? "/account" : "/adm-page"} onClick={() => setDropdownVisible(false)} className={`${styles.navList} ${styles.navLink}`} /> : null }
         </ul>
       </nav>
