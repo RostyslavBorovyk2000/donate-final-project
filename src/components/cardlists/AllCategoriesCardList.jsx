@@ -49,8 +49,6 @@ export default function CategoriesCardList({ query }) {
     );
   }
 
- 
-
   const applyFilter = () => {
     if (
       prevTempSliderValue
