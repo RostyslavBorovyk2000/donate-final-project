@@ -3,7 +3,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 import CardList from "./CardList";
-import PaginationPages from "../PaginationPages/PaginationPages";
+import PaginationPages from "../paginationPages/PaginationPages";
 import Spinner from "../spinner/Spinner";
 import styles from "./AllCategoriesCardList.module.scss";
 import { getProducts } from "../../api/getProducts";

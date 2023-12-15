@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import PaginationCard from "../paginationCard/PaginationCard";
-import PaginationPages from "../PaginationPages/PaginationPages";
+import PaginationPages from "../paginationPages/PaginationPages";
 
 function Pagination({ query }) {
   const [coods, setCoods] = useState([]);

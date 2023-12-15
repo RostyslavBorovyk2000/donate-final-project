@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { GET_PRODUCTS_URL } from "../../endpoints/endpoints";
 import CardList from "./CardList";
 import Spinner from "../spinner/Spinner";
-import PaginationPages from "../PaginationPages/PaginationPages";
+import PaginationPages from "../paginationPages/PaginationPages";
 import shuffleArray from "../../scripts/shuffleArray";
 
 export default function FilteredCardList({

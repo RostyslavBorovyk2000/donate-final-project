@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter } from "react-router-dom";
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import AppRoutes from "./routes/AppRoutes";
+import AppRoutes from "../routes/AppRoutes";
 import { initializeCart, initializeFavorites } from "../redux/actions/cartActions";
 import { setAuthToken } from "../redux/actions/authActions";
 import { getProducts } from "../api/getProducts";
