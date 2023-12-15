@@ -11,7 +11,6 @@ import { Twitter } from "../../components/footer/icons/twitter/Twitter";
 import { Linkedin } from "../../components/footer/icons/linkedin/LinkedIn";
 import { Youtube } from "../../components/footer/icons/youtube/Youtube";
 import logo from "../../components/footer/icons/logo.png";
-import Button from "../../components/button/Button";
 import style from "./Contacts.module.scss";
 
 export function ContactMap() {
@@ -40,8 +39,10 @@ export function ContactMap() {
 
 export function ContactForm() {
   const handleSubmit = (values, { resetForm }) => {
+    console.log("Форма відправлена з такими даними:", values);
     resetForm();
   };
+
 
   return (
     <div>
@@ -146,9 +147,10 @@ export function ContactForm() {
             />
           </div>
 
-          <Button>
+          <button className={style.btnForm} type="submit">
             Надіслати
-          </Button>
+          </button>
+
         </Form>
       </Formik>
     </div>
