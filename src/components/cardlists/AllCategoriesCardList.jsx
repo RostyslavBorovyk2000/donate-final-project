@@ -26,6 +26,14 @@ export default function CategoriesCardList({ query }) {
     minPrice: tempSliderValue[0],
     maxPrice: tempSliderValue[1],
   });
+  // pagination
+  const [coods, setCoods] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [goodsPearPages] = useState(12);
+  const lastCoodsIndex = currentPage * goodsPearPages;
+  const firstCoodsIndex = lastCoodsIndex - goodsPearPages;
+  const currentCoods = coods.slice(firstCoodsIndex, lastCoodsIndex);
+  const paginateFunc = (pageNumber) => setCurrentPage(pageNumber);
 
   const [searchParams, setSearchParams] = useSearchParams({
     brand: [],
@@ -112,6 +120,9 @@ export default function CategoriesCardList({ query }) {
     const selectCategory = e.target.value;
     handleSearchParamsChange("category", selectCategory === selectedValue ? "" : selectCategory);
     handleSearchParamsChange("subcategory", "");
+    // reset filters
+    handleSearchParamsChange("brand", "");
+    handleSearchParamsChange("color", "");
     setCurrentPage(1);
   };
 
@@ -180,13 +191,7 @@ export default function CategoriesCardList({ query }) {
     return (currentValue / goal) * 100;
   };
 
-  const [coods, setCoods] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [goodsPearPages] = useState(12);
-  const lastCoodsIndex = currentPage * goodsPearPages;
-  const firstCoodsIndex = lastCoodsIndex - goodsPearPages;
-  const currentCoods = coods.slice(firstCoodsIndex, lastCoodsIndex);
-  const paginateFunc = (pageNumber) => setCurrentPage(pageNumber);
+  // pagination
   useEffect(() => {
     const getGoods = async () => {
       const filteredProd = await sortProducts(items, sortType);
