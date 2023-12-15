@@ -399,7 +399,8 @@
 
 .nameCustomer {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    // justify-content: space-between;
     width: 100%;
 }
 
@@ -431,11 +432,13 @@
 
 .errorsWrapper {
     padding: 0px 0px 20px;
+    width: 100%;
 }
 
 .textAttention {
     font-size: variables.$fs-s;
     text-align: center;
+    color: variables.$fc-attention;
 }
 
 .text,

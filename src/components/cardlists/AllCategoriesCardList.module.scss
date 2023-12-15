@@ -7,12 +7,42 @@
   gap: 10px;
   // padding-right: 40px;
   align-items: center;
+
+  @include devices(mobile) {
+    width: 300px;
+  }
+}
+
+.categoryOptionWrapper {
+  @include devices(mobile) {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    & h3 {
+      display: flex;
+      justify-content: center;
+    }
+  }
+}
+
+.categoryOption {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
 }
 
 .categorySelect {
   position: absolute;
   top: -20px;
   left: 0;
+
+  @include devices(mobile) {
+    position: static;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
 }
 
 .buttonLinksWrapper {
@@ -30,7 +60,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 45px 0px 25px;
+    padding: 0px;
   }
 
   & p {
@@ -53,6 +83,7 @@
   @include devices(mobile) {
     align-items: center;
     padding-bottom: 25px;
+    width: 280px;
   }
 }
 
@@ -61,13 +92,21 @@
 .filtration {
   display: flex;
   flex-direction: column;
-  padding-right: 40px;
+  width: 220px;
+  // padding-right: 40px;
   // width: 25%;
+
+  @include devices(tablet) {
+    padding-right: 0px;
+    width: 200px;
+  }
 
   @include devices(mobile) {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    padding-right: 0px;
+    width: 100%;
   }
 }
 
@@ -124,12 +163,18 @@
 
 .filtrationOptions {
   font-size: 20px;
-    line-height: 2;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-
+  line-height: 2;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  // @include devices(mobile) {
+  //   width: 200px;
+  // }
 }
 
 .select {
   padding: 5px 25px;
+
+  @include devices(mobile) {
+    width: 200px;
+  }
 }

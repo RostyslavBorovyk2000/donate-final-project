@@ -6,6 +6,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import Spinner from "../../components/spinner/Spinner";
 import { setArticle } from "../../redux/actions/articleActions";
+import DocumentTitle from "../DocumentTitle";
 import styles from "./Blog.module.scss";
 
 
@@ -40,13 +41,11 @@ export default function ArticleView() {
 
   return (
     <section style={{ padding: "50px 15px 100px" }} className={styles.articlePageContentWrapper}>
-      {/* <DocumentTitle title={`${product.shortName} | Донат Перемоги`} /> */}
+      <DocumentTitle title={`${article.title} | Донат Перемоги`} />
 
-      {/* <div className={styles.productViewCard}> */}
       <h1>{article.title}</h1>
       <img src={article.url} alt={article.title} />
       <p>{article.content}</p>
-      {/* </div> */}
     </section>
   );
 }

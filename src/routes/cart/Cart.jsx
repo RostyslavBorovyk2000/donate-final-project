@@ -64,7 +64,7 @@ function Cart() {
     setOpenForm(true);
   };
 
-  const handlePurchase = async (name = "", phone = "", email = "", region = "", city = "", address = "", postal = "", addressNp = "") => {
+  const handlePurchase = async (firstName = "", lastName = "", phone = "", email = "", region = "", city = "", address = "", postal = "", addressNp = "") => {
     if (isUserLoggedIn !== null) {
       try {
         const cartData = await getCartFromServer();
@@ -82,7 +82,8 @@ function Cart() {
             },
             canceled: false,
             email,
-            name,
+            firstName,
+            lastName,
             mobile: phone,
             letterSubject: "Дякуємо за покупку та весок на підтримку ЗСУ!",
             letterHtml: `<h1>Ваше замовлення прийнято. Номер замовлення - ${orderNumber}.</h1><p>Ми переможемо!</p>`,
@@ -137,7 +138,8 @@ function Cart() {
               addressNp,
             },
             canceled: false,
-            name,
+            firstName,
+            lastName,
             email,
             mobile: phone,
             letterSubject: "Дякуємо за покупку та весок на підтримку ЗСУ!",
@@ -167,6 +169,22 @@ function Cart() {
   };
 
   const validationSchema = object().shape({
+    firstName: string()
+      .required("Поле 'Ім'я' є обов'язковим для заповнення")
+      .matches(/[a-zA-Zа-яА-ЯіІїЇ'єЄ]/, "Дозволені символи для ім'я a-z, A-Z, а-я, А-Я")
+      .min(2, "Ім'я має містити від 2 до 25 символів")
+      .max(25, "Ім'я має містити від 2 до 25 символів"),
+    lastName: string()
+      .required("Поле 'Прізвище' є обов'язковим для заповнення")
+      .matches(/[a-zA-Zа-яА-ЯіІїЇ'єЄ]/, "Дозволені символи для ім'я a-z, A-Z, а-я, А-Я")
+      .min(2, "Ім'я має містити від 2 до 25 символів")
+      .max(25, "Ім'я має містити від 2 до 25 символів"),
+    phone: string()
+      .required("Поле 'Телефон' обов'язковим для заповнення")
+      .matches(/\d{3}\d{2}\d{2}\d{2}/, "Некорректний формат телефонного номера"),
+    email: string()
+      .email("Некорректний формат електронної адреси")
+      .required("Поле 'email' є обов'язковим для заповнення"),
     region: string()
       // .required("Поле області адреси доставлення є обов'язковим для заповнення")
       .matches(/[a-zA-Zа-яА-ЯіІїЇ'єЄ]/, "Дозволені символи для ім'я a-z, A-Z, а-я, А-Я"),
@@ -224,7 +242,8 @@ function Cart() {
           <p className={`${styles.textForm}`}>Ваші контактні дані</p>
           <Formik
             initialValues={{
-              name: "",
+              firstName: "",
+              lastName: "",
               phone: "",
               email: "",
               region: "",
@@ -235,7 +254,8 @@ function Cart() {
             }}
             onSubmit={(values, { setSubmitting }) => {
               handlePurchase(
-                values.name,
+                values.firstName,
+                values.lastName,
                 values.phone,
                 values.email,
                 values.region,
@@ -253,46 +273,50 @@ function Cart() {
               <Form className={styles.form}>
                 <div className={styles.dataCustomerWrapper}>
                   <div className={styles.nameCustomer}>
-                    <div>
-                      <Field name="name">
-                        {({ field, meta }) => (
-                          <input
-                            {...field}
-                            id="name"
-                            // eslint-disable-next-line max-len
-                            className={meta.touched && meta.error ? styles.inputAttention : styles.input}
-                            placeholder="Ім'я та Прізвище"
-                            // onChange={handleNameChange}
-                          />
-                        )}
-                      </Field>
-                    </div>
-                  </div>
-                  <div className={styles.nameCustomer}>
-                    <div>
-                      <Field name="phone">
-                        {({ field, meta }) => (
-                          <input
-                            {...field}
-                            id="phone"
-                            // eslint-disable-next-line max-len
-                            className={meta.touched && meta.error ? styles.inputAttention : styles.input}
-                            placeholder="Телефон"
-                          />
-                        )}
-                      </Field>
-                      <Field name="email">
-                        {({ field, meta }) => (
-                          <input
-                            {...field}
-                            id="email"
-                            // eslint-disable-next-line max-len
-                            className={meta.touched && meta.error ? styles.inputAttention : styles.input}
-                            placeholder="email"
-                          />
-                        )}
-                      </Field>
-                    </div>
+                    <Field name="firstName">
+                      {({ field, meta }) => (
+                        <input
+                          {...field}
+                          id="firstName"
+                          // eslint-disable-next-line max-len
+                          className={meta.touched && meta.error ? styles.inputAttention : styles.input}
+                          placeholder="Ім'я"
+                        />
+                      )}
+                    </Field>
+                    <Field name="lastName">
+                      {({ field, meta }) => (
+                        <input
+                          {...field}
+                          id="lastName"
+                          // eslint-disable-next-line max-len
+                          className={meta.touched && meta.error ? styles.inputAttention : styles.input}
+                          placeholder="Прізвище"
+                        />
+                      )}
+                    </Field>
+                    <Field name="phone">
+                      {({ field, meta }) => (
+                        <input
+                          {...field}
+                          id="phone"
+                          // eslint-disable-next-line max-len
+                          className={meta.touched && meta.error ? styles.inputAttention : styles.input}
+                          placeholder="Телефон"
+                        />
+                      )}
+                    </Field>
+                    <Field name="email">
+                      {({ field, meta }) => (
+                        <input
+                          {...field}
+                          id="email"
+                          // eslint-disable-next-line max-len
+                          className={meta.touched && meta.error ? styles.inputAttention : styles.input}
+                          placeholder="email"
+                        />
+                      )}
+                    </Field>
                   </div>
                 </div>
 
@@ -398,6 +422,12 @@ function Cart() {
                 </div>
 
                 <div className={styles.errorsWrapper}>
+                  <ErrorMessage name="firstName" component="p" className={styles.textAttention} />
+                  <ErrorMessage name="lastName" component="p" className={styles.textAttention} />
+                  <ErrorMessage name="phone" component="p" className={styles.textAttention} />
+                  <ErrorMessage name="email" component="p" className={styles.textAttention} />
+                  {/* <ErrorMessage name="selectedOption" component="p"
+                  className={styles.textAttention} /> */}
                   <ErrorMessage name="region" component="p" className={styles.textAttention} />
                   <ErrorMessage name="city" component="p" className={styles.textAttention} />
                   <ErrorMessage name="address" component="p" className={styles.textAttention} />
