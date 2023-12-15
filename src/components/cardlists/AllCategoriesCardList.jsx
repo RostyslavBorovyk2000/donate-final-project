@@ -112,6 +112,7 @@ export default function CategoriesCardList({ query }) {
     const selectCategory = e.target.value;
     handleSearchParamsChange("category", selectCategory === selectedValue ? "" : selectCategory);
     handleSearchParamsChange("subcategory", "");
+    setCurrentPage(1);
   };
 
   const handleSubCategoryChange = (e) => {
