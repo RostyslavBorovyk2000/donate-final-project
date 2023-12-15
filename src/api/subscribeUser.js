@@ -10,7 +10,6 @@ const subscribeUser = (email) => (dispatch) => {
     letterHtml: "<h1>Привіт! Твоя підписка успішно оформлена!</h1><p>Тепер ти вчасно дізнаєшся про актуальні новини, термінові збори та нові надходження продукції на сайті Донат на Перемогу.</p> <p>Робімо внески на Перемогу разом!</p>",
     date: new Date().toISOString(),
   };
-  console.log(newSubscriber);
 
   return axios
     .post(SUBSCRIBE_URL, newSubscriber)

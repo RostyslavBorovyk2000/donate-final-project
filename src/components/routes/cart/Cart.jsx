@@ -203,7 +203,7 @@ function Cart() {
                 <p>Всього на суму:</p>
                 <p>
                   {/* eslint-disable-next-line max-len */}
-                  {cartItems.reduce((total, item) => total + item.currentPrice * item.cartQuantity, 0)}
+                  {cartItems.reduce((total, item) => (total + (item.currentPrice * item.cartQuantity)).toFixed(2), 0)}
                   &nbsp;грн
                 </p>
               </div>

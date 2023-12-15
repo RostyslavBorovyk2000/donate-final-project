@@ -8,7 +8,6 @@ export default function getCart() {
   const { token } = store.getState().auth;
   store.dispatch(setAuthToken(token));
 
-  // return axios.get(NEW_CART_URL);
   return axios.get(NEW_CART_URL)
     .then((response) => response)
     .catch((error) => {

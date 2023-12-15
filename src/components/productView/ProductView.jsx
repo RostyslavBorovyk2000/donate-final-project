@@ -379,20 +379,6 @@ function ProductView() {
                 </p>
               </>
             )}
-            {/* {(product.subcategory === "Взуття" && <ShoesSelector />)
-              || ((product.subcategory === "Комплекти форми"
-                || product.subcategory === "Одяг верхній"
-                || product.subcategory === "Термобілизна") && <ClothesSelector />)
-                || (product.subcategory === "Кепки" && <OuterwearSelector type="cap" />)
-                || (product.subcategory === "Шапки" && <OuterwearSelector type="hat" />)
-              || null}
-
-            {(product.category === "Одяг" && (
-            <QuantityCounter
-              quantity={product.cartQuantity}
-              handleChangeQuantity={handleChangeQuantity}
-            />
-            )) || null} */}
             {["Одяг"].includes(
               product.category,
             ) && (
@@ -491,13 +477,13 @@ function ProductView() {
           </div>
         </div>
 
-        {["Одяг"].includes(
+        {/* {["Одяг"].includes(
           product.category,
-        ) && (
-          <div className={styles.descriptionContainer}>
-            <TabComponent productDescription={product.description} />
-          </div>
-        )}
+        ) && ( */}
+        <div className={styles.descriptionContainer}>
+          <TabComponent productDescription={product.description} />
+        </div>
+        {/* // )} */}
       </div>
     </section>
   );

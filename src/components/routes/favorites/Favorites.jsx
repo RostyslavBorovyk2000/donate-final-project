@@ -6,6 +6,7 @@ import styles from "./Favorites.module.scss";
 
 function Favorites() {
   const favoritesItems = useSelector((state) => state.favorites.items);
+  const favoritesItemsGoods = favoritesItems.filter((product) => product.category === "Одяг");
   const isFavoriteEmpty = favoritesItems.length === 0;
 
   return (
@@ -13,18 +14,7 @@ function Favorites() {
       <h1 className={styles.cardsSectionHeadline}>Обрані товари</h1>
       <p className={styles.cardsSectionText}>Ваші обрані товари</p>
 
-      {/* {isFavoriteEmpty ? <p className={styles.favoriteEmpty}>Ви ще не додали жодного товару</p>
-        : (
-          <div className={styles.cardsListWrapper}>
-            {favoritesItems.map((item) => (
-              <FavoritesItem
-                key={item.itemNo}
-                item={item}
-              />
-            ))}
-          </div>
-        )} */}
-      {isFavoriteEmpty ? (
+      {isFavoriteEmpty || (favoritesItemsGoods.length === 0) ? (
         <p className={styles.favoriteEmpty}>Ви ще не додали жодного товару</p>
       ) : (
         <div className={styles.cardsListWrapper}>
@@ -44,7 +34,7 @@ function Favorites() {
       
       <h2 className={styles.cardsSectionHeadline}>Ви слідкуєте</h2>
       <p className={styles.cardsSectionText}>Лоти та донати</p>
-      {isFavoriteEmpty ? (
+      {isFavoriteEmpty || (favoritesItemsGoods.length !== 0) ? (
         <p className={styles.favoriteEmpty}>Ви ще не додали жодного лоту чи донат</p>
       ) : (
         <div className={styles.cardsListDonatWrapper}>
