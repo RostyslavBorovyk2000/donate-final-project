@@ -1,7 +1,6 @@
 /* eslint-disable react/button-has-type */
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-// import axios from "axios";
 import { Link } from "react-router-dom";
 import styles from "./Header.module.scss";
 import HeartFavorite from "./icons/favorites/Heart";
@@ -11,7 +10,6 @@ import IconEnter from "./icons/enter/IconEnter";
 import IconOut from "./icons/enter/IconOut";
 import { logOut } from "../../redux/actions/loggedInActions";
 import { resetCart, resetFavorites } from "../../redux/actions/cartActions";
-// import { REGISTRATION_URL } from "../../endpoints/endpoints";
 
 
 function BurgerMenu({ toggleBar }) {
@@ -27,27 +25,8 @@ function BurgerMenu({ toggleBar }) {
     toggleBar();
   };
 
-  // async function updateFavoritesToServer(newFavorites) {
-  //   const updatedCustomer = {
-  //     favorites: newFavorites,
-  //   };
-
-  //   try {
-  //     const response = await axios.put(REGISTRATION_URL, updatedCustomer);
-  //     return response.data.favorites;
-  //   } catch (err) {
-  //     console.error("Помилка при отриманні даних:", err);
-  //     return null;
-  //   }
-  // }
-
   async function doLogOut() {
     try {
-      // const currentFavorites = JSON.parse(localStorage.getItem("Favorites")) || [];
-      // if (currentFavorites.length > 0) {
-      //   await updateFavoritesToServer(currentFavorites);
-      // }
-  
       localStorage.removeItem("userLogin");
       localStorage.removeItem("isAdmin");
       localStorage.removeItem("CountCartProducts");

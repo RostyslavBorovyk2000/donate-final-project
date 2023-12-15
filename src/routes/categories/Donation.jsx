@@ -3,7 +3,6 @@ import { useState } from "react";
 import FilteredCardList from "../../components/cardlists/FilteredCardList";
 import { SortDonateComponent } from "../../components/sortComponent/SortComponent";
 import styles from "./Categories.module.scss";
-// import Pagination from "../../pagination/Pagination";
 
 
 export default function Donation() {
@@ -16,8 +15,6 @@ export default function Donation() {
       <p className={styles.cardsSectionText}>Цільові донати, що направляються на потреби військових підрозділів Збройних Сил України</p>
       <SortDonateComponent sortType={sortType} setSortType={setSortType} />
       <FilteredCardList property="category" value="Донат" sortType={sortType} query="Донат" />
-      {/* <FilteredCardList property="category" value="Донат" /> */}
-      {/* <Pagination query="Донат" /> */}
     </section>
   );
 }

@@ -14,12 +14,8 @@ import EyeClosed from "./eye/EyeClosed";
 import EyeOpen from "./eye/EyeOpen";
 import { FormButton } from "../button/Button";
 import logInUser from "../../api/logInUser";
-import {
-  // NEW_CART_URL,
-  GET_CUSTOMER,
-} from "../../endpoints/endpoints";
+import { GET_CUSTOMER } from "../../endpoints/endpoints";
 import styles from "./LogIn.module.scss";
-// import { initializeCart, initializeFavorites } from "../../redux/actions/cartActions";
 
 
 function LogIn({ headline, toRegistration }) {
@@ -56,10 +52,6 @@ function LogIn({ headline, toRegistration }) {
       await dispatch(logInUser(login, password));
 
       const customer = await getCustomer();
-      // if (userFavotites.favorites && userFavotites.favorites.length > 0) {
-      //   dispatch(initializeFavorites(userFavotites.favorites));
-      // }
-    
       if (customer.isAdmin === false) {
         navigate("/account");
       } else if (customer.isAdmin === true) {

@@ -59,12 +59,8 @@ function ProductView() {
   ));
 
   const progress = product ? ((product.currentValue * 100 / product.goal).toFixed(1)) : 0;
-  // const [currentBid, setCurrentBid] = useState(product?.initialPrice || "");
-  // console.log(currentBid);
   const [newCurrentBid, setNewCurrentBid] = useState("");
   const [errorInput, setErrorInput] = useState("");
-  // const [quantity, setQuantity] = useState(1);
-  // const [isInCart, setIsInCart] = useState(false);
   const [isButtonClicked, setButtonClicked] = useState(false);
   const isUserLoggedIn = localStorage.getItem("userLogin");
   const [showLoginModalBid, setShowLoginModalBid] = useState(false);
@@ -118,7 +114,6 @@ function ProductView() {
             imageURL: convertToImgUrl(data.nameCloudinary[0]),
           }),
         );
-        // setCurrentBid(initialPrice);
       } catch (error) {
         console.error("Error fetching product:", error);
       }
@@ -177,11 +172,8 @@ function ProductView() {
             console.log(err);
           });
       } catch (error) {
-        // !
-        // setShowError(true);
         console.error("Помилка при вході:", error);
       }
-      // setCurrentBid(newCurrentBid);
       setNewCurrentBid("");
       setErrorInput("");
     }
@@ -209,7 +201,6 @@ function ProductView() {
         setButtonClicked(true);
       }
     } else if (!isUserLoggedIn) {
-      // !
       // do nothing
     }
   };
@@ -328,7 +319,6 @@ function ProductView() {
                       {" "}
                     </span>
                     <span>
-                      {/* {currentBid} */}
                       {product.currentValue}
                       {" "}
                       грн
@@ -351,13 +341,6 @@ function ProductView() {
             ) : null}
 
             {(product.category === "Одяг" && (
-            // <p className={styles.productPrice}>
-            //   {product.currentPrice}
-            //   {" "}
-            //   грн.
-            // </p>
-            // ))
-            //   || null}
               <p className={styles.productPrice}>
                 {product.currentPrice}
                 {" "}
@@ -386,7 +369,6 @@ function ProductView() {
                 </Button>
                 <button
                   className={!showLoginModal ? styles.addToFavorite : styles.hidden}
-                  // className={styles.addToFavorite}
                   onClick={isUserLoggedIn ? handleAddFavorites : promptLogin}
                 >
                   {isButtonClicked ? (
@@ -471,14 +453,9 @@ function ProductView() {
             ) : null}
           </div>
         </div>
-
-        {/* {["Одяг"].includes(
-          product.category,
-        ) && ( */}
         <div className={styles.descriptionContainer}>
           <TabComponent productDescription={product.description} />
         </div>
-        {/* // )} */}
       </div>
     </section>
   );

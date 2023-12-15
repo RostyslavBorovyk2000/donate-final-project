@@ -46,8 +46,6 @@ const logInUser = (login, password) => async (dispatch) => {
       } else if (serverCart.data === null && cartItems.length === 0) {
         // go ahead
       } else if (serverCart.data.products.length === 0) {
-        // ! ?
-        // ? or updateCart for better?
         await editCart(cartItems);
       } else if (serverCart.data.products.length > 0) {
         const serverCartItems = [];
@@ -55,7 +53,6 @@ const logInUser = (login, password) => async (dispatch) => {
           ...i.product,
           cartQuantity: i.cartQuantity,
         }));
-        // TODO
         const updatedProducts = serverCart.data.products.map((i) => ({
           ...i.product,
           cartQuantity: i.cartQuantity,
@@ -71,7 +68,6 @@ const logInUser = (login, password) => async (dispatch) => {
         localStorage.setItem("Cart", JSON.stringify(uniqueUpdatedCartItems));
         dispatch(initializeCart(uniqueUpdatedCartItems));
         await updateCart(uniqueUpdatedCartItems);
-        // TODO
       }
 
       if (serverFavorites.data === null) {

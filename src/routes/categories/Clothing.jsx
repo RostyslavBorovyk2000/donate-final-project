@@ -4,7 +4,6 @@ import { useSelector } from "react-redux";
 import FilteredCardList from "../../components/cardlists/FilteredCardList";
 import { SortComponent } from "../../components/sortComponent/SortComponent";
 import SliderPrice from "../../components/sliderPrice/SliderPrice";
-// import Pagination from "../../pagination/Pagination";
 import styles from "./Categories.module.scss";
 
 
@@ -20,23 +19,6 @@ export default function Clothing() {
   const [selectedBrand, setSelectedBrand] = useState("");
   const [selectedColor, setSelectedColor] = useState("");
   const [sortType, setSortType] = useState("default");
-
-  //   const [coods, setCoods] = useState([]);
-
-  // useEffect(() => {
-  //     const getGoods = async () => {
-  //         try {
-  //             const res = await axios.get("http://localhost:4000/api/products");
-  //             const filteredCoods = res.data.filter(item => item.category === "Одяг");
-  //             setCoods(filteredCoods);
-  //         } catch (error) {
-  //             console.error("Error fetching data:", error);
-  //         }
-  //     };
-
-  //     getGoods();
-  // }, []);
-
 
   const applyFilter = () => {
     setSliderValue(tempSliderValue);
@@ -87,7 +69,6 @@ export default function Clothing() {
               {subCategory}
             </label>
           ))}
-          {/* Brand */}
           <h3 className={styles.filtrationOptions}>Виробник</h3>
           {getUniqueList(
             filtersList
@@ -109,7 +90,6 @@ export default function Clothing() {
               {brand}
             </label>
           ))}
-          {/* Color */}
           <h3 className={styles.filtrationOptions}>Колір</h3>
           {getUniqueList(
             filtersList
@@ -135,8 +115,6 @@ export default function Clothing() {
         <SortComponent sortType={sortType} setSortType={setSortType} />
         <FilteredCardList property="category" value={["Одяг"]} priceRange={sliderValue} subcategory={selectedSubCategory} brand={selectedBrand} color={selectedColor} sortType={sortType} query="Одяг" />
       </div>
-      {/* <FilteredCardList property="category" value={["Взуття", "Комплекти форми", "Одяг верхній"]} priceRange={sliderValue} /> */}
-      {/* <Pagination query="Одяг" /> */}
     </section>
   );
 }

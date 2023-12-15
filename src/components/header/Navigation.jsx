@@ -28,10 +28,6 @@ function Navigation() {
       <nav style={style} className={styles.nav}>
         <ul className={`${styles.navItem} ${styles.active}`}>
           <ActiveLink label="головна" to="/" className={`${styles.navList} ${styles.navLink}`} />
-          {/* <ActiveLink
-            label="про нас"
-            to="/about-us"
-            className={`${styles.navList} ${styles.navLink}`} /> */}
           <div
             className={styles.dropdown}
             onMouseEnter={showDropdown}

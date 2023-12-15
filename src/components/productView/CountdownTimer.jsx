@@ -17,7 +17,7 @@ function CountdownTimer({ targetDate }) {
 
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
   const [isTimerExpired, setIsTimerExpired] = useState(false);
-  const [status, setStatus] = useState("Активний збір"); // Додано стан для статусу
+  const [status, setStatus] = useState("Активний збір");
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -25,7 +25,7 @@ function CountdownTimer({ targetDate }) {
       setTimeLeft(updatedTimeLeft);
       if (updatedTimeLeft === null) {
         setIsTimerExpired(true);
-        setStatus("Завершений збір"); // Встановлення статусу при закінченні таймера
+        setStatus("Завершений збір");
       }
     }, 1000);
 

@@ -99,15 +99,6 @@ export const cartReducer = (state = initialState.cart, action) => {
       return {
         ...initialState.cart,
       };
-      
-      //  !
-      // case UPDATE_CART_PRODUCT: {
-      //   return {
-      //     ...state,
-      //     items: action.payload,
-      //     itemCount: action.payload.length,
-      //   };
-      // }
 
     default:
       return state;
@@ -118,11 +109,6 @@ export const cartReducer = (state = initialState.cart, action) => {
 export const favoritesReducer = (state = initialState.favorites, action) => {
   switch (action.type) {
     case ADD_FAVORITES:
-      // return {
-      //   ...state,
-      //   items: [...state.items, action.payload],
-      //   itemCount: state.itemCount + 1,
-      // };
       // eslint-disable-next-line no-underscore-dangle
       if (state.items.some((item) => item._id === action.payload._id)) {
         return {
@@ -163,22 +149,6 @@ export const favoritesReducer = (state = initialState.favorites, action) => {
       return {
         ...initialState.favorites,
       };
-       
-      // case UPDATE_CART_PRODUCT_QUANTITY:
-      //   console.log(state.items);
-      //   return {
-      //     ...state,
-      //     items: state.items.map((item) => {
-      //       // eslint-disable-next-line no-underscore-dangle
-      //       if (item._id === action.payload.productId) {
-      //         return {
-      //           ...item,
-      //           cartQuantity: action.payload.newQuantity,
-      //         };
-      //       }
-      //       return item;
-      //     }),
-      //   };
 
     default:
       return state;

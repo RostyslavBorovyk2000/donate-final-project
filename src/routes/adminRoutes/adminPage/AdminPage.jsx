@@ -85,8 +85,6 @@ function AdminPage() {
     (item) => item.category === "Благодійний лот" && item.currentValue > item.goal,
   );
 
-  // const getAllProducts = products.length;
-
   const getAllProducts = products.filter(
     (product) => product.category === "Одяг",
   );
@@ -119,7 +117,7 @@ function AdminPage() {
   return (
     <>
       <DocumentTitle title="Кабінет адміністратора" />
-      <section>
+      <section className={styles.sectionWrapper}>
         <div>
           <h1 className={styles.adminSectionHeadline}>Кабінет адміністратора</h1>
         </div>

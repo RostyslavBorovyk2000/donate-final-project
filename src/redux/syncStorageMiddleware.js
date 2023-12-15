@@ -13,14 +13,12 @@ export const syncStorageMiddleware = (storeAPI) => (next) => async (action) => {
       setAuthToken(token);
     }
 
-    // Отримуємо стан кошика з сервера
     try {
       const cartResponse = await axios.get(NEW_CART_URL);
       const cartDataOnServer = cartResponse.data;
       const responseWishlist = await axios.get(NEW_FAVORITES_URL);
       const favoritesDataOnServer = responseWishlist.data;
 
-      // Перевіряємо, чи існує кошик на сервері
       if (cartDataOnServer) {
         const cartItems = storeAPI.getState().cart.items;
         const updatedCartData = {

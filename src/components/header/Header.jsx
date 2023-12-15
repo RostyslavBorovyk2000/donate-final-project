@@ -3,7 +3,6 @@ import React, { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { Link } from "react-router-dom";
-// import { useMediaQuery } from "@mui/material";
 import { updateInputValue } from "../../redux/actionsCreators/inputValueActionsCreators";
 import Cart from "./icons/cart/IconCart";
 import IconEnter from "./icons/enter/IconEnter";
@@ -13,7 +12,6 @@ import { logOut } from "../../redux/actions/loggedInActions";
 import Button from "../button/Button";
 import Navigation from "./Navigation";
 import { resetCart, resetFavorites } from "../../redux/actions/cartActions";
-// import { IconSearchMobile } from "./icons/search/IconSearch";
 import HeartFavorite from "./icons/favorites/Heart";
 import BurgerMenu from "./BurgerMenu";
 import { REGISTRATION_URL } from "../../endpoints/endpoints";
@@ -24,8 +22,6 @@ function Header() {
   const favoriteCount = useSelector((state) => state.favorites.itemCount);
   const isLoggedInFromRedux = useSelector((state) => state.auth.isLoggedIn);
   const dispatch = useDispatch();
-  // const isMobileScreen = useMediaQuery("(max-width: 767px)");
-
   const [showBurgerMenu, setShowBurgerMenu] = useState(false);
   const [showInput, setShowInput] = useState(false);
   const [searchResults, setSearchResults] = useState([]);
@@ -33,13 +29,10 @@ function Header() {
   const [inputValue, setInputValue] = useState(inputValueFromRedux);
   const searchResultsRef = useRef(null);
   const [debounceTimeoutId, setDebounceTimeoutId] = useState(null);
-  // const [selectedProduct, setSelectedProduct] = useState(null);
 
   const getProductDetails = async (productId) => {
     try {
       await axios.get(`http://localhost:4000/api/products/${productId}`);
-      // const response = await axios.get(`http://localhost:4000/api/products/${productId}`);
-      // setSelectedProduct(response.data);
     } catch (error) {
       console.error("Помилка при отриманні деталей товару:", error);
     }
@@ -96,31 +89,21 @@ function Header() {
       console.error("Помилка при виході:", error);
     }
   };
-  // const [categoryName, setCategoryName] = useState('');
 
   const performSearch = async (query) => {
-    // console.log(query);
     try {
       const searchPhrases = {
         query,
       };
   
-      // await axios.post("http://localhost:4000/api/products/search", searchPhrases);
       const response = await axios.post("http://localhost:4000/api/products/search", searchPhrases);
       const products = response.data;
   
       
       setSearchResults(products);
-  
-      if (products.length > 0) {
-        // setCategoryName(products[0].category);
-      } else {
-        // setCategoryName('');
-      }
     } catch (error) {
       console.error("Error while searching for products:", error);
       setSearchResults([]);
-      // setCategoryName('');
     }
   };
 
@@ -158,15 +141,6 @@ function Header() {
   return (
     <header className={styles.header}>
       <div className={styles.mobileHeader}>
-        {/* <Button
-          toPage={`/products-search?query=${inputValue}`}
-          type="submit"
-          className={styles.buttonMobileHeader}
-          width="45px"
-          color=""
-        >
-          <IconSearchMobile />
-        </Button> */}
         <input
           ref={searchResultsRef}
           className={styles.inputMobileHeader}
@@ -186,8 +160,6 @@ function Header() {
             ))}
           </div>
         )}
-
-        {/* {isMobileScreen && <BurgerMenu toggleBar={toggleBar} />} */}
         <BurgerMenu toggleBar={toggleBar} />
       </div>
 

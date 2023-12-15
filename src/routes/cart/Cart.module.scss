@@ -40,14 +40,12 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    // flex-wrap: wrap;
     border-radius: 25px;
     margin-top: 11px;
     border: 1px solid rgba(114, 114, 114, 1);
 
     @media screen and (min-width: 1001px) {
         padding: 10px 0px 10px 20px;
-        // flex-wrap: wrap;
     }
 
     @media screen and (min-width: 768px) and (max-width: 1000px) {
@@ -68,7 +66,6 @@
     
 }
 .productInfo{
-    // width: 40%;
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -97,7 +94,6 @@
 
 .cardItemImage {
     width: 150px;
-    // height: 70px;
     object-fit: cover;
     border-radius: 25px;
 }
@@ -122,17 +118,8 @@
     background-color: variables.$bgc-attention;
 }
 
-// .quantityCounterWrapper{
-//     order: 1;
-//     width: 150px;
-// }
-
 .quantityButtonWrapper {
     order: 2;
-
-    // @include devices(mobile) {
-    //     margin-left: 50px;
-    // }
 }
 
 .buttonsWrapper {
@@ -143,7 +130,6 @@
 
     @media screen and (min-width: 768px) {
         width: 100%;
-        // min-height: 170px;
     }
 
     @media screen and (min-width: 426px) and (max-width: 767px) {
@@ -158,22 +144,6 @@
         align-items: center;
     }
 }
-
-// .buttons1 {
-//     @include devices(mobile) {
-//         width: 100%;
-//         display: flex;
-//         justify-content: space-between;
-//     }
-// }
-
-// .buttons2 {
-//     @include devices(mobile) {
-//         width: 70%;
-//         display: flex;
-//         justify-content: space-between;
-//     }
-// }
 
 .cardItemPriceWrapper {
     @media screen and (min-width: 320px) and (max-width: 480px) {
@@ -216,7 +186,6 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    // height: 65px;
     margin-left: 15px;
 }
 .name {
@@ -235,7 +204,6 @@
         color: #a5a5a5;
         text-transform: uppercase;
     }
-
 }
 
 .totalPriceWrapper {
@@ -284,7 +252,6 @@
     text-align: center;
     width: 100%;
     padding: 100px 0px 0px;
-    // padding-top: 100px;
 }
 
 .cardItemIcons {
@@ -377,7 +344,6 @@
     flex-direction: column;
     justify-content: space-between;
     font-weight: 700;
-    // margin-bottom: 20px;
 }
 
 .customerFirstNameChange {
@@ -400,7 +366,6 @@
 .nameCustomer {
     display: flex;
     flex-direction: column;
-    // justify-content: space-between;
     width: 100%;
 }
 

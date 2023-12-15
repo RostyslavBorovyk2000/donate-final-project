@@ -1,7 +1,5 @@
 import { Routes, Route } from "react-router-dom";
 import AboutUs from "./aboutUs/AboutUs";
-// import Cart from "./cart/Cart";
-// import Cart from "./cart/Cart";
 import Cart from "./cart/Cart";
 import Blog from "./blog/Blog";
 import ArticleView from "./blog/ArticleView";
@@ -40,17 +38,13 @@ function AppRoutes() {
       <Route path="/categories/donation" element={<Donation />} />
       <Route path="/cart" element={<Cart />} />
       <Route path="/blog" element={<Blog />} />
-      {/* ! */}
       <Route path="/blog/news/:customId" element={<ArticleView />} />
-      {/* ! */}
       <Route path="/contacts" element={<Contacts />} />
       <Route path="/favorites" element={<Favorites />} />
       <Route path="/delivery-payment" element={<DeliveryPayment />} />
       <Route path="/returns" element={<Returns />} />
       <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-      {/* ! */}
       <Route path="/product/:itemNo" element={<ProductPage />} />
-      {/* ! */}
       <Route path="/log-in" element={<CustomerLogIn />} />
       <Route path="/account" element={<ProtectedComponentForCustomer />} />
       <Route path="/admin" element={<AdminLogIn />} />

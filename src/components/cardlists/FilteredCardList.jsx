@@ -127,7 +127,6 @@ export default function FilteredCardList({
   const paginateFunc = (pageNumber) => setCurrentPage(pageNumber);
   useEffect(() => {
     const getGoods = async () => {
-      // const filteredProd = await sortProducts(items, sortType);
       if (query !== "") {
         const coodsFiltre = sortedData.filter((product) => product.category === `${query}`);
         setCoods(coodsFiltre);
@@ -139,7 +138,6 @@ export default function FilteredCardList({
     getGoods();
   }, [query, sortType, sortedData]);
     
-  // return isLoading ? <p>Loading...</p> : <CardList items={sortedData} />;
   return (
     <div>
       <div>
@@ -159,16 +157,13 @@ export default function FilteredCardList({
 
 export function MainFilteredCardList({ property, value }) {
   const [isLoading, setIsLoading] = useState(true);
-  // const [filteredData, setFilteredData] = useState([]);
   const [productsPopular, setProductsPopular] = useState([]);
     
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        // const response = await axios.get(GET_PRODUCTS_URL);
         const response = await axios.get("http://localhost:4000/api/products/filter?isPopular=true&perPage=12");
-        // const response = await axios.get("http://localhost:4000/api/products/filter?color=Камуфляж");
         const products = response.data;
   
         if (!Array.isArray(products.products)) {
@@ -188,9 +183,6 @@ export function MainFilteredCardList({ property, value }) {
             newData.push(item);
           }
         });
-
-        // const mixedData = shuffleArray([...newData]);
-        // setFilteredData(mixedData);
       } catch (error) {
         console.error("Помилка при завантаженні даних:", error);
       } finally {
@@ -204,9 +196,7 @@ export function MainFilteredCardList({ property, value }) {
   return (
     // eslint-disable-next-line react/jsx-no-useless-fragment
     <>
-      {/* {isLoading ? <Spinner /> : <CardList items={filteredData} />} */}
       {isLoading ? <Spinner /> : <CardList items={productsPopular} />}
-      {/* {isLoading ? <Spinner /> : <CardList items={currentCoods} />} */}
     </>
   );
 }

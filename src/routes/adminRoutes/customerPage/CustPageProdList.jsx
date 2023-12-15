@@ -4,8 +4,6 @@ import styles from "./CustomerPage.module.scss";
 
 
 export default function CustPageProdList({ storeData }) {
-  // const [productsFavorites, setProductsFavorites] = useState([]);
-  // const [productsCart, setProductsCart] = useState([]);
   const [products, setProducts] = useState([]);
   const storeFavorites = useSelector((state) => state.favorites.items);
   const storeCart = useSelector((state) => state.cart.items);

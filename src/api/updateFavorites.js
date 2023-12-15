@@ -16,29 +16,11 @@ export default function updateFavorites(favoritesItemsFromLocalStorage) {
   };
 
   axios.put(NEW_FAVORITES_URL, updatedFavorites);
-  // ! below !
-  // })
-  //   .catch((error) => {
-  //     // Логуємо помилку тут, але також репропагуємо її, щоб можна було обробити ззовні
-  //     console.error("Помилка при оновленні кошика:", error);
-  //     throw error;
-  //   });
 }
 
 export function deleteWishlist() {
   const { token } = store.getState().auth;
   store.dispatch(setAuthToken(token));
-  
-  // const updatedFavorites = {
-  //   products: [],
-  // };
 
   axios.delete(NEW_FAVORITES_URL);
-  // ! below !
-  // })
-  //   .catch((error) => {
-  //     // Логуємо помилку тут, але також репропагуємо її, щоб можна було обробити ззовні
-  //     console.error("Помилка при оновленні кошика:", error);
-  //     throw error;
-  //   });
 }

@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 // import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-// import Button from "../button/Button";
 import { updateInputValue } from "../../redux/actionsCreators/inputValueActionsCreators";
 import styles from "./Header.module.scss";
 
@@ -11,16 +10,12 @@ function SearchForm() {
   const dispatch = useDispatch();
   const [searchResults, setSearchResults] = useState([]);
   const [showInput, setShowInput] = useState(false);
-  // const [categoryName, setCategoryName] = useState('');
   const inputValueFromRedux = useSelector((state) => state.inputValue.inputValue);
   const [inputValue, setInputValue] = useState(inputValueFromRedux);
-  // const [selectedProduct, setSelectedProduct] = useState(null);
   const [debounceTimeoutId, setDebounceTimeoutId] = useState(null);
   const getProductDetails = async (productId) => {
     try {
-      // const response = await axios.get(`http://localhost:4000/api/products/${productId}`);
       await axios.get(`http://localhost:4000/api/products/${productId}`);
-      // setSelectedProduct(response.data);
     } catch (error) {
       console.error("Помилка при отриманні деталей товару:", error);
     }
@@ -38,16 +33,13 @@ function SearchForm() {
       setSearchResults(products);
   
       if (products.length > 0) {
-        // setCategoryName(products[0].category);
         setShowInput(true);
       } else {
-        // setCategoryName('');
         setShowInput(false);
       }
     } catch (error) {
       console.error("Error while searching for products:", error);
       setSearchResults([]);
-      // setCategoryName('');
       setShowInput(false);
     }
   };
@@ -92,7 +84,6 @@ function SearchForm() {
           value={inputValue}
           onChange={handleInputChange}
         />
-        {/* </div> */}
         {showInput && (
         <div className={styles.searchResults}>
           <ul>
@@ -109,17 +100,6 @@ function SearchForm() {
         </div>
         )}
       </div>
-
-
-      {/* <div className={styles.searchButtons}>
-        <Button
-          type="button"
-          className={styles.searchBtn}
-          text="Search"
-          width="80px"
-          onClick={() => handleSearch(inputValue)}
-        />
-      </div> */}
     </div>
   );
 }

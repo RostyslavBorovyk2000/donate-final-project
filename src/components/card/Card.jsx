@@ -91,7 +91,6 @@ export function Card({ item }) {
         dispatch(counterIncrement());
       }
     } else if (!isUserLoggedIn) {
-      // !
       // do nothing
     }
   };

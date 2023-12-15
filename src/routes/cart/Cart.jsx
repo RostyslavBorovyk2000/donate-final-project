@@ -68,7 +68,6 @@ function Cart() {
     if (isUserLoggedIn !== null) {
       try {
         const cartData = await getCartFromServer();
-        // const lsData = localStorage.getItem("cart") || null;
         if (cartData !== null) {
           const { _id: customerId } = cartData.customerId;
           const newOrder = {
@@ -105,8 +104,6 @@ function Cart() {
             });
         }
       } catch (error) {
-        // !
-        // setShowError(true);
         console.error("Помилка при вході:", error);
       }
     } else {
@@ -161,8 +158,6 @@ function Cart() {
             });
         }
       } catch (error) {
-        // !
-        // setShowError(true);
         console.error("Помилка при вході:", error);
       }
     }
@@ -186,16 +181,12 @@ function Cart() {
       .email("Некорректний формат електронної адреси")
       .required("Поле 'email' є обов'язковим для заповнення"),
     region: string()
-      // .required("Поле області адреси доставлення є обов'язковим для заповнення")
       .matches(/[a-zA-Zа-яА-ЯіІїЇ'єЄ]/, "Дозволені символи для ім'я a-z, A-Z, а-я, А-Я"),
     city: string()
-      // .required("Поле населеного пункту є обов'язковим для заповнення")
       .matches(/[a-zA-Zа-яА-ЯіІїЇ'єЄ]/, "Дозволені символи для прізвища a-z, A-Z, а-я, А-Я"),
     address: string()
-      // .required("Поле адреси є обов'язковим для заповнення")
       .matches(/[a-zA-Zа-яА-ЯіІїЇ'єЄ]/, "Дозволені символи для прізвища a-z, A-Z, а-я, А-Я"),
     postal: string()
-      // .required("Поле поштового індекса є обов'язковим для заповнення")
       .matches(/[0-9]/, "Дозволені символи для пароля: 0-9"),
   });
 
@@ -229,7 +220,6 @@ function Cart() {
             <FormButton
               text="Оформити замовлення"
               padding="10px"
-              // onClick={isUserLoggedIn ? showForm : promptLogin}
               onClick={showForm}
               className={openForm ? styles.hidden : styles.buttonStyle}
             />
@@ -426,8 +416,6 @@ function Cart() {
                   <ErrorMessage name="lastName" component="p" className={styles.textAttention} />
                   <ErrorMessage name="phone" component="p" className={styles.textAttention} />
                   <ErrorMessage name="email" component="p" className={styles.textAttention} />
-                  {/* <ErrorMessage name="selectedOption" component="p"
-                  className={styles.textAttention} /> */}
                   <ErrorMessage name="region" component="p" className={styles.textAttention} />
                   <ErrorMessage name="city" component="p" className={styles.textAttention} />
                   <ErrorMessage name="address" component="p" className={styles.textAttention} />

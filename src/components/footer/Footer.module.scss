@@ -19,17 +19,6 @@
   margin-top: 100px;
 }
 
-// .footerContainer::before {
-//   content: "";
-//   position: absolute;
-//   left: 50%;
-//   width: 100vw;
-//   min-height: 100%;
-//   background-color: rgba(193, 189, 189, 0.09);
-//   transform: translateX(-50%);
-//   z-index: -1;
-// }
-
 .footerSubscribeWrapper {
   display: flex;
   flex-direction: column;
@@ -167,13 +156,6 @@
     color: rgba(61, 61, 61, 1);
     text-decoration: none;
   }
-
-  // @include devices(tablet) {
-  //   &:first-child {
-  //     position: absolute;
-  //     top: 15px;
-  //   }
-  // }
 }
 
 .footerNavigationContainer {
@@ -251,10 +233,6 @@
       display: block;
     }
   }
-}
-
-//mobile Accordion Menu:
-.bottomMobileItem {
 }
 
 .bottomSocialMedia {

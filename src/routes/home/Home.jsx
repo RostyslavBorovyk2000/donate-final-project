@@ -1,5 +1,4 @@
 import CategorysList from "../../components/categoriesList/CategoriesList";
-// import FilteredCardList from "../../cardlists/FilteredCardList";
 import { MainFilteredCardList } from "../../components/cardlists/FilteredCardList";
 import MainSlider from "../../components/slider/MainSlider";
 import DocumentTitle from "../DocumentTitle";
@@ -19,7 +18,6 @@ function MainPage() {
           <p className={styles.cardsSectionText}>Найпопулярніші позиції</p>
         </div>
 
-        {/* <FilteredCardList property="isPopular" value /> */}
         <MainFilteredCardList property="isPopular" value />
                 
       </section>

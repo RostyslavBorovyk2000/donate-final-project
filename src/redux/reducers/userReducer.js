@@ -1,5 +1,4 @@
 import { SET_LOGGED_IN_USER, SET_LOGGED_OUT_USER } from "../actions/userActions";
-// import { SET_LOGGED_OUT_USER } from "../actions/userActions";
 
 const initialState = {
   username: null,

@@ -13,7 +13,6 @@
   display: flex;
   justify-content: space-between;
   width: 200px;
-  // margin-top: 50px;
 
   @include devices(mobile) {
     justify-content: space-around;
@@ -64,7 +63,6 @@
   padding: 10px;
 
   @media screen and (min-width: 320px) and (max-width: 600px) {
-    // flex-wrap: wrap;
     flex-direction: column;
     row-gap: 20px;
   }
@@ -102,7 +100,6 @@
   & div {
     width: 100%;
     display: flex;
-    // flex-direction: column;
     align-items: center;
     justify-content: space-between;
     border-bottom: 1px solid #d1e2bb;

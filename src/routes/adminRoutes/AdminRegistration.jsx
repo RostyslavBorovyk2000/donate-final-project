@@ -1,4 +1,3 @@
-// import Registration from "../../registration/Registration";
 import Registration from "../../components/pagination/Pagination";
 import DocumentTitle from "../DocumentTitle";
 

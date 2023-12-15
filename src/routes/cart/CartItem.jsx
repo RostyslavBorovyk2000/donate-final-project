@@ -38,19 +38,8 @@ function CartItem({ item }) {
     }
   }
 
-  // async function getCartFromServer() {
-  //   try {
-  //     const response = await axios.get(NEW_CART_URL);
-  //     return response.data;
-  //   } catch (err) {
-  //     console.error("Помилка при отриманні даних:", err);
-  //     return null;
-  //   }
-  // }
-
   async function getCartFromServer() {
     if (!isUserLoggedIn) {
-      // console.log("Користувач не авторизований.");
       return null;
     }
   
@@ -70,7 +59,6 @@ function CartItem({ item }) {
     if (cartData.products.length !== null) {
       // eslint-disable-next-line no-underscore-dangle
       const idToDelete = item._id ? item._id : item.id;
-      // const idToDelete = item._id;
       axios
         .delete(`http://localhost:4000/api/cart/${idToDelete}`)
         .catch((err) => {
@@ -149,7 +137,6 @@ function CartItem({ item }) {
   };
 
   const updateItemSize = async (productId, newSize) => {
-    // Оновлення розміру в localStorage
     const currentProducts = JSON.parse(localStorage.getItem("Cart")) || [];
     const updatedProducts = currentProducts.map((product) => {
       // eslint-disable-next-line no-underscore-dangle
@@ -160,7 +147,6 @@ function CartItem({ item }) {
     });
     localStorage.setItem("Cart", JSON.stringify(updatedProducts));
   
-    // Оновлення розміру на сервері
     try {
       const cartData = await getCartFromServer();
       if (cartData && cartData.products) {
@@ -175,7 +161,6 @@ function CartItem({ item }) {
   
         const response = await axios.put(NEW_CART_URL, updatedCart);
         if (response.status === 200) {
-          // Оновлення Redux store
           dispatch(updateCartItemSize(productId, newSize));
         }
       }
@@ -217,7 +202,6 @@ function CartItem({ item }) {
         </div>
       </div>
       <div className={styles.buttonsWrapper}>
-        {/* <div className={styles.buttons1}> */}
         {/* eslint-disable-next-line no-underscore-dangle */}
         {(cartIt.subcategory === "Взуття" && <ShoesSelector updateCartItemSize={updateItemSize} id={item._id} />)
         // eslint-disable-next-line no-underscore-dangle
@@ -226,20 +210,15 @@ function CartItem({ item }) {
         || (cartIt.subcategory === "Кепки" && <OuterwearSelector type="cap" updateCartItemSize={updateItemSize} id={item._id} />)
         // eslint-disable-next-line no-underscore-dangle
         || (cartIt.subcategory === "Шапки" && <OuterwearSelector type="hat" updateCartItemSize={updateItemSize} id={item._id} />) || null}
-        {/* </div> */}
-        {/* <div className={styles.quantityCounterWrapper}> */}
         <QuantityCounter
           quantity={cartIt.cartQuantity}
           handleChangeQuantity={handleChangeQuantity}
         />
-        {/* </div> */}
-        {/* <div className={styles.buttons2}> */}
         <div className={styles.quantityButtonWrapper}>
           <Button style={{ backgroundColor: "none" }} onClick={() => handleRemoveFromCart()}>
             <DeleteIcon />
           </Button>
         </div>
-        {/* </div> */}
       </div>
     </div>
   );

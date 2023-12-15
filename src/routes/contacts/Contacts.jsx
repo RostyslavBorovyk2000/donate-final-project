@@ -21,8 +21,8 @@ export function ContactMap() {
   };
 
   const center = {
-    lat: 50.4501, // Широта (Київ)
-    lng: 30.5234, // Довгота (Київ)
+    lat: 50.4501,
+    lng: 30.5234,
   };
 
   return (
@@ -40,7 +40,6 @@ export function ContactMap() {
 
 export function ContactForm() {
   const handleSubmit = (values, { resetForm }) => {
-    console.log(values);
     resetForm();
   };
 
@@ -167,7 +166,7 @@ const containerStyle = {
 
 function Contacts() {
   return (
-    <>
+    <section className={style.sectionWrapper}>
       <DocumentTitle title="Контакти" />
       <h1
         style={{
@@ -178,13 +177,7 @@ function Contacts() {
       </h1>
       <p style={{ color: "rgb(61 61 61)", marginBottom: "10px" }}>Контактна інформація</p>
       <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr",
-          gap: "24px",
-          padding: "0",
-          marginBottom: "24px",
-        }}
+        className={style.contactPageWrapper}
       >
         <div style={containerStyle}>
           {" "}
@@ -287,7 +280,7 @@ function Contacts() {
       <div>
         <ContactMap />
       </div>
-    </>
+    </section>
   );
 }
 

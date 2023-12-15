@@ -53,3 +53,18 @@
   border-width: 2px;
   cursor: pointer;
 }
+
+.contactPageWrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  padding: 0;
+  margin-bottom: 24px;
+
+  @include devices(tablet) {
+    grid-template-columns: 1fr;
+  }
+  @include devices(mobile) {
+    grid-template-columns: 1fr;
+  }
+}

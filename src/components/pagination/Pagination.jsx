@@ -25,7 +25,6 @@ function Pagination({ query }) {
 
     getGoods();
   }, [query]);
-  // }, []);
 
 
   const lastCoodsIndex = currentPage * goodsPearPages;
