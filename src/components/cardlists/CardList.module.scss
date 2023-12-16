@@ -8,8 +8,6 @@
   padding: 20px 60px 0px;
   column-gap: 30px;
   row-gap: 30px;
-  // justify-content: center;
-
 
   @include devices(mobile) {
     justify-content: center;
