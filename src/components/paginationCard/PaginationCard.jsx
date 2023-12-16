@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { Card } from "../card/Card";
 import Spinner from "../spinner/Spinner";
 import styles from "./PaginationCard.module.scss";
@@ -20,3 +21,8 @@ function PaginationCard({ coods, loading }) {
 }
 
 export default PaginationCard;
+
+PaginationCard.propTypes = {
+  loading: PropTypes.bool.isRequired,
+  coods: PropTypes.arrayOf.isRequired,
+};

@@ -5,10 +5,11 @@ import { Cloudinary } from "@cloudinary/url-gen";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-// import PropTypes from "prop-types";
+import PropTypes from "prop-types";
 import { Icons } from "./Icons";
 import { counterIncrement } from "../../redux/actionsCreators/counterActionsCreators";
 import { addFavorites, addToCart } from "../../redux/actions/cartActions";
+import { NEW_CART_URL, NEW_FAVORITES_URL } from "../../endpoints/endpoints";
 import styles from "./Card.module.scss";
 import Button from "../button/Button";
 
@@ -42,7 +43,7 @@ export function Card({ item }) {
   async function addCartToServer() {
     try {
       axios
-        .put(`http://localhost:4000/api/cart/${_id}`)
+        .put(`${NEW_CART_URL}/${_id}`)
         .catch((err) => {
           console.log(err);
         });
@@ -74,7 +75,7 @@ export function Card({ item }) {
   async function addFavoritesToServer() {
     try {
       axios
-        .put(`http://localhost:4000/api/wishlist/${_id}`)
+        .put(`${NEW_FAVORITES_URL}/${_id}`)
         .catch((err) => {
           console.log(err);
         });
@@ -166,12 +167,24 @@ export function Card({ item }) {
   );
 }
 
-// Card.propTypes = {
-//   itemNo: PropTypes.string.isRequired,
-//   name: PropTypes.string.isRequired,
-//   price: PropTypes.oneOfType([
-//     PropTypes.string.isRequired,
-//     PropTypes.number.isRequired,
-//   ]),
-//   nameCloudinary: PropTypes.string.isRequired,
-// };
+Card.propTypes = {
+  item: PropTypes.shape({
+    itemNo: PropTypes.string.isRequired,
+    shortName: PropTypes.string.isRequired,
+    currentPrice: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+    ]),
+    currentValue: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+    ]),
+    goal: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+    ]),
+    nameCloudinary: PropTypes.arrayOf(PropTypes.string),
+    category: PropTypes.string.isRequired,
+    _id: PropTypes.string.isRequired,
+  }).isRequired,
+};

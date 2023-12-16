@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import PropTypes from "prop-types";
 import PaginationCard from "../paginationCard/PaginationCard";
 import PaginationPages from "../paginationPages/PaginationPages";
+import { GET_PRODUCTS_URL } from "../../endpoints/endpoints";
 
 function Pagination({ query }) {
   const [coods, setCoods] = useState([]);
@@ -12,7 +14,7 @@ function Pagination({ query }) {
   useEffect(() => {
     const getGoods = async () => {
       setLoading(true);
-      const res = await axios.get("http://localhost:4000/api/products");
+      const res = await axios.get(GET_PRODUCTS_URL);
       if (query !== "") {
         const coodsFiltre = res.data.filter((product) => product.category === `${query}`);
         setCoods(coodsFiltre);
@@ -43,3 +45,7 @@ function Pagination({ query }) {
 }
 
 export default Pagination;
+
+Pagination.propTypes = {
+  query: PropTypes.string.isRequired,
+};

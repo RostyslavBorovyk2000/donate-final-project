@@ -14,7 +14,7 @@ import Navigation from "./Navigation";
 import { resetCart, resetFavorites } from "../../redux/actions/cartActions";
 import HeartFavorite from "./icons/favorites/Heart";
 import BurgerMenu from "./BurgerMenu";
-import { REGISTRATION_URL } from "../../endpoints/endpoints";
+import { GET_PRODUCTS_URL, REGISTRATION_URL, GET_SEARCH } from "../../endpoints/endpoints";
 import styles from "./Header.module.scss";
 
 function Header() {
@@ -32,7 +32,7 @@ function Header() {
 
   const getProductDetails = async (productId) => {
     try {
-      await axios.get(`http://localhost:4000/api/products/${productId}`);
+      await axios.get(`${GET_PRODUCTS_URL}/${productId}`);
     } catch (error) {
       console.error("Помилка при отриманні деталей товару:", error);
     }
@@ -96,7 +96,7 @@ function Header() {
         query,
       };
   
-      const response = await axios.post("http://localhost:4000/api/products/search", searchPhrases);
+      const response = await axios.post(GET_SEARCH, searchPhrases);
       const products = response.data;
   
       

@@ -211,8 +211,12 @@ function Cart() {
               <div className={styles.totalPrice}>
                 <p>Всього на суму:</p>
                 <p>
-                  {/* eslint-disable-next-line max-len */}
-                  {cartItems.reduce((total, item) => (total + (item.currentPrice * item.cartQuantity)).toFixed(2), 0)}
+                  {cartItems.reduce((total, item) => {
+                    const price = parseFloat(item.currentPrice);
+                    const quantity = parseInt(item.cartQuantity, 10);
+                    const sum = total + (price * quantity);
+                    return sum;
+                  }, 0).toFixed(2)}
                   &nbsp;грн
                 </p>
               </div>

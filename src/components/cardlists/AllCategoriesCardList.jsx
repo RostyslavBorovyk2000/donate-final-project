@@ -2,13 +2,14 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
+import PropTypes from "prop-types";
 import CardList from "./CardList";
 import PaginationPages from "../paginationPages/PaginationPages";
 import Spinner from "../spinner/Spinner";
-import styles from "./AllCategoriesCardList.module.scss";
 import { getProducts } from "../../api/getProducts";
 import { SortComponent, SortDonateComponent, SortLotsComponent } from "../sortComponent/SortComponent";
 import SliderPrice from "../sliderPrice/SliderPrice";
+import styles from "./AllCategoriesCardList.module.scss";
 
 function getUniqueList(list) {
   return [...new Set(list)];
@@ -209,139 +210,140 @@ export default function CategoriesCardList({ query }) {
   
 
   return (
-    <>
-      <div className={styles.filtrationWrapper}>
-        <div className={styles.subCategoryOptions}>
-          <div className={styles.categorySelect}>
-            <select className={styles.select} value={selectedValue} onChange={handleChange}>
-              {getUniqueList(
-                filtersList.filter(({ type }) => type === "category").map(({ name }) => name),
-              ).map((selectCategory) => (
-                <option key={selectCategory} value={selectCategory}>
-                  {selectCategory}
-                </option>
-              ))}
-            </select>
+    <div className={styles.filtrationWrapper}>
+      <div className={styles.subCategoryOptions}>
+        <div className={styles.categorySelect}>
+          <select className={styles.select} value={selectedValue} onChange={handleChange}>
+            {getUniqueList(
+              filtersList.filter(({ type }) => type === "category").map(({ name }) => name),
+            ).map((selectCategory) => (
+              <option key={selectCategory} value={selectCategory}>
+                {selectCategory}
+              </option>
+            ))}
+          </select>
+        </div>
+        
+        {selectedValue === "Одяг" && (
+        <aside className={styles.filtration}>
+          <SortComponent sortType={sortType} setSortType={setSortType} />
+          <SliderPrice
+            tempSliderValue={tempSliderValue}
+            setTempSliderValue={setTempSliderValue}
+            applyFilter={applyFilter}
+            priceRange={priceRange}
+            setPriceRange={setPriceRange}
+          />
+          <div className={styles.filtrationSelectWrapper}>
+            <div className={styles.categoryOptionWrapper}>
+              <h3 className={styles.filtrationOptions}>Підкатегорія</h3>
+              <div className={styles.categoryOption}>
+                {getUniqueList(
+                  filtersList
+                    .filter(({ type }) => type === "subcategory")
+                    .map(({ name }) => name),
+                ).map((subCategory) => (
+                  <label
+                    htmlFor={subCategory}
+                    key={subCategory}
+                    className={styles.checkboxLabel}
+                  >
+                    <input
+                      type="checkbox"
+                      name={subCategory}
+                      checked={selectedSubCategory === subCategory}
+                      className={styles.customCheckbox}
+                      onChange={() => handleSubCategoryChange({ target: { value: subCategory } })}
+                    />
+                    {subCategory}
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            <div className={styles.categoryOptionWrapper}>
+              <h3 className={styles.filtrationOptions}>Виробник</h3>
+              <div className={styles.categoryOption}>
+                {getUniqueList(
+                  filtersList
+                    .filter(({ type }) => type === "brand")
+                    .map(({ name }) => name),
+                ).map((brand) => (
+                  <label
+                    htmlFor={brand}
+                    key={brand}
+                    className={styles.checkboxLabel}
+                  >
+                    <input
+                      type="checkbox"
+                      name={brand}
+                      checked={selectedBrand === brand}
+                      className={styles.customCheckbox}
+                      onChange={() => handleBrandChange({ target: { value: brand } })}
+                    />
+                    {brand}
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            <div className={styles.categoryOptionWrapper}>
+              <h3 className={styles.filtrationOptions}>Колір</h3>
+              <div className={styles.categoryOption}>
+                {getUniqueList(
+                  filtersList
+                    .filter(({ type }) => type === "color")
+                    .map(({ name }) => name),
+                ).map((color) => (
+                  <label
+                    htmlFor={color}
+                    key={color}
+                    className={styles.checkboxLabel}
+                  >
+                    <input
+                      type="checkbox"
+                      name={color}
+                      checked={selectedColor === color}
+                      className={styles.customCheckbox}
+                      onChange={() => handleColorChange({ target: { value: color } })}
+                    />
+                    {color}
+                  </label>
+                ))}
+              </div>
+            </div>
+
+          </div>
+        </aside>
+        )}
+
+        {selectedValue === "Донат" && (
+          <div>
+            <SortDonateComponent sortType={sortType} setSortType={setSortType} />
           </div>
           
-          {selectedValue === "Одяг" && (
-          <aside className={styles.filtration}>
-            <SortComponent sortType={sortType} setSortType={setSortType} />
-            <SliderPrice
-              tempSliderValue={tempSliderValue}
-              setTempSliderValue={setTempSliderValue}
-              applyFilter={applyFilter}
-              priceRange={priceRange}
-              setPriceRange={setPriceRange}
-            />
-            <div className={styles.filtrationSelectWrapper}>
-              <div className={styles.categoryOptionWrapper}>
-                <h3 className={styles.filtrationOptions}>Підкатегорія</h3>
-                <div className={styles.categoryOption}>
-                  {getUniqueList(
-                    filtersList
-                      .filter(({ type }) => type === "subcategory")
-                      .map(({ name }) => name),
-                  ).map((subCategory) => (
-                    <label
-                      htmlFor={subCategory}
-                      key={subCategory}
-                      className={styles.checkboxLabel}
-                    >
-                      <input
-                        type="checkbox"
-                        name={subCategory}
-                        checked={selectedSubCategory === subCategory}
-                        className={styles.customCheckbox}
-                        onChange={() => handleSubCategoryChange({ target: { value: subCategory } })}
-                      />
-                      {subCategory}
-                    </label>
-                  ))}
-                </div>
-              </div>
-
-              <div className={styles.categoryOptionWrapper}>
-                <h3 className={styles.filtrationOptions}>Виробник</h3>
-                <div className={styles.categoryOption}>
-                  {getUniqueList(
-                    filtersList
-                      .filter(({ type }) => type === "brand")
-                      .map(({ name }) => name),
-                  ).map((brand) => (
-                    <label
-                      htmlFor={brand}
-                      key={brand}
-                      className={styles.checkboxLabel}
-                    >
-                      <input
-                        type="checkbox"
-                        name={brand}
-                        checked={selectedBrand === brand}
-                        className={styles.customCheckbox}
-                        onChange={() => handleBrandChange({ target: { value: brand } })}
-                      />
-                      {brand}
-                    </label>
-                  ))}
-                </div>
-              </div>
-
-              <div className={styles.categoryOptionWrapper}>
-                <h3 className={styles.filtrationOptions}>Колір</h3>
-                <div className={styles.categoryOption}>
-                  {getUniqueList(
-                    filtersList
-                      .filter(({ type }) => type === "color")
-                      .map(({ name }) => name),
-                  ).map((color) => (
-                    <label
-                      htmlFor={color}
-                      key={color}
-                      className={styles.checkboxLabel}
-                    >
-                      <input
-                        type="checkbox"
-                        name={color}
-                        checked={selectedColor === color}
-                        className={styles.customCheckbox}
-                        onChange={() => handleColorChange({ target: { value: color } })}
-                      />
-                      {color}
-                    </label>
-                  ))}
-                </div>
-              </div>
-
-            </div>
-          </aside>
-          )}
-
-          {selectedValue === "Донат" && (
-            <div>
-              <SortDonateComponent sortType={sortType} setSortType={setSortType} />
-            </div>
-            
-          )}
+        )}
 
 
-          {selectedValue === "Благодійний лот" && (
-          <SortLotsComponent sortType={sortType} setSortType={setSortType} />
-          )}
-        </div>
-    
-        {isLoading ? <Spinner /> : (
-          <CardList items={currentCoods} />
+        {selectedValue === "Благодійний лот" && (
+        <SortLotsComponent sortType={sortType} setSortType={setSortType} />
         )}
       </div>
+  
       <div>
+        {isLoading ? <Spinner /> : (
+          <CardList items={currentCoods} pageIsMain="false" />
+        )}
         <PaginationPages
           goodsPearPages={goodsPearPages}
           tottalCoods={coods.length}
           paginateFunc={paginateFunc}
         />
       </div>
-    </>
+    </div>
   );
 }
 
+CategoriesCardList.propTypes = {
+  query: PropTypes.string.isRequired,
+};

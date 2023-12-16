@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import styles from "./SortComponent.module.scss";
 
 export function SortComponent({ sortType, setSortType }) {
@@ -49,3 +50,18 @@ const SortComponents = {
 };
 
 export default SortComponents;
+
+SortComponent.propTypes = {
+  sortType: PropTypes.string.isRequired,
+  setSortType: PropTypes.func.isRequired,
+};
+
+SortLotsComponent.propTypes = {
+  sortType: PropTypes.string.isRequired,
+  setSortType: PropTypes.func.isRequired,
+};
+
+SortDonateComponent.propTypes = {
+  sortType: PropTypes.string.isRequired,
+  setSortType: PropTypes.func.isRequired,
+};

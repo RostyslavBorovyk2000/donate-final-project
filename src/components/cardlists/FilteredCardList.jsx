@@ -141,7 +141,7 @@ export default function FilteredCardList({
   return (
     <div>
       <div>
-        {isLoading ? <p>Loading...</p> : <CardList items={currentCoods} />}
+        {isLoading ? <p>Loading...</p> : <CardList items={currentCoods} pageIsMain="false" />}
       </div>
       <div>
         <PaginationPages
@@ -163,7 +163,7 @@ export function MainFilteredCardList({ property, value }) {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        const response = await axios.get("http://localhost:4000/api/products/filter?isPopular=true&perPage=12");
+        const response = await axios.get(`${GET_PRODUCTS_URL}/filter?isPopular=true&perPage=12`);
         const products = response.data;
   
         if (!Array.isArray(products.products)) {
@@ -196,7 +196,7 @@ export function MainFilteredCardList({ property, value }) {
   return (
     // eslint-disable-next-line react/jsx-no-useless-fragment
     <>
-      {isLoading ? <Spinner /> : <CardList items={productsPopular} />}
+      {isLoading ? <Spinner /> : <CardList items={productsPopular} pageIsMain="true" />}
     </>
   );
 }
@@ -213,4 +213,5 @@ FilteredCardList.propTypes = {
   brand: PropTypes.string,
   color: PropTypes.string,
   sortType: PropTypes.string,
+  query: PropTypes.string,
 };

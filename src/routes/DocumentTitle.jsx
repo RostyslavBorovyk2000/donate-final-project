@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import PropTypes from "prop-types";
 
 
 export default function DocumentTitle({ title }) {
@@ -8,3 +9,7 @@ export default function DocumentTitle({ title }) {
 
   return null;
 }
+
+DocumentTitle.propTypes = {
+  title: PropTypes.string.isRequired,
+};

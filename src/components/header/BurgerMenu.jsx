@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import styles from "./Header.module.scss";
+import PropTypes from "prop-types";
 import HeartFavorite from "./icons/favorites/Heart";
 import Button from "../button/Button";
 import Cart from "./icons/cart/IconCart";
@@ -10,6 +10,7 @@ import IconEnter from "./icons/enter/IconEnter";
 import IconOut from "./icons/enter/IconOut";
 import { logOut } from "../../redux/actions/loggedInActions";
 import { resetCart, resetFavorites } from "../../redux/actions/cartActions";
+import styles from "./Header.module.scss";
 
 
 function BurgerMenu({ toggleBar }) {
@@ -100,4 +101,6 @@ function BurgerMenu({ toggleBar }) {
 
 export default BurgerMenu;
 
-
+BurgerMenu.propTypes = {
+  toggleBar: PropTypes.func,
+};

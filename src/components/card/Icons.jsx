@@ -67,4 +67,5 @@ Icons.propTypes = {
   category: PropTypes.string.isRequired,
   handleAddFavorites: PropTypes.func.isRequired,
   handleAddToCart: PropTypes.func.isRequired,
+  loggedIn: PropTypes.string,
 };

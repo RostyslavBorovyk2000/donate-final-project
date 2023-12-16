@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
+
 export function withAuth(WrappedComponent, redirectTo = "", requiredAdmin = false, prohibitAdmin = false) {
   return function ProtectedRoute(props) {
     const navigate = useNavigate();

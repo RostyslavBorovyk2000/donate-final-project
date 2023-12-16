@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Article from "./Article";
 import Spinner from "../../components/spinner/Spinner";
+import { GET_BLOG } from "../../endpoints/endpoints";
 import styles from "./Blog.module.scss";
 
 
@@ -15,9 +16,9 @@ export default function ArticleList() {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        const responseOne = await axios.get("http://localhost:4000/api/pages/collection-mobile-workshop-92nd-OSHBr");
-        const responseTwo = await axios.get("http://localhost:4000/api/pages/impression-military-GUR");
-        const responseThree = await axios.get("http://localhost:4000/api/pages/breakfast-1-plus-1-about-donation-of-victory");
+        const responseOne = await axios.get(`${GET_BLOG}/collection-mobile-workshop-92nd-OSHBr`);
+        const responseTwo = await axios.get(`${GET_BLOG}/impression-military-GUR`);
+        const responseThree = await axios.get(`${GET_BLOG}/breakfast-1-plus-1-about-donation-of-victory`);
   
         const updatedArticles = [responseOne.data, responseTwo.data, responseThree.data];
         setArticles(() => [...updatedArticles]);

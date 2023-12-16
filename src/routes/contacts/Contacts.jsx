@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Formik, Form, Field, ErrorMessage,
 } from "formik";
@@ -11,8 +11,16 @@ import { Twitter } from "../../components/footer/icons/twitter/Twitter";
 import { Linkedin } from "../../components/footer/icons/linkedin/LinkedIn";
 import { Youtube } from "../../components/footer/icons/youtube/Youtube";
 import logo from "../../components/footer/icons/logo.png";
-import Button from "../../components/button/Button";
+import { FormButton } from "../../components/button/Button";
 import style from "./Contacts.module.scss";
+
+function LoginModal() {
+  return (
+    <div className={style.loginModal}>
+      Форму надіслано
+    </div>
+  );
+}
 
 export function ContactMap() {
   const mapContainerStyle = {
@@ -39,9 +47,26 @@ export function ContactMap() {
 }
 
 export function ContactForm() {
+  // window
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const timerRef = useRef();
+  function promptLogin() {
+    setShowLoginModal(true);
+    timerRef.current = setTimeout(() => {
+      setShowLoginModal(false);
+    }, 8000);
+  }
+  useEffect(() => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+  }, []);
+
   const handleSubmit = (values, { resetForm }) => {
+    promptLogin();
     resetForm();
   };
+
 
   return (
     <div>
@@ -145,10 +170,12 @@ export function ContactForm() {
               className={style.errorMessage}
             />
           </div>
-
-          <Button>
-            Надіслати
-          </Button>
+          <div className={showLoginModal ? style.hidden : null}>
+            <FormButton type="submit">
+              Надіслати
+            </FormButton>
+          </div>
+          { showLoginModal && <LoginModal onClose={() => setShowLoginModal(false)} /> }
         </Form>
       </Formik>
     </div>

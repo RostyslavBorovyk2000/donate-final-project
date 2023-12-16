@@ -15,7 +15,13 @@ import DocumentTitle from "../../routes/DocumentTitle";
 import styles from "./ProductView.module.scss";
 import { addFavorites, addToCart } from "../../redux/actions/cartActions";
 import { counterIncrement } from "../../redux/actionsCreators/counterActionsCreators";
-import { GET_CUSTOMER } from "../../endpoints/endpoints";
+import {
+  GET_CUSTOMER,
+  GET_PRODUCTS_URL,
+  MAKE_ORDERS,
+  NEW_FAVORITES_URL,
+  NEW_CART_URL,
+} from "../../endpoints/endpoints";
 import heart from "./icons/heart/heart.svg";
 import heartFilled from "./icons/heart/heart-filled.svg";
 
@@ -96,7 +102,7 @@ function ProductView() {
     const fetchProduct = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:4000/api/products/${params.itemNo}`,
+          `${GET_PRODUCTS_URL}/${params.itemNo}`,
         );
         const { data } = response;
         const rawDate = new Date(data.date);
@@ -162,7 +168,7 @@ function ProductView() {
         };
 
         axios
-          .post("http://localhost:4000/api/orders", newOrder)
+          .post(MAKE_ORDERS, newOrder)
           .then((response) => {
             if (response.status === 200) {
               promptPurchase();
@@ -183,7 +189,7 @@ function ProductView() {
     try {
       axios
         // eslint-disable-next-line no-underscore-dangle
-        .put(`http://localhost:4000/api/wishlist/${product._id}`)
+        .put(`${NEW_FAVORITES_URL}/${product._id}`)
         .catch((err) => {
           console.log(err);
         });
@@ -209,7 +215,7 @@ function ProductView() {
     try {
       axios
         // eslint-disable-next-line no-underscore-dangle
-        .put(`http://localhost:4000/api/cart/${product._id}`)
+        .put(`${NEW_CART_URL}/${product._id}`)
         .catch((err) => {
           console.log(err);
         });
@@ -331,10 +337,10 @@ function ProductView() {
                 </div>
 
                 <div className={styles.descriptionOfProduct}>
-                  <h3 style={{ marginBottom: "10px" }}>Опис</h3>
+                  <h3 style={{ marginBottom: "10px" }}>Короткий опис</h3>
                   <p className={styles.descriptionText}>
                     {" "}
-                    {product.description}
+                    {product.shortDescription}
                   </p>
                 </div>
               </div>
@@ -413,7 +419,7 @@ function ProductView() {
                 <h3 style={{ marginBottom: "10px" }}>Опис</h3>
                 <p className={styles.descriptionText}>
                   {" "}
-                  {product.description}
+                  {product.shortDescription}
                 </p>
               </div>
             ) : null}
@@ -447,7 +453,7 @@ function ProductView() {
 
             {product.category === "Донат" ? (
               <div className={styles.donateBtnContainer}>
-                <Button text="Підтримати проект" />
+                <Button text="Підтримати проект" toPage="https://savelife.in.ua/" />
                 <ShareProducts />
               </div>
             ) : null}

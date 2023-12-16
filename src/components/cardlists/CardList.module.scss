@@ -1,15 +1,41 @@
 @use "../../styles/variables";
 @import "../../styles/mediaqueries";
 
-.cardsListWrapper {
+.cardsListWrapper,
+.cardsListWrapperMain {
   display: flex;
   flex-wrap: wrap;
-  padding-top: 20px;
-  gap: 30px;
-  justify-content: center;
+  padding: 20px 60px 0px;
+  column-gap: 30px;
+  row-gap: 30px;
+  // justify-content: center;
+
+
+  @include devices(mobile) {
+    justify-content: center;
+    padding: 20px 0px 0px;
+  }
 
   & a {
     display: flex;
     justify-content: center;
+  }
+}
+
+.cardsListWrapperMain {
+  padding: 20px 25px 0px;
+  @include devices(tablet) {
+    justify-content: space-around;
+  }
+  @include devices(mobile) {
+    padding: 20px 10px 0px;
+  }
+}
+
+.cardsListWrapper {
+  @include devices(tablet) {
+    justify-content: center;
+    padding: 20px 0px 0px 15px;
+    column-gap: 10px;
   }
 }

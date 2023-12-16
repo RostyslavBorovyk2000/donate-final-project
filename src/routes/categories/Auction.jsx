@@ -13,8 +13,12 @@ export default function Auction() {
     <section className={styles.cardsSectionWrapper}>
       <h1 className={styles.cardsSectionHeadline}>Лоти аукціону доброчиності</h1>
       <p className={styles.cardsSectionText}>Відкриті аукціони</p>
-      <SortLotsComponent sortType={sortType} setSortType={setSortType} />
-      <FilteredCardList property="category" value="Благодійний лот" sortType={sortType} query="Благодійний лот" />
+      <div className={styles.cardSection}>
+        <SortLotsComponent sortType={sortType} setSortType={setSortType} />
+        <div className={styles.filterSectionWrapper}>
+          <FilteredCardList property="category" value="Благодійний лот" sortType={sortType} query="Благодійний лот" />
+        </div>
+      </div>
     </section>
   );
 }

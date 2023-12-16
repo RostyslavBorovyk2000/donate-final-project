@@ -6,6 +6,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import Spinner from "../../components/spinner/Spinner";
 import { setArticle } from "../../redux/actions/articleActions";
+import { GET_BLOG } from "../../endpoints/endpoints";
 import DocumentTitle from "../DocumentTitle";
 import styles from "./Blog.module.scss";
 
@@ -21,7 +22,7 @@ export default function ArticleView() {
       setIsLoading(true);
       try {
         const response = await axios.get(
-          `http://localhost:4000/api/pages/${params.customId}`,
+          `${GET_BLOG}/${params.customId}`,
         );
         const { data } = response;
         dispatch(setArticle(data));

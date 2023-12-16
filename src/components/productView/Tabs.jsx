@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
+import PropTypes from "prop-types";
 import styles from "./ProductView.module.scss";
 
 
@@ -21,3 +22,7 @@ function TabComponent({ productDescription }) {
 }
 
 export default TabComponent;
+
+TabComponent.propTypes = {
+  productDescription: PropTypes.string.isRequired,
+};

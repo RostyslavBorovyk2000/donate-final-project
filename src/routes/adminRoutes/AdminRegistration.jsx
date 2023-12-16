@@ -1,4 +1,4 @@
-import Registration from "../../components/pagination/Pagination";
+import Registration from "../../components/registration/Registration";
 import DocumentTitle from "../DocumentTitle";
 
 

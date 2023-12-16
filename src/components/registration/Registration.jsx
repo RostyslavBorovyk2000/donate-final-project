@@ -48,7 +48,7 @@ function Registration({ headline, to, isAdmin }) {
       .max(30, "Пароль має містити від 7 до 30 символів")
       .matches(/[a-zA-Z0-9]/, "Дозволені символи для пароля: a-z, A-Z, 0-9"),
     telephone: string()
-      .matches(/\+380\d{3}\d{2}\d{2}\d{2}/, "Некорректний формат телефонного номера"),
+      .matches(/\+380\d{3}\d{2}\d{2}\d{2}/, "Некорректний формат телефонного номера (має починатися з +380...)"),
   });
 
   const handleUserRegistration = (
@@ -228,6 +228,7 @@ function Registration({ headline, to, isAdmin }) {
 Registration.propTypes = {
   headline: PropTypes.string.isRequired,
   to: PropTypes.string.isRequired,
+  isAdmin: PropTypes.bool.isRequired,
 };
 
 export default Registration;

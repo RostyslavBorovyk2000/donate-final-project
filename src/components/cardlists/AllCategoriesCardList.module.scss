@@ -6,6 +6,7 @@
   flex-direction: column;
   gap: 10px;
   align-items: center;
+  width: 350px;
 
   @include devices(mobile) {
     width: 300px;

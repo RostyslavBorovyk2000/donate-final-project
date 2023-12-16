@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { Cloudinary } from "@cloudinary/url-gen";
 import axios from "axios";
+import PropTypes from "prop-types";
 import { removeFromCart, updateCartProductQuantity, updateCartItemSize } from "../../redux/actions/cartActions";
 import { counterDecrement } from "../../redux/actionsCreators/counterActionsCreators";
 import Button from "../../components/button/Button";
@@ -60,7 +61,7 @@ function CartItem({ item }) {
       // eslint-disable-next-line no-underscore-dangle
       const idToDelete = item._id ? item._id : item.id;
       axios
-        .delete(`http://localhost:4000/api/cart/${idToDelete}`)
+        .delete(`${NEW_CART_URL}/${idToDelete}`)
         .catch((err) => {
           console.log(err);
         });
@@ -101,11 +102,8 @@ function CartItem({ item }) {
 
         const updatedCart = { products: updatedProducts };
 
-        const response = await axios.put(NEW_CART_URL, updatedCart);
+        await axios.put(NEW_CART_URL, updatedCart);
         dispatch(updateCartProductQuantity(productId, newQuantity));
-        if (response.data) {
-          console.log("Кошик успішно оновлено на сервері.");
-        }
       }
     } catch (error) {
       console.error("Помилка при оновленні кошика на сервері:", error);
@@ -225,3 +223,16 @@ function CartItem({ item }) {
 }
 
 export default CartItem;
+
+CartItem.propTypes = {
+  item: PropTypes.shape({
+    _id: PropTypes.string,
+    nameCloudinary: PropTypes.arrayOf(PropTypes.string),
+    imageURL: PropTypes.string,
+    name: PropTypes.string,
+    itemNo: PropTypes.string,
+    currentPrice: PropTypes.number,
+    cartQuantity: PropTypes.number,
+    subcategory: PropTypes.string,
+  }).isRequired,
+};

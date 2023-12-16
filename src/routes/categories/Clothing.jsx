@@ -47,72 +47,83 @@ export default function Clothing() {
       <p className={styles.cardsSectionText}>Військовий одяг на продаж</p>
       <div className={styles.filtration}>
         <div className={styles.categoryOptions}>
+          <SortComponent sortType={sortType} setSortType={setSortType} />
           <SliderPrice tempSliderValue={tempSliderValue} setTempSliderValue={setTempSliderValue} applyFilter={applyFilter} />
-          <h3 className={styles.filtrationOptions}>Підкатегорія</h3>
-          {getUniqueList(
-            filtersList
-              .filter(({ type }) => type === "subcategory")
-              .map(({ name }) => name),
-          ).map((subCategory) => (
-            <label
-              htmlFor={subCategory}
-              key={subCategory}
-              className={styles.checkboxLabel}
-            >
-              <input
-                type="checkbox"
-                name={subCategory}
-                checked={selectedSubCategory === subCategory}
-                className={styles.customCheckbox}
-                onChange={() => handleSubCategoryChange({ target: { value: subCategory } })}
-              />
-              {subCategory}
-            </label>
-          ))}
-          <h3 className={styles.filtrationOptions}>Виробник</h3>
-          {getUniqueList(
-            filtersList
-              .filter(({ type }) => type === "brand")
-              .map(({ name }) => name),
-          ).map((brand) => (
-            <label
-              htmlFor={brand}
-              key={brand}
-              className={styles.checkboxLabel}
-            >
-              <input
-                type="checkbox"
-                name={brand}
-                checked={selectedBrand === brand}
-                className={styles.customCheckbox}
-                onChange={() => handleBrandChange({ target: { value: brand } })}
-              />
-              {brand}
-            </label>
-          ))}
-          <h3 className={styles.filtrationOptions}>Колір</h3>
-          {getUniqueList(
-            filtersList
-              .filter(({ type }) => type === "color")
-              .map(({ name }) => name),
-          ).map((color) => (
-            <label
-              htmlFor={color}
-              key={color}
-              className={styles.checkboxLabel}
-            >
-              <input
-                type="checkbox"
-                name={color}
-                checked={selectedColor === color}
-                className={styles.customCheckbox}
-                onChange={() => handleColorChange({ target: { value: color } })}
-              />
-              {color}
-            </label>
-          ))}
+
+          <div className={styles.categoryOptionWrapper}>
+            <h3 className={styles.filtrationOptions}>Підкатегорія</h3>
+            {getUniqueList(
+              filtersList
+                .filter(({ type }) => type === "subcategory")
+                .map(({ name }) => name),
+            ).map((subCategory) => (
+              <label
+                htmlFor={subCategory}
+                key={subCategory}
+                className={styles.checkboxLabel}
+              >
+                <input
+                  type="checkbox"
+                  name={subCategory}
+                  checked={selectedSubCategory === subCategory}
+                  className={styles.customCheckbox}
+                  onChange={() => handleSubCategoryChange({ target: { value: subCategory } })}
+                />
+                {subCategory}
+              </label>
+            ))}
+          </div>
+
+          <div className={styles.categoryOptionWrapper}>
+            <h3 className={styles.filtrationOptions}>Виробник</h3>
+            {getUniqueList(
+              filtersList
+                .filter(({ type }) => type === "brand")
+                .map(({ name }) => name),
+            ).map((brand) => (
+              <label
+                htmlFor={brand}
+                key={brand}
+                className={styles.checkboxLabel}
+              >
+                <input
+                  type="checkbox"
+                  name={brand}
+                  checked={selectedBrand === brand}
+                  className={styles.customCheckbox}
+                  onChange={() => handleBrandChange({ target: { value: brand } })}
+                />
+                {brand}
+              </label>
+            ))}
+          </div>
+
+          <div className={styles.categoryOptionWrapper}>
+            <h3 className={styles.filtrationOptions}>Колір</h3>
+            {getUniqueList(
+              filtersList
+                .filter(({ type }) => type === "color")
+                .map(({ name }) => name),
+            ).map((color) => (
+              <label
+                htmlFor={color}
+                key={color}
+                className={styles.checkboxLabel}
+              >
+                <input
+                  type="checkbox"
+                  name={color}
+                  checked={selectedColor === color}
+                  className={styles.customCheckbox}
+                  onChange={() => handleColorChange({ target: { value: color } })}
+                />
+                {color}
+              </label>
+            ))}
+          </div>
+
         </div>
-        <SortComponent sortType={sortType} setSortType={setSortType} />
+        {/* <SortComponent sortType={sortType} setSortType={setSortType} /> */}
         <FilteredCardList property="category" value={["Одяг"]} priceRange={sliderValue} subcategory={selectedSubCategory} brand={selectedBrand} color={selectedColor} sortType={sortType} query="Одяг" />
       </div>
     </section>

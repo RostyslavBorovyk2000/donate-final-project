@@ -57,9 +57,7 @@ Button.propTypes = {
   padding: PropTypes.string,
   width: PropTypes.string,
   toPage: PropTypes.string,
-
   onClick: PropTypes.func,
-
   children: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.element,
@@ -72,9 +70,7 @@ FormButton.propTypes = {
   color: PropTypes.string,
   padding: PropTypes.string,
   width: PropTypes.string,
-  
   onClick: PropTypes.func,
-
   children: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.element,

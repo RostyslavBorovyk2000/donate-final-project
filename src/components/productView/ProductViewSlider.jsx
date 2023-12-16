@@ -1,5 +1,6 @@
-import Slider from "react-slick";
 import { useEffect, useRef, useState } from "react";
+import Slider from "react-slick";
+import PropTypes from "prop-types";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./sliderStyles.scss";
@@ -117,3 +118,7 @@ export default function ProductViewSlider({ images }) {
     </div>
   );
 }
+
+ProductViewSlider.propTypes = {
+  images: PropTypes.arrayOf(PropTypes.string).isRequired,
+};

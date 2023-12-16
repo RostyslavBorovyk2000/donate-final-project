@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import PropTypes from "prop-types";
 import styles from "./CustomerPage.module.scss";
 
 
@@ -48,3 +49,7 @@ export default function CustPageProdList({ storeData }) {
     </div>
   );
 }
+
+CustPageProdList.propTypes = {
+  storeData: PropTypes.string.isRequired,
+};

@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import styles from "./ProductView.module.scss";
 
 function QuantityCounter({ quantity, handleChangeQuantity }) {
@@ -30,3 +31,8 @@ function QuantityCounter({ quantity, handleChangeQuantity }) {
 }
 
 export default QuantityCounter;
+
+QuantityCounter.propTypes = {
+  quantity: PropTypes.number.isRequired,
+  handleChangeQuantity: PropTypes.func.isRequired,
+};

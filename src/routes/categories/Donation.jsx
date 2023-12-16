@@ -13,8 +13,12 @@ export default function Donation() {
     <section className={styles.cardsSectionWrapper}>
       <h1 className={styles.cardsSectionHeadline}>Донати на ЗСУ</h1>
       <p className={styles.cardsSectionText}>Цільові донати, що направляються на потреби військових підрозділів Збройних Сил України</p>
-      <SortDonateComponent sortType={sortType} setSortType={setSortType} />
-      <FilteredCardList property="category" value="Донат" sortType={sortType} query="Донат" />
+      <div className={styles.cardSection}>
+        <SortDonateComponent sortType={sortType} setSortType={setSortType} />
+        <div className={styles.filterSectionWrapper}>
+          <FilteredCardList property="category" value="Донат" sortType={sortType} query="Донат" />
+        </div>
+      </div>
     </section>
   );
 }

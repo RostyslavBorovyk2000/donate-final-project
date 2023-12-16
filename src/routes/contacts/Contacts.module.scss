@@ -1,3 +1,4 @@
+@use "../../styles/variables";
 @import "../../styles/mediaqueries";
 
 .sectionWrapper {
@@ -67,4 +68,19 @@
   @include devices(mobile) {
     grid-template-columns: 1fr;
   }
+}
+
+.hidden {
+  display: none;
+}
+
+.loginModal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 40px;
+  color: variables.$fc-main;
+  text-align: center;
+  font-size: variables.$fs-sx;
 }

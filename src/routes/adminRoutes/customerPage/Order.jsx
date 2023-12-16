@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import styles from "./Orders.module.scss";
 
 function formatDate(dateString) {
@@ -55,3 +56,20 @@ function Order({ item }) {
 
 export default Order;
 
+Order.propTypes = {
+  item: PropTypes.shape({
+    date: PropTypes.string,
+    orderNo: PropTypes.string,
+    totalSum: PropTypes.number,
+    products: PropTypes.arrayOf(
+      PropTypes.shape({
+        _id: PropTypes.string,
+        product: PropTypes.shape({
+          name: PropTypes.string,
+          currentPrice: PropTypes.number,
+        }),
+        cartQuantity: PropTypes.number,
+      }),
+    ),
+  }).isRequired,
+};

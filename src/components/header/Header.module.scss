@@ -157,6 +157,8 @@
     display: flex;
     flex-direction: column;
     width: max-content;
+    height: 150px;
+    justify-content: space-around;
     padding: 10px 10px 15px;
     background-color: variables.$border-color-decor;
     box-shadow: 0 8px 16px 0 rgba(0, 0, 0, .2);
@@ -166,8 +168,7 @@
     padding: 10px 0px 5px;
 
     &:hover {
-        padding-bottom: 4px;
-        border-bottom: 1px solid #7c8d66;
+        color: #5d684f;
     }
 }
 

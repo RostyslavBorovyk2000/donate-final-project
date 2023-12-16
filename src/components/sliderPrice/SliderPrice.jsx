@@ -1,5 +1,6 @@
 import React from "react";
 import Slider from "react-slider";
+import PropTypes from "prop-types";
 import styles from "./SliderPrice.module.scss";
 
 
@@ -39,3 +40,9 @@ export default function SliderPrice({ tempSliderValue, setTempSliderValue, apply
     </div>
   );
 }
+
+SliderPrice.propTypes = {
+  tempSliderValue: PropTypes.arrayOf(PropTypes.number),
+  setTempSliderValue: PropTypes.func.isRequired,
+  applyFilter: PropTypes.func.isRequired,
+};

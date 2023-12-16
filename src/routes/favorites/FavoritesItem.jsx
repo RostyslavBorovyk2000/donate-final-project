@@ -3,12 +3,14 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { Cloudinary } from "@cloudinary/url-gen";
+import PropTypes from "prop-types";
 import { removeFavorites, addToCart } from "../../redux/actions/cartActions";
 import { counterIncrement, counterDecrement } from "../../redux/actionsCreators/counterActionsCreators";
 import getFavorites from "../../api/getFavorites";
 import Button, { FormButton } from "../../components/button/Button";
-import styles from "./Favorites.module.scss";
+import { NEW_CART_URL, NEW_FAVORITES_URL } from "../../endpoints/endpoints";
 import DeleteIcon from "../cart/DeleteIcon";
+import styles from "./Favorites.module.scss";
 
 function LoginModal() {
   return (
@@ -60,7 +62,7 @@ function FavoritesItem({ item }) {
       if (!isProductInCart) {
         await axios
         // eslint-disable-next-line max-len, no-underscore-dangle
-          .put(`http://localhost:4000/api/cart/${item._id}`)
+          .put(`${NEW_CART_URL}/${item._id}`)
           .catch((err) => {
             console.log(err);
           });
@@ -72,7 +74,7 @@ function FavoritesItem({ item }) {
 
         await axios
           // eslint-disable-next-line max-len, no-underscore-dangle
-          .delete(`http://localhost:4000/api/wishlist/${item._id}`)
+          .delete(`${NEW_FAVORITES_URL}/${item._id}`)
           .catch((err) => {
             console.log(err);
           });
@@ -92,7 +94,7 @@ function FavoritesItem({ item }) {
       // eslint-disable-next-line no-underscore-dangle
       const idToDelete = item._id ? item._id : item.id;
       axios
-        .delete(`http://localhost:4000/api/wishlist/${idToDelete}`)
+        .delete(`${NEW_FAVORITES_URL}/${idToDelete}`)
         .catch((err) => {
           console.log(err);
         });
@@ -158,3 +160,16 @@ function FavoritesItem({ item }) {
 }
 
 export default FavoritesItem;
+
+FavoritesItem.propTypes = {
+  item: PropTypes.shape({
+    _id: PropTypes.string,
+    nameCloudinary: PropTypes.arrayOf(PropTypes.string),
+    imageURL: PropTypes.string,
+    name: PropTypes.string,
+    itemNo: PropTypes.string,
+    currentPrice: PropTypes.number,
+    cartQuantity: PropTypes.number,
+    subcategory: PropTypes.string,
+  }).isRequired,
+};

@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
-// import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { updateInputValue } from "../../redux/actionsCreators/inputValueActionsCreators";
+import { GET_PRODUCTS_URL, GET_SEARCH } from "../../endpoints/endpoints";
 import styles from "./Header.module.scss";
 
 function SearchForm() {
@@ -15,7 +15,7 @@ function SearchForm() {
   const [debounceTimeoutId, setDebounceTimeoutId] = useState(null);
   const getProductDetails = async (productId) => {
     try {
-      await axios.get(`http://localhost:4000/api/products/${productId}`);
+      await axios.get(`${GET_PRODUCTS_URL}/${productId}`);
     } catch (error) {
       console.error("Помилка при отриманні деталей товару:", error);
     }
@@ -27,7 +27,7 @@ function SearchForm() {
         query,
       };
   
-      const response = await axios.post("http://localhost:4000/api/products/search", searchPhrases);
+      const response = await axios.post(GET_SEARCH, searchPhrases);
       const products = response.data;
   
       setSearchResults(products);
@@ -103,9 +103,5 @@ function SearchForm() {
     </div>
   );
 }
-
-// SearchForm.propTypes = {
-//   handleSearch: PropTypes.func.isRequired,
-// };
 
 export default SearchForm;
