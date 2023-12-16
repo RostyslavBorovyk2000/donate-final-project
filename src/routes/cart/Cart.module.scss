@@ -1,0 +1,438 @@
+@use"../../styles/variables";
+@use "../../styles/mixins";
+@import "../../styles/mediaqueries";
+
+.cardsSectionWrapper {
+    padding: 50px 15px;
+}
+
+.cardsListWrapper {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    padding-top: 20px;
+    padding-bottom: 20px;
+
+    @include devices(mobile) {
+        row-gap: 50px;
+        padding-bottom: 20px;
+    }
+}
+
+.cardsSectionHeadline {
+    color: variables.$fc-main;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+  .cardsSectionText {
+    padding-top: 5px;
+    color: variables.$fc-text;
+}
+
+.cartEmpty {
+    padding-top: 100px;
+    text-align: center;
+}
+
+.cardItemWrapper {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 25px;
+    margin-top: 11px;
+    border: 1px solid rgba(114, 114, 114, 1);
+
+    @media screen and (min-width: 1001px) {
+        padding: 10px 0px 10px 20px;
+    }
+
+    @media screen and (min-width: 768px) and (max-width: 1000px) {
+        padding: 20px 20px 20px;
+        flex-wrap: wrap;
+    }
+
+    @include devices(mobile) {
+        flex-wrap: wrap;
+        padding: 30px 10px 10px 10px;
+    }
+}
+
+
+.cardItemImageWrapper {
+    border: 5px solid variables.$bgc-second;
+    border-radius: 25px;
+    
+}
+.productInfo{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+    @media screen and (min-width: 1001px) {
+        width: 70%;
+    }
+
+    @include devices(mobile) {
+        width: inherit;
+    }
+}
+
+.productInfoTablet {
+    @media screen and (min-width: 1001px) {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+    }
+    @media screen and (min-width: 426px) and (max-width: 1000px) {
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
+    }
+}
+
+.cardItemImage {
+    width: 150px;
+    object-fit: cover;
+    border-radius: 25px;
+}
+
+.decorLot,
+.decorDonat {
+    position: absolute;
+    top: 5px;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    padding: 8px;
+    font-weight: 700;
+    background-color: variables.$bgc-hot;
+    border-radius: 20px 0px;
+}
+
+.decorDonat {
+    width: 100px;
+    background-color: variables.$bgc-attention;
+}
+
+.quantityButtonWrapper {
+    order: 2;
+}
+
+.buttonsWrapper {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 45%;
+
+    @media screen and (min-width: 768px) {
+        width: 100%;
+    }
+
+    @media screen and (min-width: 426px) and (max-width: 767px) {
+        width: 100%;
+        min-height: 170px;
+    }
+
+    @include devices(mobile) {
+        min-height: 170px;
+        width: 100%;
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+.cardItemPriceWrapper {
+    @media screen and (min-width: 320px) and (max-width: 480px) {
+        width: 100%;
+        padding: 25px 0px 25px;
+        font-size: 18px;
+    }
+
+    @media screen and (min-width: 481px) {
+        display: flex;
+        align-items: center;
+    }
+}
+
+.cardItemPrice {
+    display: flex;
+    justify-content: center;
+    color: rgba(114, 114, 114, 1);
+    font-weight: 700;
+}
+.cartTable {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+}
+.tableRow{
+    display: flex;
+    justify-content: space-between;
+    justify-items: start;
+    align-items: center;
+    border-bottom: 0.3px solid #7c8d66;
+    padding-bottom: 11px;
+    border-radius: 0;
+    color: rgba(61, 61, 61, 1);
+    @include mixins.font-family-medium;
+    font-size: 16px;
+    line-height: 16px;
+}
+.nameContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-left: 15px;
+}
+.name {
+    @include mixins.font-family-medium;
+    font-size: 16px;
+    line-height: 16px;
+    padding-bottom: 10px;
+}
+.sku{
+    @include mixins.font-family-regular;
+    margin-bottom: 10px;
+    color: #727272;
+    font-size: 15px;
+    line-height: 16px;
+    span {
+        color: #a5a5a5;
+        text-transform: uppercase;
+    }
+}
+
+.totalPriceWrapper {
+    display: flex;
+    justify-content: flex-end;
+    font-size: 16px;
+
+    @include devices(mobile) {
+        justify-content: center;
+    }
+}
+
+.totalPrice {
+    display: flex;
+    justify-content: space-between;
+    width: 300px;
+    padding: 20px 20px;
+    font-weight: 700;
+    font-size: 18px;
+
+    @include devices(mobile) {
+        padding-bottom: 50px;
+    }
+}
+
+.totalPrice p:first-child {
+    color: #7c8d66;
+}
+
+.showLoginModal {
+    display: none;
+}
+
+.loginModal {
+    display: flex;
+    align-items: center;
+    width: 100px;
+    color: variables.$fc-main;
+    text-align: center;
+    padding-left: 20px;
+}
+
+.loginModalPurchase {
+    background-color: #fff;
+    color: variables.$fc-main;
+    text-align: center;
+    width: 100%;
+    padding: 100px 0px 0px;
+}
+
+.cardItemIcons {
+    display: block;
+}
+
+.formSectionWrapper {
+    display: flex;
+    justify-content: space-around;
+    padding-top: 50px;
+    width: 100%;
+}
+
+.formWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 30px 0px;
+    background-color: rgba(0, 0, 0, 0.125);
+    width: 400px;
+
+    @media screen and (min-width: 320px) and (max-width: 450px) {
+        padding: 30px 10px;
+    }
+}
+
+.checkOrderWrapper {
+    width: 50%;
+    padding: 50px;
+    background-color: rgba(0, 0, 0, 0.125);
+}
+
+.hidden {
+    display: none;
+}
+
+.headline {
+    padding-bottom: 10px;
+    color: variables.$fc-main;
+    font-weight: 600;
+    font-size: variables.$fs-x;
+    text-align: center;
+  }
+
+.headlineText {
+    align-items: center;
+}
+
+.textForm {
+    font-size: variables.$fs-x;
+    padding: 20px 0px 14px;
+    width: 300px;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    width: 300px;
+}
+
+.deliverySection {
+    display: flex;
+    flex-direction: column;
+    padding: 0px 0px 10px;
+
+    & input {
+        margin-right: 10px;
+    }
+}
+
+.adressWrapper {
+    width: 100%;
+    display: flex;
+}
+
+.shopAdres {
+    height: 40px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.dataCustomerWrapper {
+    width: 100%;
+    min-height: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-weight: 700;
+}
+
+.customerFirstNameChange {
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
+.customerFirstNameChange:hover {
+    text-decoration: underline;
+    color: #7c8d66;
+}
+
+.customerFirstNameChange:focus {
+    outline: none;
+}
+
+.nameCustomer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.input,
+.inputAttention {
+  width: 280px;
+  height: 40px;
+  margin-bottom: 17px;
+  padding: 2px 10px;
+  border: 1px solid variables.$border-color-decor;
+  border-radius: 5px;
+
+  @include devices(mobile) {
+    height: 50px;
+  }
+}
+
+.input {
+  &:focus {
+    border: none;
+    border: 1px solid variables.$border-color-main;
+    outline: none;
+  }
+}
+
+.inputAttention {
+    border: 1px solid variables.$bgc-attention;
+}
+
+.errorsWrapper {
+    padding: 0px 0px 20px;
+    width: 100%;
+}
+
+.textAttention {
+    font-size: variables.$fs-s;
+    text-align: center;
+    color: variables.$fc-attention;
+}
+
+.text,
+.textAttention {
+  font-size: variables.$fs-s;
+  text-align: center;
+}
+
+.text {
+  color: variables.$fc-text;
+}
+
+.buttonStyle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    color: #fff;
+    font-weight: 700;
+    font-size: variables.$fs-s;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.buttonWrapper {
+    @media screen and (min-width: 320px) and (max-width: 425px) {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+}

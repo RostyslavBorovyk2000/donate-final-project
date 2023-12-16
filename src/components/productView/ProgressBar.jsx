@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 
 const containerStyle = {
@@ -33,3 +34,7 @@ export function ProgressBar({ progress }) {
     </div>
   );
 }
+
+ProgressBar.propTypes = {
+  progress: PropTypes.string.isRequired,
+};

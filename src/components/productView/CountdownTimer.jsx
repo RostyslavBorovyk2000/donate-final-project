@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 import styles from "./ProductView.module.scss";
 
-// ! replace
 function CountdownTimer({ targetDate }) {
   const calculateTimeLeft = () => {
     const difference = +new Date(targetDate) - +new Date();
@@ -18,6 +18,7 @@ function CountdownTimer({ targetDate }) {
 
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
   const [isTimerExpired, setIsTimerExpired] = useState(false);
+  const [status, setStatus] = useState("Активний збір");
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -25,6 +26,7 @@ function CountdownTimer({ targetDate }) {
       setTimeLeft(updatedTimeLeft);
       if (updatedTimeLeft === null) {
         setIsTimerExpired(true);
+        setStatus("Завершений збір");
       }
     }, 1000);
 
@@ -34,7 +36,7 @@ function CountdownTimer({ targetDate }) {
   return (
     <div className={isTimerExpired ? styles.timerExpired : null}>
       {isTimerExpired ? (
-        <span className={styles.timerExpiredText}>Збір закрито</span>
+        <span className={styles.timerExpiredText}>{status}</span>
       ) : (
         <div>
           {timeLeft ? (
@@ -62,3 +64,7 @@ function CountdownTimer({ targetDate }) {
 }
 
 export default CountdownTimer;
+
+CountdownTimer.propTypes = {
+  targetDate: PropTypes.string.isRequired,
+};

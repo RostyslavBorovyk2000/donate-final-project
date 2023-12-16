@@ -1,77 +1,175 @@
 @use "../../styles/variables";
 @import "../../styles/mediaqueries";
 
+.subCategoryOptions{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  width: 350px;
 
-.filtrationWrapper {
-    width: 100%;
-    padding: 50px 0px 20px;
-  
-    @include devices(mobile) {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 45px 0px 25px;
-    }
-  
-    & p {
-      padding-bottom: 15px;
-      color: variables.$fc-text;
-    
-      @include devices(mobile) {
-        padding-bottom: 20px;
-      }
-    }
+  @include devices(mobile) {
+    width: 300px;
   }
-  
-  .filtrationSelectWrapper {
+}
+
+.categoryOptionWrapper {
+  @include devices(mobile) {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-  
-    @include devices(mobile) {
-      align-items: center;
-      padding-bottom: 25px;
-    }
-  }
-  
-  .select {
-    width: 280px;
-    height: 40px;
-    padding: 2px 10px;
-    font-size: 18px;
-    background-color: white;
-    border: 1px solid variables.$bgc-main;
-    border-radius: 5px;
-    cursor: pointer;
-    appearance: none;
-    
-  
-    @include devices(mobile) {
-      text-align: center;
-    }
-  
-    &:focus {
-      border: 1px solid variables.$bgc-main;
-      outline: none;
-    }
-  }
-  
-  .option {
-    font-size: 18px;
-    text-align: center;
-    border-bottom: 1px solid variables.$bgc-main;
-  }
-  
-  .filtration {
-    display: flex;
-    justify-content: space-between;
     width: 100%;
-  
-    @include devices(mobile) {
-      flex-direction: column;
-      align-items: center;
+
+    & h3 {
+      display: flex;
       justify-content: center;
     }
   }
+}
+
+.categoryOption {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+}
+
+.categorySelect {
+  position: absolute;
+  top: -20px;
+  left: 0;
+
+  @include devices(mobile) {
+    position: static;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+}
+
+.buttonLinksWrapper {
+  margin: 0 10px;
+}
+
+.filtrationWrapper {
+  display: flex;
+  width: 100%;
+  padding: 30px 0px 20px;
+  position: relative;
+
+  @include devices(mobile) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0px;
+  }
+
+  & p {
+    padding-bottom: 15px;
+    color: variables.$fc-text;
+
+    @include devices(mobile) {
+      padding-bottom: 20px;
+    }
+  }
+}
+
+.filtrationSelectWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  
+
+  @include devices(mobile) {
+    align-items: center;
+    padding-bottom: 25px;
+    width: 280px;
+  }
+}
+
+
+
+.filtration {
+  display: flex;
+  flex-direction: column;
+  width: 220px;
+
+  @include devices(tablet) {
+    padding-right: 0px;
+    width: 200px;
+  }
+
+  @include devices(mobile) {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-right: 0px;
+    width: 100%;
+  }
+}
+
+
+.customCheckbox {
+  position: relative;
+  width: 1rem;
+  height: 1rem;
+  appearance: none;
+  border: none;
+  cursor: pointer;
+  border-radius: 0;
+  background-color: transparent;
+}
+.customCheckbox:checked:before {
+  background: #c6d9d9;
+}
+.customCheckbox:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  border: 0.0625rem solid #c6d9d9;
+  background-color: transparent;
+  transition: background-color 0.2s;
+}
+
+.customCheckbox:checked:after {
+  width: 0.75rem;
+  height: 0.375rem;
+  border-color: #536060;
+}
+
+.customCheckbox:after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+  transform: rotate(-45deg);
+  border-bottom: 0.125rem solid transparent;
+  border-left: 0.125rem solid transparent;
+}
+.checkbox__body {
+  padding-right: 2px;
+}
+.checkboxLabel {
+  display: flex;
+  margin-left: 0.5rem;
+  justify-content: center;
+}
+
+
+.filtrationOptions {
+  font-size: 20px;
+  line-height: 2;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.select {
+  padding: 5px 25px;
+
+  @include devices(mobile) {
+    width: 200px;
+  }
+}

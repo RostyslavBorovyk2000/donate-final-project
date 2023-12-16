@@ -14,9 +14,8 @@ import EyeClosed from "./eye/EyeClosed";
 import EyeOpen from "./eye/EyeOpen";
 import { FormButton } from "../button/Button";
 import logInUser from "../../api/logInUser";
-import { NEW_CART_URL, GET_FAVORITES } from "../../endpoints/endpoints";
+import { GET_CUSTOMER } from "../../endpoints/endpoints";
 import styles from "./LogIn.module.scss";
-import { initializeCart, initializeFavorites } from "../../redux/actions/cartActions";
 
 
 function LogIn({ headline, toRegistration }) {
@@ -38,23 +37,9 @@ function LogIn({ headline, toRegistration }) {
       .matches(/[a-zA-Z0-9]/, "Дозволені символи для пароля: a-z, A-Z, 0-9"),
   });
 
-
-  // get Favorites
-  async function getFavoritesFromServer() {
+  async function getCustomer() {
     try {
-      const response = await axios.get(GET_FAVORITES);
-      return response.data;
-    } catch (err) {
-      console.error("Помилка при отриманні даних:", err);
-      return null;
-    }
-  }
-
-  // get Cart
-  // ! api
-  async function getCartFromServer() {
-    try {
-      const response = await axios.get(NEW_CART_URL);
+      const response = await axios.get(GET_CUSTOMER);
       return response.data;
     } catch (err) {
       console.error("Помилка при отриманні даних:", err);
@@ -66,22 +51,10 @@ function LogIn({ headline, toRegistration }) {
     try {
       await dispatch(logInUser(login, password));
 
-      const userFavotites = await getFavoritesFromServer();
-      const userCart = await getCartFromServer();
-      if (userCart !== null) {
-        const productsFromServer = userCart.products.map((item) => item.product);
-        dispatch(initializeCart(productsFromServer));
-      }
-      if (userFavotites.favorites && userFavotites.favorites.length > 0) {
-        dispatch(initializeFavorites(userFavotites.favorites));
-      }
-      // else {
-      //   console.log("Масив порожній або невизначений");
-      // }
-    
-      if (userFavotites.isAdmin === false) {
+      const customer = await getCustomer();
+      if (customer.isAdmin === false) {
         navigate("/account");
-      } else if (userFavotites.isAdmin === true) {
+      } else if (customer.isAdmin === true) {
         navigate("/adm-page");
       }
     } catch (error) {

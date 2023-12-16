@@ -1,44 +1,107 @@
-import React from "react";
-import PropTypes from "prop-types";
-import Button from "../button/Button";
+import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import axios from "axios";
+import { Link } from "react-router-dom";
+import { updateInputValue } from "../../redux/actionsCreators/inputValueActionsCreators";
+import { GET_PRODUCTS_URL, GET_SEARCH } from "../../endpoints/endpoints";
 import styles from "./Header.module.scss";
 
-function SearchForm({
-  inputValue, handleInputChange, handleSearch,
-}) {
+function SearchForm() {
+  const dispatch = useDispatch();
+  const [searchResults, setSearchResults] = useState([]);
+  const [showInput, setShowInput] = useState(false);
+  const inputValueFromRedux = useSelector((state) => state.inputValue.inputValue);
+  const [inputValue, setInputValue] = useState(inputValueFromRedux);
+  const [debounceTimeoutId, setDebounceTimeoutId] = useState(null);
+  const getProductDetails = async (productId) => {
+    try {
+      await axios.get(`${GET_PRODUCTS_URL}/${productId}`);
+    } catch (error) {
+      console.error("Помилка при отриманні деталей товару:", error);
+    }
+  };
+
+  const performSearch = async (query) => {
+    try {
+      const searchPhrases = {
+        query,
+      };
+  
+      const response = await axios.post(GET_SEARCH, searchPhrases);
+      const products = response.data;
+  
+      setSearchResults(products);
+  
+      if (products.length > 0) {
+        setShowInput(true);
+      } else {
+        setShowInput(false);
+      }
+    } catch (error) {
+      console.error("Error while searching for products:", error);
+      setSearchResults([]);
+      setShowInput(false);
+    }
+  };
+
+  const handleResultClick = async (result) => {
+    setSearchResults([]);
+    setShowInput(false);
+  
+    if (result) {
+      await getProductDetails(result.id);
+    }
+  };
+
+  const handleInputChange = (e) => {
+    const { value } = e.target;
+    dispatch(updateInputValue(value));
+    setInputValue(value);
+
+    if (debounceTimeoutId) {
+      clearTimeout(debounceTimeoutId);
+    }
+
+    if (value === "") {
+      setSearchResults([]);
+      handleResultClick();
+    } else {
+      const newTimeoutId = setTimeout(() => {
+        performSearch(value);
+      }, 1000);
+      
+      setDebounceTimeoutId(newTimeoutId);
+    }
+  };
+
   return (
     <div className={styles.searching}>
       <div className={styles.inputWrapper}>
         <input
           className={styles.input}
           type="text"
-          placeholder="Знайти..."
+          placeholder="Пошук..."
           value={inputValue}
           onChange={handleInputChange}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              handleSearch();
-            }
-          }}
         />
-      </div>
-      <div className={styles.searchButtons}>
-        <Button
-          toPage={`/products-search?query=${inputValue}`}
-          type="submit"
-          className={styles.searchBtn}
-          text="Знайти"
-          width="80px"
-        />
+        {showInput && (
+        <div className={styles.searchResults}>
+          <ul>
+            {searchResults.length > 0 && inputValue !== "" && (
+              searchResults.map((result) => (
+                <li className={styles.searchResultItem} key={result.id}>
+                  <Link to={`/product/${result.itemNo}`} key={result.id} className={styles.searchResultItem}>
+                    {result.shortName}
+                  </Link>
+                </li>
+              ))
+            )}
+          </ul>
+        </div>
+        )}
       </div>
     </div>
   );
 }
-
-SearchForm.propTypes = {
-  inputValue: PropTypes.string.isRequired,
-  handleInputChange: PropTypes.func.isRequired,
-  handleSearch: PropTypes.func.isRequired,
-};
 
 export default SearchForm;

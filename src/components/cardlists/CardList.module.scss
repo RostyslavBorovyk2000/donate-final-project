@@ -1,34 +1,39 @@
 @use "../../styles/variables";
 @import "../../styles/mediaqueries";
 
-.cardsListWrapper {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(4, 1fr);
-  padding-top: 20px;
-  gap: 30px;
-  box-sizing: border-box;
+.cardsListWrapper,
+.cardsListWrapperMain {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 20px 60px 0px;
+  column-gap: 30px;
+  row-gap: 30px;
 
-  
-
-  @include devices(tablet) {
-    grid-template-columns: repeat(3, 1fr);
-    grid-auto-rows: minmax(100px, 1fr);
-  }
-
-  @media screen and (min-width: 426px)  and (max-width: 767px) {
-    grid-template-columns: repeat(2, 1fr);
-    
-  }
-
-  @media screen and (min-width: 320px) and (max-width: 425px) {
-    grid-template-columns: repeat(1, 80%);
+  @include devices(mobile) {
     justify-content: center;
+    padding: 20px 0px 0px;
   }
-  
 
   & a {
     display: flex;
     justify-content: center;
+  }
+}
+
+.cardsListWrapperMain {
+  padding: 20px 25px 0px;
+  @include devices(tablet) {
+    justify-content: space-around;
+  }
+  @include devices(mobile) {
+    padding: 20px 10px 0px;
+  }
+}
+
+.cardsListWrapper {
+  @include devices(tablet) {
+    justify-content: center;
+    padding: 20px 0px 0px 15px;
+    column-gap: 10px;
   }
 }

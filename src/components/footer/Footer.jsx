@@ -209,18 +209,6 @@ function Footer() {
                 </a>
               </div>
               <div className={styles.bottomPaymentMethods}>
-                {/* <a href="https://paypal.com/ua/home">
-                  <PaypalIcon />
-                </a>
-                <a href="#1">
-                  <MastercardIcon />
-                </a>
-                <a href="#1">
-                  <VisaIcon />
-                </a>
-                <a href="#1">
-                  <LiqpayIcon />
-                </a> */}
                 <PaypalIcon />
                 <MastercardIcon />
                 <VisaIcon />

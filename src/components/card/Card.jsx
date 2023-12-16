@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 /* eslint-disable no-nested-ternary */
-import React, { useState } from "react";
+import React from "react";
 import { Cloudinary } from "@cloudinary/url-gen";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,178 +9,116 @@ import PropTypes from "prop-types";
 import { Icons } from "./Icons";
 import { counterIncrement } from "../../redux/actionsCreators/counterActionsCreators";
 import { addFavorites, addToCart } from "../../redux/actions/cartActions";
-import sendCart from "../../api/sendCart";
-import {
-  NEW_CART_URL,
-  GET_FAVORITES,
-  REGISTRATION_URL,
-} from "../../endpoints/endpoints";
+import { NEW_CART_URL, NEW_FAVORITES_URL } from "../../endpoints/endpoints";
 import styles from "./Card.module.scss";
 import Button from "../button/Button";
 
-export function Card({
-  itemNo,
-  name,
-  price,
-  goal,
-  nameCloudinary,
-  category,
-  id,
-  quantity,
-}) {
+export function Card({ item }) {
+  const {
+    itemNo,
+    shortName,
+    currentPrice,
+    currentValue,
+    goal,
+    nameCloudinary,
+    category,
+    _id,
+  } = item;
   const dispatch = useDispatch();
-  const isItemInCart = useSelector((state) => state.cart.items.some((cartItem) => cartItem.itemNo === itemNo));
-  const isItemInFavorites = useSelector((state) => state.favorites.items.some((favItem) => favItem.itemNo === itemNo));
+  // eslint-disable-next-line no-underscore-dangle
+  const isItemInCart = useSelector((state) => state.cart.items.some((cartItem) => cartItem._id === _id));
+  // eslint-disable-next-line no-underscore-dangle
+  const isItemInFavorites = useSelector((state) => state.favorites.items.some((favItem) => favItem._id === _id));
 
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [isModalVisibleTwo, setIsModalVisibleTwo] = useState(false);
+  const isUserLoggedIn = localStorage.getItem("userLogin");
 
   // for working with Cloudinary
   const cld = new Cloudinary({
     cloud: { cloudName: "dzaxltnel" },
     url: { secure: true },
   });
-  const myImage = cld.image(`${nameCloudinary}`);
+  const myImage = cld.image(`${nameCloudinary[0]}`);
   const imageURL = myImage.toURL();
 
-  const product = {
-    itemNo,
-    name,
-    price,
-    imageURL,
-    id,
-    quantity,
-  };
-
-  async function getCartFromServer() {
+  async function addCartToServer() {
     try {
-      const response = await axios.get(NEW_CART_URL);
-      return response.data;
-    } catch (err) {
-      console.error("Помилка при отриманні даних:", err);
-      return null;
-    }
-  }
-
-  async function getFavoritesFromServer() {
-    try {
-      const response = await axios.get(GET_FAVORITES);
-      return response.data;
-    } catch (err) {
-      console.error("Помилка при отриманні даних:", err);
-      return null;
-    }
-  }
-
-  async function checkCartFromServer() {
-    try {
-      const cartData = await getCartFromServer();
-      if (cartData === null) {
-        sendCart();
-      } else if (cartData !== null) {
-        axios
-          .put(`http://localhost:4000/api/cart/${product.id}`)
-          // .then((updatedCart) => {
-          //   console.log(updatedCart);
-          // })
-          .catch((err) => {
-            console.log(err);
-          });
-      }
+      axios
+        .put(`${NEW_CART_URL}/${_id}`)
+        .catch((err) => {
+          console.log(err);
+        });
     } catch (error) {
       console.error("Помилка при виході:", error);
     }
   }
 
-  async function checkFavoritesFromServer() {
-    try {
-      const cartData = await getFavoritesFromServer();
-
-      if (
-        cartData
-        && cartData.favorites
-        && Array.isArray(cartData.favorites.items)
-      ) {
-        const updatedFavoritesItems = [...cartData.favorites.items, product];
-
-        const updatedCustomer = {
-          favorites: {
-            items: updatedFavoritesItems,
-          },
-        };
-
-        axios.put(REGISTRATION_URL, updatedCustomer);
+  const handleAddToCart = async () => {
+    if (isUserLoggedIn) {
+      if (!isItemInCart) {
+        addCartToServer();
+        dispatch(addToCart(item));
+        dispatch(counterIncrement());
       }
-    } catch (error) {
-      console.error("Помилка при виході:", error);
-    }
-  }
-
-  const handleAddToCart = () => {
-    let countProducts = JSON.parse(localStorage.getItem("CountCartProducts")) || 0;
-
-    if (!isItemInCart) {
+    } else if (!isUserLoggedIn) {
       const currentProducts = JSON.parse(localStorage.getItem("Cart")) || [];
-      currentProducts.push(product);
-      countProducts += 1;
-      localStorage.setItem("Cart", JSON.stringify(currentProducts));
-      localStorage.setItem("CountCartProducts", JSON.stringify(countProducts));
+      const isItemInLSCart = currentProducts && currentProducts.some((cartItem) => cartItem.product === _id);
+      if (!isItemInLSCart && !isItemInCart) {
+        currentProducts.push(item);
+        localStorage.setItem("Cart", JSON.stringify(currentProducts));
 
-      checkCartFromServer();
-
-      dispatch(addToCart(product));
-      dispatch(counterIncrement());
-      setIsModalVisible(true);
-      setIsModalVisibleTwo(true);
-
-      setTimeout(() => {
-        setIsModalVisibleTwo(false);
-      }, 1000);
-
-      setTimeout(() => {
-        setIsModalVisible(false);
-      }, 1000);
+        dispatch(addToCart(item));
+        dispatch(counterIncrement());
+      }
     }
   };
+
+  async function addFavoritesToServer() {
+    try {
+      axios
+        .put(`${NEW_FAVORITES_URL}/${_id}`)
+        .catch((err) => {
+          console.log(err);
+        });
+    } catch (error) {
+      console.error("Помилка при виході:", error);
+    }
+  }
 
   const handleAddFavorites = () => {
-    let countProducts = JSON.parse(localStorage.getItem("CountFavoritesProducts")) || 0;
-
-    if (!isItemInFavorites) {
-      const currentProducts = JSON.parse(localStorage.getItem("Favorites")) || [];
-      currentProducts.push(product);
-      countProducts += 1;
-      localStorage.setItem("Favorites", JSON.stringify(currentProducts));
-      localStorage.setItem(
-        "CountFavoritesProducts",
-        JSON.stringify(countProducts),
-      );
-
-      checkFavoritesFromServer();
-
-      dispatch(addFavorites(product));
-      dispatch(counterIncrement());
-      setIsModalVisible(true);
-      setIsModalVisibleTwo(true);
-
-      setTimeout(() => {
-        setIsModalVisibleTwo(false);
-      }, 1000);
-
-      setTimeout(() => {
-        setIsModalVisible(false);
-      }, 1000);
+    if (isUserLoggedIn) {
+      if (!isItemInFavorites) {
+        addFavoritesToServer();
+        dispatch(addFavorites(item));
+        dispatch(counterIncrement());
+      }
+    } else if (!isUserLoggedIn) {
+      // do nothing
     }
   };
 
   return (
     <li className={styles.cardItemWrapper}>
-      <article className={styles.cardContainer}>
-        {category === "Благодійний лот" ? (
-          <div className={styles.decorLot}>ЛОТ</div>
-        ) : category === "Донат" ? (
-          <div className={styles.decorDonat}>ДОНАТ</div>
-        ) : null}
+      <div className={styles.cardContainer}>
+        <div className={styles.cardItemIconsWrapper}>
+          {category === "Благодійний лот" ? (
+            <div className={styles.decorLot}>ЛОТ</div>
+          ) : category === "Донат" ? (
+            <div className={styles.decorDonat}>ДОНАТ</div>
+          ) : (<div className={styles.decorGoods}>10% на ЗСУ</div>)}
+
+          <Icons
+            imageURL={imageURL}
+            itemNo={itemNo}
+            name={shortName}
+            price={currentPrice}
+            id={_id}
+            category={category}
+            handleAddFavorites={handleAddFavorites}
+            handleAddToCart={handleAddToCart}
+            loggedIn={isUserLoggedIn}
+          />
+        </div>
+      
         <div className={styles.cardItemImageWrapper}>
           <Link to={`/product/${itemNo}`}>
             <img src={imageURL} className={styles.cardItemImage} alt="My img" />
@@ -188,10 +126,12 @@ export function Card({
         </div>
         <Link to={`/product/${itemNo}`} className={styles.cardLink}>
           <div className={styles.cardItemTextWrapper}>
-            <h3 className={styles.cardItemHeadline}>{name}</h3>
-            {price ? (
+            <h3 className={styles.cardItemHeadline}>{shortName}</h3>
+            {currentPrice ? (
               <p className={styles.cardItemPrice}>
-                {price}
+                Ціна:
+                {" "}
+                {currentPrice}
                 {" "}
                 грн
               </p>
@@ -199,7 +139,7 @@ export function Card({
               <p className={styles.cardItemGoalLot}>
                 Ставка:
                 {" "}
-                {goal}
+                {currentValue}
                 {" "}
                 грн
               </p>
@@ -215,39 +155,36 @@ export function Card({
           </div>
         </Link>
 
-        <div style={{ margin: "0 16px 16px" }}>
+        <div className={styles.buttonWrapper}>
           {category === "Благодійний лот" ? (
-            <Button text="Підняти ставку" width="100%" />
+            <Button text="Підняти ставку" width="80%" toPage={`/product/${itemNo}`} />
           ) : category === "Донат" ? (
-            <Button text="Підтримати проєкт" width="100%" />
-          ) : null}
+            <Button text="Зробити донат" width="80%" toPage={`/product/${itemNo}`} />
+          ) : <Button text="Купити" width="80%" toPage={`/product/${itemNo}`} />}
         </div>
-      </article>
-
-      <Icons
-        imageURL={imageURL}
-        itemNo={itemNo}
-        name={name}
-        price={price}
-        id={id}
-        quantity={1}
-        category={category}
-        handleAddFavorites={handleAddFavorites}
-        handleAddToCart={handleAddToCart}
-        isModalVisible={isModalVisible}
-        isModalVisibleTwo={isModalVisibleTwo}
-      />
-      <div className={styles.cardItemDecor} />
+      </div>
     </li>
   );
 }
 
 Card.propTypes = {
-  itemNo: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  price: PropTypes.oneOfType([
-    PropTypes.string.isRequired,
-    PropTypes.number.isRequired,
-  ]),
-  nameCloudinary: PropTypes.string.isRequired,
+  item: PropTypes.shape({
+    itemNo: PropTypes.string.isRequired,
+    shortName: PropTypes.string.isRequired,
+    currentPrice: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+    ]),
+    currentValue: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+    ]),
+    goal: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+    ]),
+    nameCloudinary: PropTypes.arrayOf(PropTypes.string),
+    category: PropTypes.string.isRequired,
+    _id: PropTypes.string.isRequired,
+  }).isRequired,
 };

@@ -22,7 +22,6 @@ const registrationUser = (
     isAdmin,
     telephone,
     birthdate,
-    favorites: { items: [] },
   };
 
   return axios

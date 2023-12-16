@@ -1,4 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
+import PropTypes from "prop-types";
 
 
 function ActiveLink({ label, to, className }) {
@@ -13,3 +14,9 @@ function ActiveLink({ label, to, className }) {
 }
 
 export default ActiveLink;
+
+ActiveLink.propTypes = {
+  label: PropTypes.string.isRequired,
+  to: PropTypes.string.isRequired,
+  className: PropTypes.string,
+};

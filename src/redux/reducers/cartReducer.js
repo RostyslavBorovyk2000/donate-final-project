@@ -7,8 +7,8 @@ import {
   INITIALIZE_FAVORITES,
   RESET_CART,
   RESET_FAVORITES,
-  // !
-  UPDATE_CART_PRODUCT,
+  UPDATE_CART_PRODUCT_QUANTITY,
+  UPDATE_CART_ITEM_SIZE,
 } from "../actions/cartActions";
 
 
@@ -27,11 +27,13 @@ const initialState = {
 export const cartReducer = (state = initialState.cart, action) => {
   switch (action.type) {
     case ADD_TO_CART:
-      if (state.items.some((item) => item.itemNo === action.payload.itemNo)) {
+      // eslint-disable-next-line no-underscore-dangle
+      if (state.items.some((item) => item._id === action.payload._id)) {
         return {
           ...state,
           items: state.items.map((item) => {
-            if (item.itemNo === action.payload.itemNo) {
+            // eslint-disable-next-line no-underscore-dangle
+            if (item._id === action.payload._id) {
               return {
                 ...item,
                 ...action.payload,
@@ -52,7 +54,8 @@ export const cartReducer = (state = initialState.cart, action) => {
     case REMOVE_FROM_CART:
       return {
         ...state,
-        items: state.items.filter((item) => item.itemNo !== action.payload),
+        // eslint-disable-next-line no-underscore-dangle
+        items: state.items.filter((item) => item._id !== action.payload),
         itemCount: state.itemCount - 1,
       };
     case INITIALIZE_CART:
@@ -61,26 +64,41 @@ export const cartReducer = (state = initialState.cart, action) => {
         items: action.payload,
         itemCount: action.payload.length,
       };
+    
+    case UPDATE_CART_PRODUCT_QUANTITY:
+      return {
+        ...state,
+        items: state.items.map((item) => {
+          // eslint-disable-next-line no-underscore-dangle
+          if (item._id === action.payload.productId) {
+            return {
+              ...item,
+              cartQuantity: action.payload.newQuantity,
+            };
+          }
+          return item;
+        }),
+      };
+    
+    case UPDATE_CART_ITEM_SIZE:
+      return {
+        ...state,
+        items: state.items.map((item) => {
+          // eslint-disable-next-line no-underscore-dangle
+          if (item._id === action.payload.productId) {
+            return {
+              ...item,
+              selectedSize: action.payload.newSize,
+            };
+          }
+          return item;
+        }),
+      };
+    
     case RESET_CART:
       return {
         ...initialState.cart,
       };
-      
-    //  !
-    case UPDATE_CART_PRODUCT: {
-      const items = state.items.map((item) => {
-        if (item.itemNo === action.payload.itemNo) {
-          return { ...item, ...action.payload };
-        }
-
-        return item;
-      });
-      
-      return {
-        ...state,
-        items,
-      };
-    }
 
     default:
       return state;
@@ -91,6 +109,24 @@ export const cartReducer = (state = initialState.cart, action) => {
 export const favoritesReducer = (state = initialState.favorites, action) => {
   switch (action.type) {
     case ADD_FAVORITES:
+      // eslint-disable-next-line no-underscore-dangle
+      if (state.items.some((item) => item._id === action.payload._id)) {
+        return {
+          ...state,
+          items: state.items.map((item) => {
+            // eslint-disable-next-line no-underscore-dangle
+            if (item._id === action.payload._id) {
+              return {
+                ...item,
+                ...action.payload,
+                quantity: item.quantity + action.payload.quantity,
+              };
+            }
+    
+            return item;
+          }),
+        };
+      }
       return {
         ...state,
         items: [...state.items, action.payload],
@@ -99,7 +135,8 @@ export const favoritesReducer = (state = initialState.favorites, action) => {
     case REMOVE_FROM_FAVORITES:
       return {
         ...state,
-        items: state.items.filter((item) => item.itemNo !== action.payload),
+        // eslint-disable-next-line no-underscore-dangle
+        items: state.items.filter((item) => item._id !== action.payload),
         itemCount: state.itemCount - 1,
       };
     case INITIALIZE_FAVORITES:
@@ -112,7 +149,7 @@ export const favoritesReducer = (state = initialState.favorites, action) => {
       return {
         ...initialState.favorites,
       };
-        
+
     default:
       return state;
   }

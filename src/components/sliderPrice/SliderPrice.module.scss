@@ -3,22 +3,32 @@
 
 .filtrationSliderSection {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  width: 350px;
+  flex-direction: column;
+  margin-bottom: 20px;
 
   @include devices(mobile) {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    width: 200px;
+    margin-bottom: 0px;
   }
 }
 
 .filtrationSliderWrapper {
-  width: 150px;
+  width: 200px;
+
+  @include devices(tablet) {
+    width: 100%;
+  }
 
   @include devices(mobile) {
-    padding-bottom: 20px;
+    padding: 20px 0px 20px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
   }
 
   & p {
@@ -31,29 +41,86 @@
   }
 }
 
-.filtrationSliderText {
-  text-align: center;
+.values {
+  margin: 5px 0;
 }
+
+.filtrationSliderText {
+  font-size: 20px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.pricesValueWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 0;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+.inputPriveValue{
+  height: 22px;
+  padding: 0 4px;
+  min-width: 3.1em;
+  border-radius: 2px;
+  font-size: 14px;
+  border: 1px solid #acacac;
+  box-shadow: inset 0 0 4px rgba(0,0,0,0.15);
+  
+}
+
+.dashBeforeInput {
+  flex-shrink: 0;
+  width: 12px;
+  height: 1px;
+  margin: 3px 2px 0;
+  background-color: #acacac;
+}
+
+.btnSubmit{
+  flex: 0 0 auto;
+  height: 24px;
+  font-size: 12px;
+}
+
+.btnContent{
+  box-sizing: border-box;
+  width: 100%;
+  float: left;
+  padding: 0 5px;
+}
+
 
 .slider {
   width: 100%;
   height: 25px;
 
   & .thumb {
-    width: 25px;
-    height: 25px;
+    width: 15px;
+    height:15px;
     color: #fff;
     line-height: 25px;
     text-align: center;
     background-color: variables.$bgc-main;
     border-radius: 50%;
+    top: 5px;
     cursor: grab;
+    transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;
+    &:hover {
+      box-shadow: 0 0 0 8px rgba(121, 162, 86, 0.25);
+    }
   }
 
   & .track {
     top: 10px;
     bottom: 10px;
     height: 5px;
-    background: #ccc;
+    background: #e8e5e5;
+    border-radius: 4px;
   }
 }

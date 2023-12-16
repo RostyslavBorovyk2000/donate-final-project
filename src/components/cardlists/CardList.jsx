@@ -5,20 +5,13 @@ import { Card } from "../card/Card";
 import styles from "./CardList.module.scss";
 
 
-export default function CardList({ items }) {
+export default function CardList({ items, pageIsMain }) {
   return (
-    <ul className={styles.cardsListWrapper}>
+    <ul className={pageIsMain !== "true" ? styles.cardsListWrapper : styles.cardsListWrapperMain}>
       {items.map((item) => (
         <Card
           key={item.itemNo}
-          id={item._id}
-          itemNo={item.itemNo}
-          name={item.shortName}
-          price={item.currentPrice}
-          goal={item.goal}
-          nameCloudinary={item.nameCloudinary[0]}
-          category={item.category}
-          quantity={item.quantity}
+          item={item}
         />
       ))}
     </ul>

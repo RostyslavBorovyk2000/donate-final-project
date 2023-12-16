@@ -3,29 +3,24 @@ import store from "../redux/store";
 import { setAuthToken } from "../redux/actions/authActions";
 import { NEW_CART_URL } from "../endpoints/endpoints";
 
+export default function updateCart(cartItemsFromLocalStorage) {
+  const token = localStorage.getItem("token");
+  store.dispatch(setAuthToken(token));
+  
+  const updatedCart = {
+    products: cartItemsFromLocalStorage.map((item) => ({
+      // eslint-disable-next-line no-underscore-dangle
+      product: item._id,
+      cartQuantity: item.cartQuantity,
+    })),
+  };
 
+  axios.put(NEW_CART_URL, updatedCart);
+}
 
-const selectCartForApi = (state) => state.cart.items.map((item) => ({
-  product: item.id,
-  cartQuantity: item.quantity,
-}));
-
-export default function updateCart() {
+export function deleteCart() {
   const { token } = store.getState().auth;
   store.dispatch(setAuthToken(token));
 
-  const state = store.getState();
-
-  const newCart = {
-    products: selectCartForApi(state),
-  };
-
-  axios
-    .put(NEW_CART_URL, newCart)
-    .then((response) => {
-      console.log(response);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+  axios.delete(NEW_CART_URL);
 }

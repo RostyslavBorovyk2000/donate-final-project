@@ -2,6 +2,7 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 import downArrow from "./icons/down_arrow.svg";
 import styles from "./Footer.module.scss";
 
@@ -38,3 +39,13 @@ function FooterAccordion({ title, items }) {
 }
 
 export default FooterAccordion;
+
+FooterAccordion.propTypes = {
+  title: PropTypes.string.isRequired,
+  items: PropTypes.arrayOf(
+    PropTypes.shape({
+      link: PropTypes.string.isRequired,
+      label: PropTypes.string.isRequired,
+    }),
+  ).isRequired,
+};

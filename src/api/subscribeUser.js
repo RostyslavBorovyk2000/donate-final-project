@@ -13,11 +13,8 @@ const subscribeUser = (email) => (dispatch) => {
 
   return axios
     .post(SUBSCRIBE_URL, newSubscriber)
-  // ! do we need it?
-    // .then(newSubscriber => {
-    //   console.log(newSubscriber);
-    // })
     .catch((err) => {
+      console.log(err);
       if (err.response && err.response.data) {
         if (err.response.data.message.includes("already exists")) {
           dispatch(setError(true));

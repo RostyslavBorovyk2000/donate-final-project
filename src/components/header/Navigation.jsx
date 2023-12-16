@@ -9,6 +9,7 @@ function Navigation() {
   const { isLinkVisible } = useContext(Context);
   const [isDropdownVisible, setDropdownVisible] = useState(false);
   const isUserLoggedIn = localStorage.getItem("userLogin") || null;
+  const isAdmin = localStorage.getItem("isAdmin") || null;
 
   const style = {
     display: isLinkVisible ? "flex" : "none",
@@ -27,10 +28,6 @@ function Navigation() {
       <nav style={style} className={styles.nav}>
         <ul className={`${styles.navItem} ${styles.active}`}>
           <ActiveLink label="головна" to="/" className={`${styles.navList} ${styles.navLink}`} />
-          {/* <ActiveLink
-            label="про нас"
-            to="/about-us"
-            className={`${styles.navList} ${styles.navLink}`} /> */}
           <div
             className={styles.dropdown}
             onMouseEnter={showDropdown}
@@ -52,7 +49,7 @@ function Navigation() {
             )}
           </div>
           <ActiveLink label="новини" to="/blog" onClick={() => setDropdownVisible(false)} className={`${styles.navList} ${styles.navLink}`} />
-          { isUserLoggedIn ? <ActiveLink label="кабінет" to="/account" onClick={() => setDropdownVisible(false)} className={`${styles.navList} ${styles.navLink}`} /> : null }
+          { isUserLoggedIn ? <ActiveLink label="кабінет" to={isAdmin === "false" ? "/account" : "/adm-page"} onClick={() => setDropdownVisible(false)} className={`${styles.navList} ${styles.navLink}`} /> : null }
         </ul>
       </nav>
             
