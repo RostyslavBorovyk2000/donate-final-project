@@ -453,7 +453,7 @@ function ProductView() {
 
             {product.category === "Донат" ? (
               <div className={styles.donateBtnContainer}>
-                <Button text="Підтримати проект" toPage="https://savelife.in.ua/" />
+                <Button text="Підтримати проект" toPage="https://www.paypal.com/donate/?hosted_button_id=STWEUSHYFJEBG" />
                 <ShareProducts />
               </div>
             ) : null}
