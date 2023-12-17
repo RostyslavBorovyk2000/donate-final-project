@@ -66,11 +66,9 @@ function App() {
           const response = await axios.get(NEW_CART_URL);
           return response.data;
         } catch (err) {
-          console.error("Помилка при отриманні даних:", err);
           return null;
         }
       } else {
-        console.log("Користувач не авторизований");
         return null;
       }
     };
@@ -89,11 +87,9 @@ function App() {
           const response = await axios.get(NEW_FAVORITES_URL);
           return response.data;
         } catch (err) {
-          console.error("Помилка при отриманні обраних товарів:", err);
           return null;
         }
       } else {
-        console.log("Користувач не авторизований");
         return null;
       }
     };

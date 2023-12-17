@@ -17,7 +17,7 @@ import style from "./Contacts.module.scss";
 function LoginModal() {
   return (
     <div className={style.loginModal}>
-      Форму надіслано
+      Ваше звернення надіслано
     </div>
   );
 }

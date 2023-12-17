@@ -6,7 +6,8 @@ function AdminRegistration() {
   return (
     <>
       <DocumentTitle title="Реєстрація адміністратора" />
-      <Registration headline="Реєстрація адміністратора" to="/admin" isAdmin />
+      {/* eslint-disable-next-line react/jsx-boolean-value */}
+      <Registration headline="Реєстрація адміністратора" to="/admin" isAdmin={true} />
     </>
   );
 }

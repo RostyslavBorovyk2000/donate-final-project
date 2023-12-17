@@ -48,13 +48,14 @@ export default function Subscribe() {
 
       <Formik
         initialValues={{ email: "" }}
-        onSubmit={(values, { setSubmitting }) => {
+        onSubmit={(values, { setSubmitting, resetForm }) => {
           if (!values.email) {
             setShowError(true);
             setErrorMessage("Ви не ввели адресу");
             setTimeout(() => setShowError(false), 2000);
           } else {
             handleUserSubscribe(values.email);
+            resetForm({ values: { email: "" } });
           }
           setSubmitting(false);
         }}

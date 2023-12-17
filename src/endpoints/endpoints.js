@@ -8,5 +8,5 @@ export const NEW_CART_URL = "https://be-donate-final-project.vercel.app/api/cart
 export const NEW_FAVORITES_URL = "https://be-donate-final-project.vercel.app/api/wishlist";
 export const MAKE_ORDERS = "https://be-donate-final-project.vercel.app/api/orders";
 export const GET_FILTERS_URL = "https://be-donate-final-project.vercel.app/api/filters";
-export const GET_BLOG = "https://be-donate-final-project.vercel.app/api/pages/";
+export const GET_BLOG = "https://be-donate-final-project.vercel.app/api/pages";
 export const GET_SEARCH = "https://be-donate-final-project.vercel.app/api/products/search";
