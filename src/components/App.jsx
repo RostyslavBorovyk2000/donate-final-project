@@ -5,14 +5,12 @@ import { useDispatch } from "react-redux";
 import AppRoutes from "../routes/AppRoutes";
 import { initializeCart, initializeFavorites } from "../redux/actions/cartActions";
 import { setAuthToken } from "../redux/actions/authActions";
-import { getProducts } from "../api/getProducts";
 import { getFilters } from "../api/getFilters";
 import Context from "./Context";
 import Header from "./header/Header";
 import Footer from "./footer/Footer";
 import Main from "./main/Main";
 import { logIn } from "../redux/actions/loggedInActions";
-import { setProducts } from "../redux/actions/productActions";
 import { setFilters } from "../redux/actions/filterActions";
 import ScrollToTop from "./ScrollToTop";
 import { FormButton } from "./button/Button";
@@ -111,14 +109,6 @@ function App() {
 
 
   useEffect(() => {
-    getProducts()
-      .then((data) => {
-        dispatch(setProducts(data));
-      })
-      .catch((error) => {
-        console.error("Помилка при отриманні товарів:", error);
-      });
-
     getFilters()
       .then((data) => {
         dispatch(setFilters(data));
