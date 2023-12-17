@@ -12,7 +12,7 @@
   transition: box-shadow 1s ease;
 
   &:hover {
-    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 1);
+    box-shadow: 0 8px 16px 0 rgb(168, 168, 168);
   }
 
   @include devices(tablet) {
@@ -51,7 +51,7 @@
 }
 
 .decorGoods {
-  width: 120px;
+  width: 115px;
   color: variables.$border-color-second;
   background-color: variables.$bgc-main;
 }

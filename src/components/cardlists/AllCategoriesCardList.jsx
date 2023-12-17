@@ -331,14 +331,18 @@ export default function CategoriesCardList({ query }) {
       </div>
   
       <div>
-        {isLoading ? <div className={styles.spinnerWrapper}><Spinner /></div> : (
-          <CardList items={currentCoods} pageIsMain="false" />
-        )}
-        <PaginationPages
-          goodsPearPages={goodsPearPages}
-          tottalCoods={coods.length}
-          paginateFunc={paginateFunc}
-        />
+        <div className={selectedValue === "Донат" || selectedValue === "Благодійний лот" ? styles.cardListLaptop : null}>
+          {isLoading ? <div className={styles.spinnerWrapper}><Spinner /></div> : (
+            <CardList items={currentCoods} pageIsMain="false" />
+          )}
+        </div>
+        <div>
+          <PaginationPages
+            goodsPearPages={goodsPearPages}
+            tottalCoods={coods.length}
+            paginateFunc={paginateFunc}
+          />
+        </div>
       </div>
     </div>
   );

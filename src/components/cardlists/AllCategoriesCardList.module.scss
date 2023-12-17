@@ -6,10 +6,16 @@
   flex-direction: column;
   gap: 10px;
   align-items: center;
-  width: 350px;
+  // width: 350px;
 
   @include devices(mobile) {
     width: 300px;
+  }
+}
+
+.cardListLaptop {
+  @include devices(laptop) {
+    padding-left: 220px;
   }
 }
 
@@ -176,7 +182,7 @@
 
 .spinnerWrapper {
   @include devices(laptop) {
-    width: 500px;
+    width: 800px;
     display: flex;
     justify-content: center;
   }
