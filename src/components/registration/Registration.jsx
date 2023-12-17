@@ -58,7 +58,6 @@ function Registration({ headline, to, isAdmin }) {
     email,
     password,
     telephone,
-    birthdate,
   ) => {
     dispatch(registrationUser(
       firstName,
@@ -67,7 +66,6 @@ function Registration({ headline, to, isAdmin }) {
       email,
       password,
       telephone,
-      birthdate,
       isAdmin,
     ))
       .then(() => {
@@ -103,11 +101,10 @@ function Registration({ headline, to, isAdmin }) {
             email: "",
             password: "",
             telephone: "",
-            birthdate: "",
           }}
           onSubmit={(values, { setSubmitting }) => {
             // eslint-disable-next-line max-len
-            handleUserRegistration(values.firstName, values.lastName, values.login, values.email, values.password, values.telephone, values.birthdate);
+            handleUserRegistration(values.firstName, values.lastName, values.login, values.email, values.password, values.telephone);
             setSubmitting(false);
           }}
           validationSchema={validationSchema}
@@ -185,17 +182,6 @@ function Registration({ headline, to, isAdmin }) {
                     id="tel"
                     className={meta.touched && meta.error ? styles.inputAttention : styles.input}
                     placeholder="Телефон"
-                  />
-                )}
-              </Field>
-              <Field name="birthdate">
-                {({ field, meta }) => (
-                  <input
-                    {...field}
-                    type="date"
-                    id="date"
-                    className={meta.touched && meta.error ? styles.inputAttention : styles.input}
-                    placeholder="Дата народження"
                   />
                 )}
               </Field>

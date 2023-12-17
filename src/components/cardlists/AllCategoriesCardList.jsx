@@ -331,7 +331,7 @@ export default function CategoriesCardList({ query }) {
       </div>
   
       <div>
-        {isLoading ? <Spinner /> : (
+        {isLoading ? <div className={styles.spinnerWrapper}><Spinner /></div> : (
           <CardList items={currentCoods} pageIsMain="false" />
         )}
         <PaginationPages

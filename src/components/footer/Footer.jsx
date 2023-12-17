@@ -65,11 +65,11 @@ function Footer() {
 
                 <li className={styles.contactsItem}>
                   <Location />
-                  <a href="/">Київ, Україна</a>
+                  <p>Київ, Україна</p>
                 </li>
                 <li className={styles.contactsItem}>
                   <Message />
-                  <a href="mailto:contact@donate.com">contact@donate.com</a>
+                  <a href="mailto:donateforavictory@gmail.com">donateforavictory@gmail.com</a>
                 </li>
                 <li className={styles.contactsItem}>
                   <Call />

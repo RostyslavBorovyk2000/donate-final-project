@@ -49,7 +49,7 @@ function CustomerPage() {
                 <p>
                   {customer.firstName}
                   &nbsp;
-                  {customer.firstName}
+                  {customer.lastName}
                 </p>
               </div>
               <div className={styles.name}>

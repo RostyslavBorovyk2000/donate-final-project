@@ -10,7 +10,6 @@ const registrationUser = (
   email,
   password,
   telephone,
-  birthdate,
   isAdmin,
 ) => (dispatch) => {
   const userData = {
@@ -21,7 +20,6 @@ const registrationUser = (
     password,
     isAdmin,
     telephone,
-    birthdate,
   };
 
   return axios

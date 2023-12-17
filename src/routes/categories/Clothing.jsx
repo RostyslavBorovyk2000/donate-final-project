@@ -26,7 +26,6 @@ export default function Clothing() {
 
   const handleSubCategoryChange = (e) => {
     const subCategory = e.target.value;
-    console.log(subCategory);
     setSelectedSubCategory((prevSubCategory) => (prevSubCategory === subCategory ? "" : subCategory));
   };
 

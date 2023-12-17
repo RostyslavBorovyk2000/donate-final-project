@@ -173,3 +173,31 @@
     width: 200px;
   }
 }
+
+.spinnerWrapper {
+  @include devices(laptop) {
+    width: 500px;
+    display: flex;
+    justify-content: center;
+  }
+
+  @include devices(mobile) {
+    padding-top: 50px;
+  }
+}
+
+.spinnerWrapper2 {
+  @include devices(laptop) {
+    width: 800px;
+    display: flex;
+    justify-content: center;
+  }
+
+  @include devices(tablet) {
+    width: 500px;
+  }
+
+  @include devices(mobile) {
+    padding-top: 50px;
+  }
+}

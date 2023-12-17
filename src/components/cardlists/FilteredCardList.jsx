@@ -6,6 +6,8 @@ import CardList from "./CardList";
 import Spinner from "../spinner/Spinner";
 import PaginationPages from "../paginationPages/PaginationPages";
 import shuffleArray from "../../scripts/shuffleArray";
+import styles from "./AllCategoriesCardList.module.scss";
+
 
 export default function FilteredCardList({
   property, value, priceRange, subcategory, brand, color, sortType, query,
@@ -141,7 +143,7 @@ export default function FilteredCardList({
   return (
     <div>
       <div>
-        {isLoading ? <p>Loading...</p> : <CardList items={currentCoods} pageIsMain="false" />}
+        {isLoading ? <div className={styles.spinnerWrapper2}><Spinner /></div> : <CardList items={currentCoods} pageIsMain="false" />}
       </div>
       <div>
         <PaginationPages

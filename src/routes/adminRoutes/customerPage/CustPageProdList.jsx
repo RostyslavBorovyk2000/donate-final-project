@@ -8,9 +8,6 @@ export default function CustPageProdList({ storeData }) {
   const [products, setProducts] = useState([]);
   const storeFavorites = useSelector((state) => state.favorites.items);
   const storeCart = useSelector((state) => state.cart.items);
-  console.log(storeFavorites.length);
-  console.log(storeCart.length);
-
 
   useEffect(() => {
     if (storeData === "Cart" && storeCart) {
